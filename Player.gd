@@ -1,6 +1,8 @@
 extends KinematicBody2D
 
 
+const BULLET = preload("res://BulletTest.tscn")
+
 var gravity := 100
 var jump_height := -1500
 var move_speed := 550
@@ -17,7 +19,7 @@ func _ready() -> void:
 
 func _input(event) -> void:
 	pass
-		
+
 
 func _physics_process(delta) -> void:
 	velocity.y += gravity
@@ -34,6 +36,14 @@ func _physics_process(delta) -> void:
 	# Shoot hook
 	if Input.is_mouse_button_pressed(1):
 		hook.shoot(get_global_mouse_position() - self.global_position)
+	
+	# Fire Bullet
+	if Input.is_action_just_pressed("ui_mouse_right"):
+		var bullet_instance = BULLET.instance()
+		var direction_2 = get_global_mouse_position() - self.global_position
+		direction_2 = direction_2.normalized()
+		bullet_instance.shoot(direction_2, self.global_position)
+		get_tree().get_root().get_node("World").add_child(bullet_instance)
 	
 	velocity.x = move_speed * input_dir.x
 	velocity = move_and_slide(velocity, Vector2.UP)

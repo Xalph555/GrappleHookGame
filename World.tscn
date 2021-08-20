@@ -10,6 +10,7 @@ position = Vector2( 549.241, 895.464 )
 
 [node name="Platform" parent="." instance=ExtResource( 2 )]
 position = Vector2( 53.3614, 1020.52 )
+collision_mask = 0
 
 [node name="Platform2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 1571.45, 956.379 )
