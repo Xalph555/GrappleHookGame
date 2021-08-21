@@ -1,28 +1,24 @@
 extends KinematicBody2D
 
+const HOOK := preload("res://Player/Hook/Hook.tscn")
 
-const BULLET = preload("res://BulletTest.tscn")
-
-var gravity := 100
+var weight := 40
 var jump_height := -1500
 var move_speed := 550
 
 var input_dir := Vector2.ZERO
 var velocity := Vector2.ZERO
 
-onready var hook = $Hook
+var can_grapple := true
+
 
 
 func _ready() -> void:
 	pass 
 
 
-func _input(event) -> void:
-	pass
-
-
 func _physics_process(delta) -> void:
-	velocity.y += gravity
+	velocity.y += WorldGlobals.apply_gravity(weight)
 	
 	# Run
 	input_dir.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -34,16 +30,19 @@ func _physics_process(delta) -> void:
 			velocity.y += jump_height
 	
 	# Shoot hook
-	if Input.is_mouse_button_pressed(1):
-		hook.shoot(get_global_mouse_position() - self.global_position)
+	if Input.is_action_just_pressed("ui_mouse_left") && can_grapple:
+		#can_grapple = false
+		
+		var hook_dir := get_global_mouse_position() - self.global_position
+		hook_dir = hook_dir.normalized()
+		
+		var _hook := HOOK.instance()
+		owner.add_child(_hook)
+		_hook.shoot(self, hook_dir)
 	
 	# Fire Bullet
 	if Input.is_action_just_pressed("ui_mouse_right"):
-		var bullet_instance = BULLET.instance()
-		var direction_2 = get_global_mouse_position() - self.global_position
-		direction_2 = direction_2.normalized()
-		bullet_instance.shoot(direction_2, self.global_position)
-		get_tree().get_root().get_node("World").add_child(bullet_instance)
+		pass
 	
 	velocity.x = move_speed * input_dir.x
 	velocity = move_and_slide(velocity, Vector2.UP)
