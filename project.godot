@@ -15,7 +15,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-WorldGlobals="*res://World/WorldGlobals.gd"
+WorldGlobals="*res://Levels/World/WorldGlobals.gd"
 
 [display]
 
