@@ -11,7 +11,8 @@ position = Vector2( 53.3614, 1020.52 )
 collision_mask = 0
 
 [node name="Platform2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1571.45, 956.379 )
+position = Vector2( 2224.05, 956.379 )
+scale = Vector2( 2, 1 )
 
 [node name="Platform3" parent="." instance=ExtResource( 2 )]
 position = Vector2( -87.7995, -508.376 )
@@ -25,3 +26,5 @@ position = Vector2( 478.877, 904.781 )
 
 [node name="PointPlatform" parent="." instance=ExtResource( 3 )]
 position = Vector2( 395.113, 253.62 )
+
+[editable path="Platform2"]
