@@ -47,8 +47,8 @@ func _physics_process(delta) -> void:
 		velocity.y = lerp(velocity.y, 0, 0.05)
 	
 	if is_flying:
-		velocity.x = clamp(velocity.x, -max_speed_x*3.5, max_speed_x*3.5)
-		velocity.y = clamp(velocity.y, -max_speed_y*1.2, max_speed_y*1.2)
+		velocity.x = clamp(velocity.x, -max_speed_x*3, max_speed_x*3)
+		velocity.y = clamp(velocity.y, -max_speed_y*1.1, max_speed_y*1.1)
 		
 		
 	else:
@@ -71,10 +71,9 @@ func _physics_process(delta) -> void:
 	
 	if Input.is_action_just_released("ui_mouse_left"):
 		can_grapple = true
+		
 		hook_instance.release()
 	
 	# Fire Bullet
 	if Input.is_action_just_pressed("ui_mouse_right"):
 		pass
-	
-	#velocity = move_and_slide(velocity, Vector2.UP)

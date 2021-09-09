@@ -1,19 +1,22 @@
 extends KinematicBody2D
 
-var move_speed := 3000
+var move_speed := 6000
 
-var pull_x := 300
-var pull_y := 300
+var pull_x_max := 1000
+var pull_y_max := 300
+var hook_pull := Vector2.ZERO
 
 var move_dir := Vector2.ZERO
 var hook_dir := Vector2.ZERO
 var velocity := Vector2.ZERO
+var start_dir := Vector2.ZERO
+var orignal_dist := 0.0
 
 var is_hooked := false
 
 var parent: KinematicBody2D
 
-#var line: Line2D
+onready var hook_chain := $Chain
 
 
 func _ready() -> void:
@@ -21,59 +24,64 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	var distance_to_parent := self.global_position.distance_to(parent.global_position)
+	
+	hook_chain.region_rect.size.y = distance_to_parent
+	hook_chain.rotation = self.position.angle_to_point(parent.global_position) - self.rotation + deg2rad(90)
+	
+	hook_dir = self.global_position - parent.global_position
+	
 	if is_hooked:
-		
 		parent.is_flying = true
 		
-		if parent.global_position.y >= self.global_position.y:
-			parent.velocity.y -= pull_y
+		hook_chain.region_rect.size.y = distance_to_parent
+		hook_chain.rotation = self.position.angle_to_point(parent.global_position) - self.rotation + deg2rad(90)
 		
-		if parent.global_position.y < self.global_position.y:
-			parent.velocity.y += pull_y
+		if sign(hook_dir.x) != sign(start_dir.x):
+			hook_pull.x *= 0.1
 		
-		if parent.global_position.x >= self.global_position.x:
-			parent.velocity.x -= pull_x
+		else:
+			hook_pull.x *= 1.8
+		
+		if sign(hook_dir.y) != sign(start_dir.y):
+			hook_pull.y *= 0.1 
 
-		if parent.global_position.x < self.global_position.x:
-			parent.velocity.x += pull_x
-	
+		else:
+			hook_pull.y *= 1.3
+		
+		hook_pull.x = clamp(hook_pull.x , pull_x_max * 0.01, pull_x_max)
+		hook_pull.y = clamp(hook_pull.y, pull_y_max * 0.01, pull_y_max)
+		
+		parent.velocity += hook_dir.normalized() * hook_pull
+		print(hook_pull)
+		
 	else:
 		velocity = move_dir * move_speed * delta
-	
-#		if line.points:
-#			line.points[-1] = parent.global_position
 		
 		if move_and_collide(velocity):
 			is_hooked = true
 			move_dir = Vector2.ZERO
+			hook_chain.visible = true
+			start_dir = hook_dir
+			orignal_dist = distance_to_parent
 			
-			hook_dir = parent.global_position - self.global_position
+			#hook_dir = self.global_position - parent.global_position
 			
-			if abs(hook_dir.x) >= abs(hook_dir.y):
-				pull_x *= (abs(hook_dir.x) / abs(parent.global_position.distance_to(self.global_position)))
-				pull_y *= (abs(hook_dir.y) / abs(parent.global_position.distance_to(self.global_position)))
-				
-				print("x-stronger")
-				print(pull_x)
-				print(pull_y)
-			
-			else:
-				pull_x *= (abs(hook_dir.x) / abs(parent.global_position.distance_to(self.global_position)))
-				pull_y *= (abs(hook_dir.y) / abs(parent.global_position.distance_to(self.global_position)))
-				
-				print("y-stronger")
-				print(pull_x)
-				print(pull_y)
+			#pull_x *=  (abs(hook_dir.x / abs(distance_to_parent)))
+			#pull_y *= (abs(hook_dir.y / abs(distance_to_parent)))
+#
+#			if abs(hook_dir.x) >= abs(hook_dir.y):
+#				print("x-stronger")
+#				print(pull_x)
+#				print(pull_y)
+#
+#			else:
+#				print("y-stronger")
+#				print(pull_x)
+#				print(pull_y)
+
 
 func shoot(shooter: KinematicBody2D, dir: Vector2) -> void:
-	
-	
-#	line = Line2D.new()
-#	add_child(line)
-#
-#	line.add_point(self.global_position)
-#	line.add_point(to_local(parent.global_position))
-
 	parent = shooter
 	position = parent.global_position
 	
