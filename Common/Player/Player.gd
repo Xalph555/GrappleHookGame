@@ -50,7 +50,6 @@ func _physics_process(delta) -> void:
 		velocity.x = clamp(velocity.x, -max_speed_x*3, max_speed_x*3)
 		velocity.y = clamp(velocity.y, -max_speed_y*1.1, max_speed_y*1.1)
 		
-		
 	else:
 		velocity.x = clamp(velocity.x, -max_speed_x, max_speed_x)
 		velocity.y = clamp(velocity.y, -max_speed_y, max_speed_y)

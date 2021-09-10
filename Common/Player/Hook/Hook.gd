@@ -2,9 +2,9 @@ extends KinematicBody2D
 
 var move_speed := 6000
 
-var pull_x_max := 1000
-var pull_y_max := 300
-var hook_pull := Vector2.ZERO
+var pull_x_max := 5
+var pull_y_max := 5
+var hook_pull := Vector2(pull_x_max, pull_y_max)
 
 var move_dir := Vector2.ZERO
 var hook_dir := Vector2.ZERO
@@ -37,23 +37,34 @@ func _physics_process(delta: float) -> void:
 		hook_chain.region_rect.size.y = distance_to_parent
 		hook_chain.rotation = self.position.angle_to_point(parent.global_position) - self.rotation + deg2rad(90)
 		
-		if sign(hook_dir.x) != sign(start_dir.x):
-			hook_pull.x *= 0.1
+#		if sign(hook_dir.x) != sign(start_dir.x):
+#			hook_pull.x *= 0.1
+#
+#		else:
+#			hook_pull.x *= 1.8
+#
+#		if sign(hook_dir.y) != sign(start_dir.y):d
+#			hook_pull.y *= 0.1 
+#
+#		else:
+#			hook_pull.y *= 1.3
 		
-		else:
-			hook_pull.x *= 1.8
+		#hook_pull.x = clamp(hook_pull.x , pull_x_max * 0.01, pull_x_max)
+		#hook_pull.y = clamp(hook_pull.y, pull_y_max * 0.01, pull_y_max)
 		
-		if sign(hook_dir.y) != sign(start_dir.y):
-			hook_pull.y *= 0.1 
-
-		else:
-			hook_pull.y *= 1.3
+		var player_to_hook = parent.global_position - self.global_position
 		
-		hook_pull.x = clamp(hook_pull.x , pull_x_max * 0.01, pull_x_max)
-		hook_pull.y = clamp(hook_pull.y, pull_y_max * 0.01, pull_y_max)
-		
-		parent.velocity += hook_dir.normalized() * hook_pull
+		parent.velocity += (player_to_hook.normalized() * player_to_hook.normalized().dot(Vector2(10, -180))) #* hook_pull
 		print(hook_pull)
+		
+		# another hook physics
+		# 	move player in circular path with hook point as centre
+		# 	may result 
+		
+		# stop pull from after half way mark - need to top hook_dir from updating
+		# use tension vector that keeps player and hook point apart (essentially creating a circle)
+	
+		# maintain heavy pull force for the first second letting tension vector carry momentum 
 		
 	else:
 		velocity = move_dir * move_speed * delta
