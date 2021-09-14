@@ -47,8 +47,8 @@ func _physics_process(delta) -> void:
 		velocity.y = lerp(velocity.y, 0, 0.05)
 	
 	if is_flying:
-		velocity.x = clamp(velocity.x, -max_speed_x*3, max_speed_x*3)
-		velocity.y = clamp(velocity.y, -max_speed_y*1.1, max_speed_y*1.1)
+		velocity.x = clamp(velocity.x, -max_speed_x*3.5, max_speed_x*3.5)
+		velocity.y = clamp(velocity.y, -max_speed_y*1.5, max_speed_y*1.5)
 		
 	else:
 		velocity.x = clamp(velocity.x, -max_speed_x, max_speed_x)

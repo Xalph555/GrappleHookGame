@@ -19,11 +19,12 @@ region_enabled = true
 region_rect = Rect2( 30, 0, 10, 60 )
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2( 7.57266, 0 )
 rotation = 1.5708
 scale = Vector2( 1, 0.964884 )
 color = Color( 0.501961, 0.501961, 0.501961, 1 )
 polygon = PoolVector2Array( -0.384598, -29.5249, -19.9134, 17.1566, 17.5693, 16.1772 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -1.75, 0 )
+position = Vector2( 5.82266, 0 )
 shape = SubResource( 1 )
