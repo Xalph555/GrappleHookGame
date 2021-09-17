@@ -35,18 +35,18 @@ func _physics_process(delta: float) -> void:
 	if is_hooked:
 		parent.is_flying = true
 		
-		# adjusting pull direction
-		if hook_dir.y < 0:
-			hook_pull.y = -abs(hook_pull.y)
-		else:
-			hook_pull.y = abs(hook_pull.y)
-
-		if hook_dir.x < 0:
-			hook_pull.x = -abs(hook_pull.x)
-		else:
-			hook_pull.x = abs(hook_pull.x)
+#		# adjusting pull direction
+#		if hook_dir.y < 0:
+#			hook_pull.y = -abs(hook_pull.y)
+#		else:
+#			hook_pull.y = abs(hook_pull.y)
+#
+#		if hook_dir.x < 0:
+#			hook_pull.x = -abs(hook_pull.x)
+#		else:
+#			hook_pull.x = abs(hook_pull.x)
 		
-		var tension_vec := hook_dir * hook_dir.dot(hook_pull)
+		var tension_vec := hook_dir * abs(hook_dir.dot(hook_pull))
 		
 		# dead space
 		var dead_space := 150.00
