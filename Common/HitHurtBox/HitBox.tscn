@@ -1,0 +1,8 @@
+[gd_scene format=2]
+
+[node name="HitBox" type="Area2D"]
+modulate = Color( 0.803922, 0, 0, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( -0.420441, -0.840897 )
