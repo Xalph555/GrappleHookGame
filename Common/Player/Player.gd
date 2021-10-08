@@ -90,10 +90,12 @@ func apply_friction():
 
 
 func limit_speed():
-	if is_on_floor():
+	if is_on_floor() and sign(input_dir.x) != 0:
 		is_flying = false
+		#print("is not flying anymore")
 		
 	if is_flying:
+		#print("is flying ")
 		velocity.x = clamp(velocity.x, -max_speed_x * 3.5, max_speed_x * 3.5)
 		velocity.y = clamp(velocity.y, -max_speed_y * 1.5, max_speed_y * 1.5)
 		
