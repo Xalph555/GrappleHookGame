@@ -1,6 +1,6 @@
 extends StaticBody2D
 
-export var beam_delay := 0.0
+export var fire_delay := 0.0
 
 var limit := Vector2.ZERO
 
@@ -14,7 +14,7 @@ onready var hit_box_shape := $RayCast2D/HitBox/CollisionShape2D
 
 
 func _ready() -> void:
-	timer.wait_time = 0.1 if (timer.wait_time + beam_delay < 0) else (timer.wait_time + beam_delay)
+	timer.wait_time = 0.1 if (timer.wait_time + fire_delay < 0) else (timer.wait_time + fire_delay)
 
 
 func _physics_process(delta: float) -> void:
