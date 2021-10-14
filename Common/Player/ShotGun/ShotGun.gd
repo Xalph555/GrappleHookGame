@@ -14,7 +14,7 @@ var current_ammo := max_ammo
 var knock_back := 2800.0
 
 var bullet_speed := 3000
-var bullet_spread := 20.0
+var bullet_spread := 15.0
 var num_bullets := 4
 
 var shot_delay := 0.3

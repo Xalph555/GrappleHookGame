@@ -1,58 +1,48 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Common/Enemies/Sentry/Heads/LazerHead.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 1000.0
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 28.6104, 27.6649 )
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 28.6104, 16.9116 )
 
 [node name="LazerHead" type="StaticBody2D"]
 show_behind_parent = true
-collision_layer = 513
+collision_layer = 512
 collision_mask = 0
 script = ExtResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 1.5
 one_shot = true
 
-[node name="AttackRange" type="Area2D" parent="."]
-modulate = Color( 1, 1, 1, 0.152941 )
-position = Vector2( 0, -22.6786 )
-collision_layer = 0
-collision_mask = 16
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRange"]
-shape = SubResource( 1 )
-
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 1, 0.547009 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
-[node name="Line2D" type="Line2D" parent="."]
+[node name="LaserBeam" type="Line2D" parent="."]
 visible = false
-points = PoolVector2Array( 0, -1.124, -0.873413, -46.1508 )
+show_behind_parent = true
+points = PoolVector2Array( 0, 0, 46.151, 0 )
 default_color = Color( 1, 0, 0, 1 )
 
 [node name="TrackingLine" type="Line2D" parent="."]
 visible = false
 modulate = Color( 1, 1, 1, 0.447059 )
-points = PoolVector2Array( 0, -1.124, -0.873413, -46.1508 )
+show_behind_parent = true
+points = PoolVector2Array( 0, 0, 46.151, 0 )
 width = 2.0
 default_color = Color( 0.521569, 0.721569, 1, 1 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 show_behind_parent = true
 enabled = true
-cast_to = Vector2( 0, -2000 )
+cast_to = Vector2( 2000, 0 )
 collision_mask = 17
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="body_entered" from="AttackRange" to="." method="_on_AttackRange_body_entered"]
-[connection signal="body_exited" from="AttackRange" to="." method="_on_AttackRange_body_exited"]

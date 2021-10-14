@@ -1,55 +1,60 @@
 extends StaticBody2D
 
-var target : Node = null
 var can_rotate := true
+var can_fire := false
 
 onready var parent := get_parent()
-onready var attack_area := $AttackRange/CollisionShape2D
+
+onready var charge_timer := $Timer
+onready var laser_ray := $RayCast2D
+onready var laser_bream := $LaserBeam
+onready var tracking_line := $TrackingLine
 
 
 func _ready() -> void:
-	$Timer.wait_time = 0.1 if ($Timer.wait_time + parent.fire_delay < 0) else ($Timer.wait_time + parent.fire_delay)
+	charge_timer.wait_time = 0.1 if (charge_timer.wait_time + parent.fire_delay < 0) else (charge_timer.wait_time + parent.fire_delay)
 	
-	$RayCast2D.cast_to.y = -parent.attack_range
-	$TrackingLine.points[1] = $RayCast2D.cast_to
-	attack_area.shape.radius = parent.attack_range
+	laser_ray.cast_to.x = parent.attack_range
+	tracking_line.points[1] = laser_ray.cast_to
 
 
 func _physics_process(delta: float) -> void:
-	if target != null and can_rotate:
-		look_at(target.global_position)
-		rotation += deg2rad(90)
+	if parent.target:
+		if charge_timer.time_left == 0.0 and can_rotate:
+			charge_timer.start()
 		
-	if $RayCast2D.is_colliding():
-		$Line2D.points[1] = to_local($RayCast2D.get_collision_point())
-		$TrackingLine.points[1] = to_local($RayCast2D.get_collision_point())
+		var target_dir = parent.target.global_position - self.global_position
+		
+		if target_dir.dot(parent.up_dir) > 0 and parent.target_ray.get_collider() == parent.target:
+			can_fire = true
+			tracking_line.visible = true
+			
+			if can_rotate:
+				rotation = parent.target_angle
+			
+		else:
+			can_fire = false
+			tracking_line.visible = false
+	
+	# adjusting laser and tracking line visuals
+	if laser_ray.is_colliding():
+		laser_bream.points[1] = to_local(laser_ray.get_collision_point())
+		tracking_line.points[1] = to_local(laser_ray.get_collision_point())
+		
 	else:
-		$Line2D.points[1] = $RayCast2D.cast_to
-		$TrackingLine.points[1] = $RayCast2D.cast_to
-		
-		# check to ensure not rotating past 180 degrees
+		laser_bream.points[1] = laser_ray.cast_to
+		tracking_line.points[1] = laser_ray.cast_to
 
 
 func _on_Timer_timeout() -> void:
-	can_rotate = false
-	
-	# fire laser + damage player
-	$Line2D.visible = true
-	yield(get_tree().create_timer(2), "timeout")
-	$Line2D.visible = false
+	if can_fire:
+		can_rotate = false
+		
+		laser_bream.visible = true
+		yield(get_tree().create_timer(2), "timeout")
+		laser_bream.visible = false
+		
+		can_rotate = true
+		
+	charge_timer.start()
 
-	can_rotate = true
-	
-	if target != null:
-		$Timer.start()
-
-
-func _on_AttackRange_body_entered(body: Node) -> void:
-	$Timer.start()
-	target = body
-	$TrackingLine.visible = true
-
-
-func _on_AttackRange_body_exited(body: Node) -> void:
-	target = null
-	$TrackingLine.visible = false

@@ -6,14 +6,23 @@ extends KinematicBody2D
 
 # Variables:
 #---------------------------------------
+const UP_DIR := Vector2.UP
+const SNAP_DIR := Vector2.DOWN
+const SNAP_VEC_LEN := 65
+const MAX_SLIDES := 4
+const MAX_SLOPE_ANGLE := deg2rad(46)
+
 export var hook: PackedScene
 
-var weight := 40
+var gravity := 80
 var jump_height := -2500
 var acceleration:= 65
 var max_speed_x := 1000
 var max_speed_y := 3000
 
+var do_stop_on_slope := true
+var has_infinite_inertia := true
+var snap_vector := SNAP_DIR * SNAP_VEC_LEN
 var velocity := Vector2.ZERO
 var input_dir := Vector2.ZERO
 
@@ -40,7 +49,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	# Jump
 	if is_on_floor():
+		snap_vector = SNAP_DIR * SNAP_VEC_LEN
+		
 		if event.is_action_pressed("ui_up"):
+			snap_vector = Vector2.ZERO
 			velocity.y += jump_height
 	
 	# Shoot hook
@@ -66,23 +78,34 @@ func _unhandled_input(event: InputEvent) -> void:
 	# Fire Shotgun
 	if event.is_action_pressed("ui_mouse_right") and can_shoot:
 		is_flying = false
+		snap_vector = Vector2.ZERO
 		shotgun.shoot()
 
 
 func _physics_process(delta) -> void:
-	velocity.y += WorldGlobals.apply_gravity(weight)
-
+	if is_flying:
+		snap_vector = Vector2.ZERO
+	
+	velocity.y += gravity
 	velocity.x += input_dir.x * acceleration
 	
 	apply_friction()
 	limit_speed()
 	
-	velocity = move_and_slide(velocity, Vector2.UP)
+	#if is_on_floor(): print("is on floor")
+	
+	# fixes running up slopes??????
+	if is_on_wall(): 
+		#print("is on wall")
+		velocity = move_and_slide_with_snap(velocity, snap_vector, UP_DIR, do_stop_on_slope, MAX_SLIDES, MAX_SLOPE_ANGLE, has_infinite_inertia)
+	else:
+		velocity.y = move_and_slide_with_snap(velocity, snap_vector, UP_DIR, do_stop_on_slope, MAX_SLIDES, MAX_SLOPE_ANGLE, has_infinite_inertia).y
 
 
 func apply_friction():
 	if is_on_floor():
 		velocity.x = lerp(velocity.x, 0, 0.04)
+		#velocity.x = lerp(velocity.x, 0, 0.1)
 	
 	else:
 		velocity.x = lerp(velocity.x, 0, 0.03)
@@ -90,7 +113,7 @@ func apply_friction():
 
 
 func limit_speed():
-	if is_on_floor() and sign(input_dir.x) != 0:
+	if is_on_floor(): #and sign(input_dir.x) != 0:
 		is_flying = false
 		#print("is not flying anymore")
 		

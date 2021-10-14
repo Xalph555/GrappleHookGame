@@ -6,8 +6,9 @@
 [ext_resource path="res://Common/Player/Hook/Hook.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Common/HitHurtBox/HurtBox.tscn" type="PackedScene" id=5]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 22.6362, 42.3807 )
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 23.5
+height = 39.0
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 16
