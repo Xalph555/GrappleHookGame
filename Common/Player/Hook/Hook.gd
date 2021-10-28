@@ -8,7 +8,7 @@ extends KinematicBody2D
 #---------------------------------------
 var move_speed := 6000
 
-var pull_x := 20
+var pull_x := 50
 var pull_y := 280
 var hook_pull := Vector2(pull_x, pull_y)
 
@@ -65,6 +65,8 @@ func apply_tension():
 	if distance_to_parent < dead_space:
 		tension_vec *= 0.002 * (pull_x + pull_y)/2
 	
+	parent.limit_speed = parent.max_speed * 3.5
+	#parent.limit_speed_y = parent.max_speed_y * 1.5
 	parent.velocity += tension_vec 
 
 

@@ -21,8 +21,8 @@ WorldGlobals="*res://Levels/World/WorldGlobals.gd"
 
 window/size/width=2048
 window/size/height=1200
-window/size/test_width=1024
-window/size/test_height=600
+window/size/test_width=1536
+window/size/test_height=900
 window/stretch/mode="viewport"
 
 [input]

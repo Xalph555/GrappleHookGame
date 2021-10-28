@@ -11,7 +11,7 @@ export var bullet: PackedScene
 var max_ammo := 3
 var current_ammo := max_ammo
 
-var knock_back := 2800.0
+var knock_back := 2200.0
 
 var bullet_speed := 3000
 var bullet_spread := 15.0

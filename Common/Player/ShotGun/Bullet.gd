@@ -37,3 +37,7 @@ func _on_Timer_timeout() -> void:
 
 func _on_Bullet_area_entered(_area: Area2D) -> void:
 	queue_free()
+
+
+func _on_Bullet_body_entered(body: Node) -> void:
+	queue_free()
