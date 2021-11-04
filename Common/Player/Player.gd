@@ -44,6 +44,7 @@ onready var shotgun = $ShotGun
 func _ready() -> void:
 	pass 
 
+
 func _physics_process(delta) -> void:
 	# apply gravity
 	velocity.y += gravity
