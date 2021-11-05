@@ -24,7 +24,7 @@ color = Color( 0.513726, 0.807843, 1, 1 )
 extents = Vector2( 45.342, 7.02374 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 42.1021, 195.408 )
+extents = Vector2( 30.1698, 195.408 )
 
 [node name="Portal" type="StaticBody2D"]
 collision_mask = 0

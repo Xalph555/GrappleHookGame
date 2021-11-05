@@ -41,7 +41,6 @@ sentry_head = ExtResource( 5 )
 [node name="Sentry3" parent="Enemies" instance=ExtResource( 4 )]
 position = Vector2( 10296, -1000.07 )
 rotation = 3.12334
-scale = Vector2( 1, 1 )
 sentry_head = ExtResource( 5 )
 
 [node name="Sentry4" parent="Enemies" instance=ExtResource( 4 )]
@@ -60,24 +59,15 @@ rotation = -3.12249
 sentry_head = ExtResource( 5 )
 
 [node name="BlitzOrb" parent="Enemies" instance=ExtResource( 3 )]
-visible = false
-position = Vector2( 21462.3, 1283.48 )
-
-[node name="BlitzOrb2" parent="Enemies" instance=ExtResource( 3 )]
-visible = false
-position = Vector2( 16167.5, 802.648 )
-
-[node name="BlitzOrb3" parent="Enemies" instance=ExtResource( 3 )]
-visible = false
-position = Vector2( 18588.6, 3319.94 )
+position = Vector2( 4026.86, -320.723 )
 
 [node name="Portal" parent="." instance=ExtResource( 6 )]
-position = Vector2( 7860.03, 269.071 )
+position = Vector2( 3332.85, -642.319 )
 rotation = -0.807883
 portal_con_path = NodePath("../Portal2")
 
 [node name="Portal2" parent="." instance=ExtResource( 6 )]
-position = Vector2( 5007.62, -351.203 )
+position = Vector2( 3263.24, -336.949 )
 rotation = -2.5
 portal_con_path = NodePath("../Portal")
 
