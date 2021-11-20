@@ -9,6 +9,8 @@ onready var charge_timer := $Timer
 onready var laser_ray := $RayCast2D
 onready var laser_bream := $LaserBeam
 onready var tracking_line := $TrackingLine
+onready var hit_box = $LaserBeam/HitBox
+onready var hit_box_shape = $LaserBeam/HitBox/CollisionShape2D
 
 
 func _ready() -> void:
@@ -38,12 +40,20 @@ func _physics_process(delta: float) -> void:
 	
 	# adjusting laser and tracking line visuals
 	if laser_ray.is_colliding():
-		laser_bream.points[1] = to_local(laser_ray.get_collision_point())
 		tracking_line.points[1] = to_local(laser_ray.get_collision_point())
 		
+		if laser_bream.visible:
+			laser_bream.points[1] = to_local(laser_ray.get_collision_point())
+			hit_box_shape.shape.extents.x = laser_bream.points[1].x / 2
+			hit_box.position.x = laser_bream.points[1].x / 2
+		
 	else:
-		laser_bream.points[1] = laser_ray.cast_to
 		tracking_line.points[1] = laser_ray.cast_to
+		
+		if laser_bream.visible:
+			laser_bream.points[1] = laser_ray.cast_to
+			hit_box_shape.shape.extents.x = laser_bream.points[1].x / 2
+			hit_box.position.x = laser_bream.points[1].x / 2
 
 
 func _on_Timer_timeout() -> void:
@@ -51,7 +61,11 @@ func _on_Timer_timeout() -> void:
 		can_rotate = false
 		
 		laser_bream.visible = true
+		hit_box.monitorable = true
+		
 		yield(get_tree().create_timer(2), "timeout")
+		
+		hit_box.monitorable = false
 		laser_bream.visible = false
 		
 		can_rotate = true

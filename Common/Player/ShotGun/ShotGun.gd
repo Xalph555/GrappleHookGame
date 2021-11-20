@@ -11,9 +11,9 @@ export var bullet: PackedScene
 var max_ammo := 3
 var current_ammo := max_ammo
 
-var knock_back := 2200.0
+var knock_back := 730.0
 
-var bullet_speed := 3000
+var bullet_speed := 1000
 var bullet_spread := 15.0
 var num_bullets := 4
 
@@ -25,8 +25,9 @@ var can_shoot := true
 
 onready var parent := get_parent()
 onready var tween := $Tween
-onready var sprite := $Sprite
-onready var spawn_pos := $BulletSpawn
+onready var pivot := $Pivot
+onready var sprite := $Pivot/Sprite
+onready var spawn_pos := $Pivot/BulletSpawn
 
 
 
@@ -39,6 +40,13 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if current_ammo > 0:
 		look_at(get_global_mouse_position())
+		rotation_degrees = wrapf(rotation_degrees, 0, 360)
+	
+	# flipping shotgun sprite
+	if rotation_degrees > 90 and rotation_degrees < 270:
+		pivot.scale.y = -1
+	else:
+		pivot.scale.y = 1
 
 
 func shoot() -> void:

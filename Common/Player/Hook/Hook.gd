@@ -6,10 +6,10 @@ extends KinematicBody2D
 
 # Variables
 #---------------------------------------
-var move_speed := 6000
+var move_speed := 2000
 
-var pull_x := 50
-var pull_y := 280
+var pull_x := 30
+var pull_y := 90
 var hook_pull := Vector2(pull_x, pull_y)
 
 var move_dir := Vector2.ZERO
@@ -47,8 +47,8 @@ func _physics_process(delta: float) -> void:
 
 func display_chain():
 	# chain graphics
-	hook_chain.region_rect.size.y = distance_to_parent
-	hook_chain.rotation = self.position.angle_to_point(parent.global_position) - self.rotation + deg2rad(90)
+	hook_chain.region_rect.size.x = distance_to_parent
+	hook_chain.rotation = self.position.angle_to_point(parent.global_position) - self.rotation + deg2rad(180)
 
 
 func apply_tension():
@@ -61,12 +61,11 @@ func apply_tension():
 	var tension_vec := hook_dir * hook_dir.dot(hook_pull)
 	
 	# dead space
-	var dead_space := 150.00
+	var dead_space := 30.00
 	if distance_to_parent < dead_space:
 		tension_vec *= 0.002 * (pull_x + pull_y)/2
 	
-	parent.limit_speed = parent.max_speed * 3.5
-	#parent.limit_speed_y = parent.max_speed_y * 1.5
+	parent.limit_speed = parent.max_speed * 1.6
 	parent.velocity += tension_vec 
 
 

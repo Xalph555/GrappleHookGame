@@ -30,6 +30,6 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_Timer_timeout() -> void:
-	anim_player.play("FireBeam")
+	anim_player.play("fire_beam")
 	yield(anim_player, "animation_finished")
 	timer.start()
