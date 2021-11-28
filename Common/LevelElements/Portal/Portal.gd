@@ -30,7 +30,7 @@ func set_is_exiting(exiting: bool) -> void:
 func teleport_target(target: Node) -> void:
 	var enter_dir = target.velocity.normalized()
 	var exit_angle = enter_dir.angle_to(portal_connections[0].exit_dir)
-	var exit_impulse = portal_connections[0].exit_dir * exit_force
+	var exit_impulse = portal_connections[0].exit_dir * portal_connections[0].exit_force
 	
 	target.global_position = portal_connections[0].global_position
 	target.velocity = target.velocity.rotated(exit_angle) + exit_impulse

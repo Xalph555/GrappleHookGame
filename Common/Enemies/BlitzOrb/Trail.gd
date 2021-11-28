@@ -4,7 +4,6 @@ export var length := 30
 var point : Vector2
 
 
-
 func _process(delta: float) -> void:
 	global_position = Vector2.ZERO
 	#global_rotation = 0

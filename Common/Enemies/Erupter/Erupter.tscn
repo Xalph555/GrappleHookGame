@@ -48,7 +48,8 @@ tracks/2/keys = {
 radius = 4.0
 height = 24.0
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=5]
+resource_local_to_scene = true
 extents = Vector2( 12, 3 )
 
 [node name="Erupter" type="StaticBody2D"]
@@ -91,7 +92,7 @@ damage = 100.0
 knock_back_force = 1000.0
 
 [node name="CollisionShape2D" parent="RayCast2D/HitBox" index="0"]
-shape = SubResource( 3 )
+shape = SubResource( 5 )
 disabled = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

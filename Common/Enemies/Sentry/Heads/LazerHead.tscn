@@ -9,6 +9,7 @@ radius = 7.0
 height = 0.0
 
 [sub_resource type="RectangleShape2D" id=2]
+resource_local_to_scene = true
 extents = Vector2( 10, 1 )
 
 [node name="LazerHead" type="StaticBody2D"]

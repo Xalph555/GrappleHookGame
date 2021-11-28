@@ -8,14 +8,26 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "RigidBody2D",
+"class": "Projectile",
+"language": "GDScript",
+"path": "res://Common/Enemies/Lobber/Projectiles/Projectile.gd"
+} ]
+_global_script_class_icons={
+"Projectile": ""
+}
+
 [application]
 
 config/name="GrappleExperiment"
+run/main_scene="res://Levels/Tests/Test02.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-WorldGlobals="*res://Levels/World/WorldGlobals.gd"
+GameEvents="*res://Common/Globals/GameEvents.gd"
+PlayerStats="*res://Common/Player/PlayerStats.tscn"
 
 [display]
 
@@ -71,6 +83,7 @@ ui_mouse_left={
 2d_physics/layer_4="Coin"
 2d_physics/layer_5="Player"
 2d_physics/layer_6="Hook"
+2d_physics/layer_7="Projectile"
 2d_physics/layer_10="Enemy"
 
 [physics]

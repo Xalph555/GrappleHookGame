@@ -11,12 +11,9 @@ var direction := Vector2.ZERO
 var velocity := Vector2.ZERO
 
 
+
 # Functions:
 #---------------------------------------
-func _ready() -> void:
-	pass
-
-
 func _physics_process(delta: float) -> void:
 	velocity = direction * move_speed
 	position += velocity * delta

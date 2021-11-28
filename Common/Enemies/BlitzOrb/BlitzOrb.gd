@@ -8,6 +8,8 @@ var move_speed := 1010
 var move_dir := Vector2.ZERO
 var velocity := Vector2.ZERO
 
+var max_dashes := 5
+var current_dashes := max_dashes
 var is_attacking := false
 
 var rng := RandomNumberGenerator.new()
@@ -22,12 +24,15 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if target != null:
+	if target != null and current_dashes > 0:
 		if !is_attacking:
 			follow_target()
 		
 		velocity = move_speed * move_dir
 		velocity = move_and_slide(velocity)
+	
+	else:
+		$DashCoolDown.stop()
 
 
 func follow_target() -> void:
@@ -41,25 +46,28 @@ func follow_target() -> void:
 func dash_attack() -> void:
 	$AnimationPlayer.play("flash")
 	yield($AnimationPlayer, "animation_finished")
+	set_attack(true)
 	
-	$CollisionShape2D.disabled = true
-	$Trail.visible = true
-	hit_box.monitorable = true
-	is_attacking = true
 	var vector_to_target : Vector2 = target.global_position - self.global_position 
 	move_dir = vector_to_target.normalized()
 	move_speed *= 1.8
+	
 	yield(get_tree().create_timer(0.5), "timeout")
 	
 	move_dir = Vector2.ZERO
 	move_speed /= 1.8
 	
 	yield(get_tree().create_timer(0.1), "timeout")
-	is_attacking = false
-	hit_box.monitorable = false
-	$Trail.visible = false
-	$CollisionShape2D.disabled = false
+	set_attack(false)
 	$DashCoolDown.start()
+	current_dashes -= 1
+
+
+func set_attack(is_attacking: bool) -> void:
+	is_attacking = is_attacking
+	hit_box.monitorable = is_attacking
+	$Trail.visible = is_attacking
+	$CollisionShape2D.disabled = is_attacking
 
 
 func _on_DashCoolDown_timeout() -> void:
@@ -72,7 +80,6 @@ func _on_AttackRange_body_entered(body: Node) -> void:
 
 
 func _on_AttackRange_body_exited(body: Node) -> void:
-	#target = null
 	move_dir = Vector2.ZERO
 	$DashCoolDown.stop()
 

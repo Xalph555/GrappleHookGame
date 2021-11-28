@@ -15,6 +15,7 @@ onready var hit_box_shape := $RayCast2D/HitBox/CollisionShape2D
 
 func _ready() -> void:
 	timer.wait_time = 0.1 if (timer.wait_time + fire_delay < 0) else (timer.wait_time + fire_delay)
+	#create_beam_collisionshape()
 
 
 func _physics_process(delta: float) -> void:
@@ -27,6 +28,14 @@ func _physics_process(delta: float) -> void:
 	eruption_beam.points[1] = limit
 	hit_box_shape.shape.extents.y = limit.y / 2
 	hit_box.position.y = limit.y / 2
+
+
+# 23 Nov: Found could just set resource to 'local to scene' to achieve same effect without code
+# in order to make collision shape unique
+#func create_beam_collisionshape() -> void:
+#	var shape = RectangleShape2D.new()
+#	shape.set_extents(Vector2(12, 3))
+#	hit_box_shape.shape = shape
 
 
 func _on_Timer_timeout() -> void:

@@ -91,7 +91,10 @@ autoplay = "Idle"
 anims/Idle = SubResource( 5 )
 anims/RESET = SubResource( 6 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="PlayerCamera" type="Camera2D" parent="."]
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_speed = 15.0
 drag_margin_left = 0.01
 drag_margin_top = 0.01
 drag_margin_right = 0.01

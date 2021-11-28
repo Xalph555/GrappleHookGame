@@ -16,6 +16,8 @@ onready var hit_box_shape = $LaserBeam/HitBox/CollisionShape2D
 func _ready() -> void:
 	charge_timer.wait_time = 0.1 if (charge_timer.wait_time + parent.fire_delay < 0) else (charge_timer.wait_time + parent.fire_delay)
 	
+	#create_beam_collisionshape() 
+	
 	laser_ray.cast_to.x = parent.attack_range
 	tracking_line.points[1] = laser_ray.cast_to
 
@@ -39,6 +41,18 @@ func _physics_process(delta: float) -> void:
 			tracking_line.visible = false
 	
 	# adjusting laser and tracking line visuals
+	update_laser_visuals()
+
+
+# 23 Nov: Found could just set resource to 'local to scene' to achieve same effect without code
+# in order to make collision shape unique
+#func create_beam_collisionshape() -> void:
+	#var shape = RectangleShape2D.new()
+	#shape.set_extents(Vector2(12, 3))
+	#hit_box_shape.shape = shape
+
+
+func update_laser_visuals() -> void:
 	if laser_ray.is_colliding():
 		tracking_line.points[1] = to_local(laser_ray.get_collision_point())
 		

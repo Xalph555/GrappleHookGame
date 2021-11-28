@@ -21,7 +21,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 4.0
+radius = 5.33333
 height = 0.0
 
 [node name="Coin" type="Area2D"]
