@@ -174,7 +174,7 @@ func update_camera() -> void:
 	var zoom_ease := 0.01
 	
 	if velocity.length() > max_speed:
-		zoom_amount = velocity.length() / (max_speed * 0.8)
+		zoom_amount = velocity.length() / (max_speed * 0.8) # change to variable later
 		zoom_amount = clamp(zoom_amount, 1, 2)
 		zoom_ease = 0.01
 	
