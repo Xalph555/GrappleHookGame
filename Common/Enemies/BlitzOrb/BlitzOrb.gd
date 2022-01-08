@@ -63,11 +63,11 @@ func dash_attack() -> void:
 	current_dashes -= 1
 
 
-func set_attack(is_attacking: bool) -> void:
-	is_attacking = is_attacking
-	hit_box.monitorable = is_attacking
-	$Trail.visible = is_attacking
-	$CollisionShape2D.disabled = is_attacking
+func set_attack(attacking: bool) -> void:
+	is_attacking = attacking
+	hit_box.monitorable = attacking
+	$Trail.visible = attacking
+	$CollisionShape2D.disabled = attacking
 
 
 func _on_DashCoolDown_timeout() -> void:

@@ -9,12 +9,24 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "BossCatArms",
+"language": "GDScript",
+"path": "res://Common/Bosses/Boss1/Boss1.gd"
+}, {
+"base": "Control",
+"class": "BossHealthBar",
+"language": "GDScript",
+"path": "res://Common/UI/BossHealthBar/BossHealthBar.gd"
+}, {
 "base": "RigidBody2D",
 "class": "Projectile",
 "language": "GDScript",
 "path": "res://Common/Enemies/Lobber/Projectiles/Projectile.gd"
 } ]
 _global_script_class_icons={
+"BossCatArms": "",
+"BossHealthBar": "",
 "Projectile": ""
 }
 
@@ -85,6 +97,7 @@ ui_mouse_left={
 2d_physics/layer_6="Hook"
 2d_physics/layer_7="Projectile"
 2d_physics/layer_10="Enemy"
+2d_physics/layer_16="Boss"
 
 [physics]
 

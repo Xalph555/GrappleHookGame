@@ -17,6 +17,13 @@ const MAX_SLOPE_ANGLE := deg2rad(46)
 
 export var hook: PackedScene
 
+var camera_zoom_base := 1.0
+var camera_zoom_curent := 1.0
+var camera_zoom_ease_base := 0.01
+var camera_zoom_ease_current := 0.01
+
+var is_boss_fight := false setget update_is_boss_fight
+
 var gravity := GRAVITY
 var jump_height := -700
 var acceleration:= 33
@@ -127,7 +134,8 @@ func throw_grapple() -> void:
 		hook_dir = hook_dir.normalized()
 		
 		hook_instance = hook.instance()
-		owner.add_child(hook_instance)
+		hook_instance.set_as_toplevel(true)
+		add_child(hook_instance)
 		hook_instance.shoot(self, hook_dir)
 
 
@@ -170,19 +178,29 @@ func update_sprite() -> void:
 
 
 func update_camera() -> void:
-	var zoom_amount := 1.0
-	var zoom_ease := 0.01
+	camera_zoom_curent = camera_zoom_base
+	camera_zoom_ease_current = 0.01
 	
 	if velocity.length() > max_speed:
-		zoom_amount = velocity.length() / (max_speed * 0.8) # change to variable later
-		zoom_amount = clamp(zoom_amount, 1, 2)
-		zoom_ease = 0.01
+		camera_zoom_curent = velocity.length() / (max_speed * 0.8) # change to variable later
+		camera_zoom_curent = clamp(camera_zoom_curent, 1, 2)
+		camera_zoom_ease_current = camera_zoom_ease_base
 	
 	else:
-		zoom_amount = 1
-		zoom_ease = 0.08
+		camera_zoom_curent = camera_zoom_base
+		camera_zoom_ease_current = 0.08
 	
-	camera.zoom = lerp(camera.zoom, Vector2(1, 1) * zoom_amount, zoom_ease)
+	camera.zoom = lerp(camera.zoom, Vector2(1, 1) * camera_zoom_curent, camera_zoom_ease_current)
+
+
+func update_is_boss_fight(value : bool) -> void:
+	is_boss_fight = value
+	
+	if is_boss_fight:
+		camera_zoom_base = 1.6
+	
+	else:
+		camera_zoom_base = 1.0
 
 
 # damaged

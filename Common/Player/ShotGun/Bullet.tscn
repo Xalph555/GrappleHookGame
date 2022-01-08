@@ -29,7 +29,7 @@ shape = SubResource( 1 )
 
 [node name="HitBox" parent="." instance=ExtResource( 3 )]
 collision_layer = 16
-damage = 25.0
+damage = 15.0
 knock_back_force = 3500.0
 
 [node name="CollisionShape2D" parent="HitBox" index="0"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Common/Tiles/TestWorldTiles.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Common/Player/Player.tscn" type="PackedScene" id=2]
@@ -22,8 +22,6 @@
 background_mode = 4
 glow_enabled = true
 glow_hdr_threshold = 1.5
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id=2]
 
 [node name="Test02" type="Node2D"]
 __meta__ = {
@@ -164,6 +162,12 @@ sentry_head = ExtResource( 6 )
 position = Vector2( 9904, 196 )
 rotation = 3.14159
 sentry_head = ExtResource( 6 )
+
+[node name="Lobber" parent="Enemies" instance=ExtResource( 12 )]
+position = Vector2( 2590, 3590 )
+
+[node name="Boss1" parent="Enemies" instance=ExtResource( 17 )]
+position = Vector2( 1499.53, -167.25 )
 
 [node name="Coins" type="Node2D" parent="."]
 
@@ -330,44 +334,5 @@ exit_force = 500
 
 [node name="UI" parent="UI" instance=ExtResource( 11 )]
 
-[node name="Lobber" parent="." instance=ExtResource( 12 )]
-position = Vector2( 2590, 3590 )
-
-[node name="Boss1" parent="." instance=ExtResource( 17 )]
-position = Vector2( 1526, -232 )
-
-[node name="AnimationTree" parent="Boss1" index="0"]
-parameters/playback = SubResource( 2 )
-
-[node name="Body" parent="Boss1" index="4"]
-position = Vector2( 0, 7.31353 )
-
-[node name="Head" parent="Boss1/Body" index="2"]
-position = Vector2( 0, -55.6351 )
-
-[node name="ArmRJoint" parent="Boss1/Body" index="3"]
-position = Vector2( 132, -75.7673 )
-
-[node name="ArmRUpper" parent="Boss1/Body/ArmRJoint" index="0"]
-rotation = 0.623082
-
-[node name="ArmRFore" parent="Boss1/Body/ArmRJoint/ArmRUpper" index="0"]
-rotation = 1.20453
-
-[node name="HandR" parent="Boss1/Body/ArmRJoint/ArmRUpper/ArmRFore" index="0"]
-rotation = 0.844975
-
-[node name="ArmLJoint" parent="Boss1/Body" index="4"]
-position = Vector2( -132, -75.7673 )
-
-[node name="ArmLUpper" parent="Boss1/Body/ArmLJoint" index="0"]
-rotation = -0.481127
-
-[node name="ArmLFore" parent="Boss1/Body/ArmLJoint/ArmLUpper" index="0"]
-rotation = -1.22079
-
 [editable path="Player"]
 [editable path="Player/HurtBox"]
-[editable path="Boss1"]
-[editable path="Boss1/Body/ArmRJoint/ArmRUpper/ArmRFore/HandR/HitBox"]
-[editable path="Boss1/Body/ArmLJoint/ArmLUpper/ArmLFore/HandL/HitBox"]

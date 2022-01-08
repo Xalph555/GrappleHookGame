@@ -56,7 +56,9 @@ func shoot() -> void:
 		
 		for _i in range(num_bullets):
 			var _bullet := bullet.instance()
-			get_viewport().add_child(_bullet) # not sure if spawning on viewport is good idea
+			#get_viewport().add_child(_bullet) # not sure if spawning on viewport is good idea
+			_bullet.set_as_toplevel(true)
+			add_child(_bullet)
 			
 			var speed = rng.randf_range(bullet_speed * 0.5, bullet_speed)
 			var spread = rng.randf_range(-bullet_spread, bullet_spread)

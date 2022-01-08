@@ -126,7 +126,9 @@ func _on_ThrowDelay_timeout() -> void:
 	# if can see 
 	if _can_see_target:
 		var _projectile := projectile.instance() as Projectile
-		get_viewport().add_child(_projectile) # not sure if spawning on viewport is good idea
+		#get_viewport().add_child(_projectile) # not sure if spawning on viewport is good idea
+		_projectile.set_as_toplevel(true)
+		add_child(_projectile)
 		
 		var arc_height = _target.global_position.y - self.global_position.y - 32
 		arc_height = min(arc_height, -32)

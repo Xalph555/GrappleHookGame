@@ -13,6 +13,6 @@ func _ready() -> void:
 func _on_body_entered(body: Node) -> void:
 	#print("coin collected")
 	
-	PlayerStats.score += 100
+	PlayerStats.score += points
 	
 	queue_free()

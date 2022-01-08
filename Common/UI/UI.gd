@@ -7,9 +7,16 @@ export(NodePath) onready var _health_text = get_node(_health_text) as Label
 export(NodePath) onready var _score_text = get_node(_score_text) as Label
 export(NodePath) onready var _mouse_pointer = get_node(_mouse_pointer) as Control
 
+export var boss_hp_bar: PackedScene
+
+var _temp_nodes = []
+
 
 func _ready() -> void:
 	# connect signals
+	GameEvents.connect("boss_fight_start", self, "_on_boss_fight_start")
+	GameEvents.connect("boss_fight_end", self, "_on_boss_fight_end")
+	
 	PlayerStats.connect("health_changed", self, "_on_health_updated")
 	PlayerStats.connect("score_changed", self, "_on_score_updated")
 	
@@ -36,3 +43,20 @@ func _on_health_updated(current_health: int) -> void:
 
 func _on_score_updated(current_score: int) -> void:
 	_score_text.text = "Score: " + str(current_score)
+
+
+func _on_boss_fight_start(boss_ref) -> void:
+	var _health_bar_instance := boss_hp_bar.instance()
+	
+	add_child(_health_bar_instance)
+	_temp_nodes.append(_health_bar_instance)
+	
+	_health_bar_instance.init(boss_ref)
+
+
+func _on_boss_fight_end() -> void:
+	for i in range(_temp_nodes.size() - 1, -1, -1):
+		if _temp_nodes[i] is BossHealthBar:
+			var _temp_health_bar = _temp_nodes[i]
+			_temp_nodes.remove(i)
+			_temp_health_bar.call_deferred("free")
