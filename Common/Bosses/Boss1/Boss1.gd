@@ -1,13 +1,21 @@
+#--------------------------------------#
+# Boss1 Script                         #
+#--------------------------------------#
 extends KinematicBody2D
 
 class_name BossCatArms
 
+
+# Signals:
+#---------------------------------------
 signal boss_health_changed(health)
 
+
+# Variables:
+#---------------------------------------
 enum STATES {
 	DEAD,
 	OVERHEAT,
-	STUCK,
 	MOVE,
 	ATTK_CHARGE_SLAM,
 	ATTK_ORA_FLURRY,
@@ -68,6 +76,8 @@ onready var _next_attack_timer := $NextAttackTimer
 onready var _attack_duration_timer := $AttackDuration
 
 
+# Functions:
+#---------------------------------------
 func _ready() -> void:
 	randomize()
 	_attack_pattern.shuffle()
@@ -83,9 +93,6 @@ func _physics_process(delta: float) -> void:
 			STATES.OVERHEAT:
 				state_overheat(delta)
 			
-			STATES.STUCK:
-				state_stuck(delta)
-				
 			STATES.MOVE:
 				state_move(delta)
 				
@@ -123,9 +130,6 @@ func state_transition(new_state) -> void:
 			
 			_anim_tree_state.travel("OverHeatArms")
 			_arm_cooldown_timer.start()
-		
-		STATES.STUCK:
-			_anim_tree_state.travel("Idle")
 		
 		STATES.MOVE:
 			_can_attack = false
@@ -196,10 +200,6 @@ func state_overheat(delta : float) -> void:
 	
 	if _has_reached_position:
 		_move_dir = Vector2.ZERO
-
-
-func state_stuck(delta : float) -> void:
-	_move_dir = Vector2.ZERO
 
 
 func state_move(delta : float) -> void:
@@ -282,8 +282,10 @@ func start_attack_timer() -> void:
 
 func _on_TargetRange_body_entered(body: Node) -> void:
 	_target = body
-	_target.is_boss_fight = true
-	GameEvents.emit_signal("boss_fight_start", self)
+	
+	if !_target.is_boss_fight:
+		_target.is_boss_fight = true
+		GameEvents.emit_signal("boss_fight_start", self)
 
 
 func _on_TargetRange_body_exited(body: Node) -> void:
@@ -309,9 +311,7 @@ func _on_AttackDuration_timeout() -> void:
 	# sprial out of control if we decide to expand this boss
 	match _state_current:
 		STATES.ATTK_ORA_FLURRY:
-			state_transition(STATES.STUCK)
-			yield(get_tree().create_timer(2), "timeout")
-			state_transition(STATES.MOVE)
+			state_transition(STATES.OVERHEAT)
 		
 		STATES.ATTK_BEYBLADE_ATTACK:
 			state_transition(STATES.OVERHEAT)
@@ -331,7 +331,7 @@ func _on_HurtBox_area_entered(area: Area2D) -> void:
 	current_health -= area.damage
 	emit_signal("boss_health_changed", current_health)
 	
-	if current_health <= 0:
+	if current_health <= 0 and _state_current != STATES.DEAD:
 #		_arm_cooldown_timer.stop()
 #		_next_attack_timer.stop()
 #		_attack_duration_timer.stop()

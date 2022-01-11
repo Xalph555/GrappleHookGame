@@ -2701,6 +2701,102 @@ tracks/31/keys = {
 "method": "call_deferred"
 } ]
 }
+tracks/32/type = "value"
+tracks/32/path = NodePath("Body/HurtBox/CollisionShape2D:disabled")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/33/type = "value"
+tracks/33/path = NodePath("Body/ArmRJoint/ArmRUpper/ArmRFore/HurtBoxArmR/CollisionShape2D:disabled")
+tracks/33/interp = 1
+tracks/33/loop_wrap = true
+tracks/33/imported = false
+tracks/33/enabled = true
+tracks/33/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/34/type = "value"
+tracks/34/path = NodePath("Body/ArmRJoint/ArmRUpper/ArmRFore/HandR/HurtBoxHandR/CollisionShape2D:disabled")
+tracks/34/interp = 1
+tracks/34/loop_wrap = true
+tracks/34/imported = false
+tracks/34/enabled = true
+tracks/34/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/35/type = "value"
+tracks/35/path = NodePath("Body/ArmRJoint/ArmRUpper/ArmRFore/HandR/HitBox/CollisionShape2D:disabled")
+tracks/35/interp = 1
+tracks/35/loop_wrap = true
+tracks/35/imported = false
+tracks/35/enabled = true
+tracks/35/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/36/type = "value"
+tracks/36/path = NodePath("Body/ArmLJoint/ArmLUpper/ArmLFore/HurtBoxArmR2/CollisionShape2D:disabled")
+tracks/36/interp = 1
+tracks/36/loop_wrap = true
+tracks/36/imported = false
+tracks/36/enabled = true
+tracks/36/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/37/type = "value"
+tracks/37/path = NodePath("Body/ArmLJoint/ArmLUpper/ArmLFore/HandL/HurtBoxLeftR/CollisionShape2D:disabled")
+tracks/37/interp = 1
+tracks/37/loop_wrap = true
+tracks/37/imported = false
+tracks/37/enabled = true
+tracks/37/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/38/type = "value"
+tracks/38/path = NodePath("Body/ArmLJoint/ArmLUpper/ArmLFore/HandL/HitBox/CollisionShape2D:disabled")
+tracks/38/interp = 1
+tracks/38/loop_wrap = true
+tracks/38/imported = false
+tracks/38/enabled = true
+tracks/38/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/39/type = "value"
+tracks/39/path = NodePath("CollisionShape2D:disabled")
+tracks/39/interp = 1
+tracks/39/loop_wrap = true
+tracks/39/imported = false
+tracks/39/enabled = true
+tracks/39/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "Idle"
@@ -3125,6 +3221,78 @@ tracks/34/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/35/type = "value"
+tracks/35/path = NodePath("CollisionShape2D:disabled")
+tracks/35/interp = 1
+tracks/35/loop_wrap = true
+tracks/35/imported = false
+tracks/35/enabled = true
+tracks/35/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/36/type = "value"
+tracks/36/path = NodePath("Body/ArmLJoint/ArmLUpper/ArmLFore/HandL/HurtBoxLeftR/CollisionShape2D:disabled")
+tracks/36/interp = 1
+tracks/36/loop_wrap = true
+tracks/36/imported = false
+tracks/36/enabled = true
+tracks/36/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/37/type = "value"
+tracks/37/path = NodePath("Body/ArmLJoint/ArmLUpper/ArmLFore/HurtBoxArmR2/CollisionShape2D:disabled")
+tracks/37/interp = 1
+tracks/37/loop_wrap = true
+tracks/37/imported = false
+tracks/37/enabled = true
+tracks/37/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/38/type = "value"
+tracks/38/path = NodePath("Body/ArmRJoint/ArmRUpper/ArmRFore/HandR/HurtBoxHandR/CollisionShape2D:disabled")
+tracks/38/interp = 1
+tracks/38/loop_wrap = true
+tracks/38/imported = false
+tracks/38/enabled = true
+tracks/38/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/39/type = "value"
+tracks/39/path = NodePath("Body/ArmRJoint/ArmRUpper/ArmRFore/HurtBoxArmR/CollisionShape2D:disabled")
+tracks/39/interp = 1
+tracks/39/loop_wrap = true
+tracks/39/imported = false
+tracks/39/enabled = true
+tracks/39/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/40/type = "value"
+tracks/40/path = NodePath("Body/HurtBox/CollisionShape2D:disabled")
+tracks/40/interp = 1
+tracks/40/loop_wrap = true
+tracks/40/imported = false
+tracks/40/enabled = true
+tracks/40/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=34]
@@ -4172,6 +4340,66 @@ tracks/27/keys = {
 "update": 1,
 "values": [ true ]
 }
+tracks/28/type = "value"
+tracks/28/path = NodePath("Body/HurtBox/CollisionShape2D:disabled")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/imported = false
+tracks/28/enabled = true
+tracks/28/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/29/type = "value"
+tracks/29/path = NodePath("Body/ArmRJoint/ArmRUpper/ArmRFore/HurtBoxArmR/CollisionShape2D:disabled")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("Body/ArmRJoint/ArmRUpper/ArmRFore/HandR/HurtBoxHandR/CollisionShape2D:disabled")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/31/type = "value"
+tracks/31/path = NodePath("Body/ArmLJoint/ArmLUpper/ArmLFore/HurtBoxArmR2/CollisionShape2D:disabled")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/32/type = "value"
+tracks/32/path = NodePath("Body/ArmLJoint/ArmLUpper/ArmLFore/HandL/HurtBoxLeftR/CollisionShape2D:disabled")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=4]
 length = 0.001
@@ -4968,14 +5196,14 @@ wait_time = 4.0
 one_shot = true
 
 [node name="NextAttackTimer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 2.0
 one_shot = true
 
 [node name="AttackDuration" type="Timer" parent="."]
 one_shot = true
 
 [node name="Body" type="Sprite" parent="."]
-position = Vector2( 0, 7.17882 )
+position = Vector2( 0, 3.86773 )
 texture = ExtResource( 2 )
 __meta__ = {
 "_edit_ik_": true
@@ -5006,7 +5234,7 @@ local_coords = false
 process_material = SubResource( 12 )
 
 [node name="Head" type="Sprite" parent="Body"]
-position = Vector2( 0, -57.4882 )
+position = Vector2( 0, -62.849 )
 texture = ExtResource( 3 )
 centered = false
 offset = Vector2( -103.697, -124 )
@@ -5017,14 +5245,15 @@ collision_mask = 16
 [node name="CollisionShape2D" parent="Body/HurtBox" index="0"]
 position = Vector2( -4.5, -13.1177 )
 shape = SubResource( 75 )
+disabled = true
 
 [node name="ArmRJoint" type="Sprite" parent="Body"]
-position = Vector2( 132, -75.8852 )
+position = Vector2( 132, -78.7824 )
 texture = ExtResource( 5 )
 
 [node name="ArmRUpper" type="Sprite" parent="Body/ArmRJoint"]
 show_behind_parent = true
-rotation = 0.619545
+rotation = 0.53262
 texture = ExtResource( 1 )
 centered = false
 offset = Vector2( -4, -10 )
@@ -5035,7 +5264,7 @@ __meta__ = {
 
 [node name="ArmRFore" type="Sprite" parent="Body/ArmRJoint/ArmRUpper"]
 position = Vector2( 124, 0 )
-rotation = 1.21078
+rotation = 1.36443
 texture = ExtResource( 6 )
 centered = false
 offset = Vector2( -75.1508, -52.2315 )
@@ -5050,10 +5279,11 @@ collision_mask = 16
 position = Vector2( 39.8746, -9.54492 )
 rotation = 2.98023e-08
 shape = SubResource( 76 )
+disabled = true
 
 [node name="HandR" type="Sprite" parent="Body/ArmRJoint/ArmRUpper/ArmRFore"]
 position = Vector2( 97.202, -10.2784 )
-rotation = 0.84359
+rotation = 0.809545
 texture = ExtResource( 4 )
 centered = false
 offset = Vector2( 14.4964, -58.3757 )
@@ -5068,6 +5298,7 @@ collision_mask = 16
 position = Vector2( 70.3491, 19.7222 )
 rotation = 2.98023e-08
 shape = SubResource( 77 )
+disabled = true
 
 [node name="HandREnd" type="Position2D" parent="Body/ArmRJoint/ArmRUpper/ArmRFore/HandR"]
 position = Vector2( 51.544, 4.27669 )
@@ -5097,13 +5328,13 @@ local_coords = false
 process_material = SubResource( 23 )
 
 [node name="ArmLJoint" type="Sprite" parent="Body"]
-position = Vector2( -132, -75.8852 )
+position = Vector2( -132, -78.7824 )
 texture = ExtResource( 5 )
 
 [node name="ArmLUpper" type="Sprite" parent="Body/ArmLJoint"]
 show_behind_parent = true
 position = Vector2( 4, 2 )
-rotation = -0.47821
+rotation = -0.4065
 texture = ExtResource( 1 )
 centered = false
 offset = Vector2( -130, -10 )
@@ -5114,7 +5345,7 @@ __meta__ = {
 
 [node name="ArmLFore" type="Sprite" parent="Body/ArmLJoint/ArmLUpper"]
 position = Vector2( -130, -2 )
-rotation = -1.22742
+rotation = -1.39047
 texture = ExtResource( 6 )
 centered = false
 offset = Vector2( -117.724, -52.3409 )
@@ -5131,6 +5362,7 @@ collision_mask = 16
 position = Vector2( 39.8746, -9.54492 )
 rotation = 2.98023e-08
 shape = SubResource( 78 )
+disabled = true
 
 [node name="HandL" type="Sprite" parent="Body/ArmLJoint/ArmLUpper/ArmLFore"]
 position = Vector2( -102.706, -11.6017 )
@@ -5150,6 +5382,7 @@ collision_mask = 16
 position = Vector2( -60.7743, 13.5039 )
 rotation = 5.96046e-08
 shape = SubResource( 79 )
+disabled = true
 
 [node name="HandLEnd" type="Position2D" parent="Body/ArmLJoint/ArmLUpper/ArmLFore/HandL"]
 position = Vector2( -41.3371, 0.132111 )

@@ -1,12 +1,21 @@
+#--------------------------------------#
+# Hurtbox Script                       #
+#--------------------------------------#
 extends Area2D
 
+class_name Hurtbox
 
-onready var collision_shape := $CollisionShape2D
+
+# Variables:
+#---------------------------------------
+onready var _collision_shape := $CollisionShape2D
 
 
+# Functions:
+#---------------------------------------
 func disable_hurt_box() -> void:
-	collision_shape.disabled = true
+	_collision_shape.disabled = true
 
 
 func enable_hurt_box() -> void:
-	collision_shape.disabled = false
+	_collision_shape.disabled = false

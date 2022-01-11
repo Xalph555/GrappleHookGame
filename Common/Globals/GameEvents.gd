@@ -1,8 +1,11 @@
+#--------------------------------------#
+# GameEvents Script                    #
+#--------------------------------------#
 extends Node
 
 
-# game event signals
-
+# Signals:
+#---------------------------------------
 signal coin_collided
 
 signal boss_fight_start(boss)

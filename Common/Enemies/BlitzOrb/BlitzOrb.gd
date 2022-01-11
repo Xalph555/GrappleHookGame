@@ -1,45 +1,52 @@
+#--------------------------------------#
+# BlitzOrb Script                      #
+#--------------------------------------#
 extends KinematicBody2D
 
-
-var hover_dist := 180
-var target : Node = null
-
-var move_speed := 1010
-var move_dir := Vector2.ZERO
-var velocity := Vector2.ZERO
-
-var max_dashes := 5
-var current_dashes := max_dashes
-var is_attacking := false
-
-var rng := RandomNumberGenerator.new()
-
-onready var hit_box = $HitBox
+class_name BlitzOrb
 
 
+# Variables:
+#---------------------------------------
+var _hover_dist := 180
+var _target : Node = null
+
+var _move_speed := 1010
+var _move_dir := Vector2.ZERO
+var _velocity := Vector2.ZERO
+
+var _max_dashes := 5
+var _current_dashes := _max_dashes
+var _is_attacking := false
+
+var _rng := RandomNumberGenerator.new()
+
+
+# Functions:
+#---------------------------------------
 func _ready() -> void:
-	rng.randomize()
-	var dash_offset = rng.randf_range(0, 1)
-	$DashCoolDown.wait_time += dash_offset
+	_rng.randomize()
+	var _dash_offset = _rng.randf_range(0, 1)
+	$DashCoolDown.wait_time += _dash_offset
 
 
 func _physics_process(delta: float) -> void:
-	if target != null and current_dashes > 0:
-		if !is_attacking:
+	if _target != null and _current_dashes > 0:
+		if !_is_attacking:
 			follow_target()
 		
-		velocity = move_speed * move_dir
-		velocity = move_and_slide(velocity)
+		_velocity = _move_speed * _move_dir
+		_velocity = move_and_slide(_velocity)
 	
 	else:
 		$DashCoolDown.stop()
 
 
 func follow_target() -> void:
-	var dir_to_target: Vector2 = (target.global_position - self.global_position).normalized()
-	var hover_point: Vector2 = target.global_position - (dir_to_target * hover_dist)
+	var _dir_to_target: Vector2 = (_target.global_position - self.global_position).normalized()
+	var _hover_point: Vector2 = _target.global_position - (_dir_to_target * _hover_dist)
 	
-	global_position = lerp(global_position, hover_point, 0.1)
+	global_position = lerp(global_position, _hover_point, 0.1)
 
 
 # this needs to be cleaned up
@@ -48,24 +55,23 @@ func dash_attack() -> void:
 	yield($AnimationPlayer, "animation_finished")
 	set_attack(true)
 	
-	var vector_to_target : Vector2 = target.global_position - self.global_position 
-	move_dir = vector_to_target.normalized()
-	move_speed *= 1.8
+	var _vector_to_target : Vector2 = _target.global_position - self.global_position 
+	_move_dir = _vector_to_target.normalized()
+	_move_speed *= 1.8
 	
 	yield(get_tree().create_timer(0.5), "timeout")
 	
-	move_dir = Vector2.ZERO
-	move_speed /= 1.8
+	_move_dir = Vector2.ZERO
+	_move_speed /= 1.8
 	
 	yield(get_tree().create_timer(0.1), "timeout")
 	set_attack(false)
 	$DashCoolDown.start()
-	current_dashes -= 1
+	_current_dashes -= 1
 
 
 func set_attack(attacking: bool) -> void:
-	is_attacking = attacking
-	hit_box.monitorable = attacking
+	_is_attacking = attacking
 	$Trail.visible = attacking
 	$CollisionShape2D.disabled = attacking
 
@@ -75,15 +81,15 @@ func _on_DashCoolDown_timeout() -> void:
 
 
 func _on_AttackRange_body_entered(body: Node) -> void:
-	target = body
+	_target = body
 	$DashCoolDown.start()
 
 
 func _on_AttackRange_body_exited(body: Node) -> void:
-	move_dir = Vector2.ZERO
+	_move_dir = Vector2.ZERO
 	$DashCoolDown.stop()
 
 
 # damaged
 func _on_HurtBox_area_entered(area: Area2D) -> void:
-	queue_free()
+	call_deferred("free")

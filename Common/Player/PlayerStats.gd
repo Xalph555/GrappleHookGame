@@ -1,12 +1,19 @@
+#--------------------------------------#
+# PlayerStats Script                   #
+#--------------------------------------#
 extends Node
 
 
+# Signals:
+#---------------------------------------
 signal health_changed(health)
 signal player_died
 
 signal score_changed(score)
 
 
+# Variables:
+#---------------------------------------
 export var max_health := 1
 
 var score := 0 setget set_score
@@ -14,10 +21,8 @@ var score := 0 setget set_score
 onready var current_health := max_health setget set_health
 
 
-func _ready() -> void:
-	pass
-
-
+# Functions:
+#---------------------------------------
 func set_health(value: int) -> void:
 	current_health = clamp(value, 0, max_health)
 	emit_signal("health_changed", current_health)

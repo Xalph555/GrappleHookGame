@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Common/Enemies/BlitzOrb/Trail.gd" type="Script" id=1]
+[ext_resource path="res://Common/Effects/Trail.gd" type="Script" id=1]
 
 [sub_resource type="Curve" id=4]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.515625, 0.490909 ), 0.0983354, 0.0983354, 0, 0, Vector2( 0.984375, 0.809091 ), -0.27013, 0.0, 0, 0 ]

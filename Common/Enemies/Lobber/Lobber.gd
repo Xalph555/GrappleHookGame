@@ -1,6 +1,13 @@
+#--------------------------------------#
+# Lobber Script                        #
+#--------------------------------------#
 extends KinematicBody2D
 
+class_name Lobber
 
+
+# Variables:
+#---------------------------------------
 export(PackedScene) var projectile = projectile as Projectile
 
 const _UP_DIR := Vector2.UP
@@ -31,6 +38,8 @@ onready var _throw_delay := $ThrowDelay
 onready var _target_tracker := $TargetTracker
 
 
+# Functions:
+#---------------------------------------
 func _physics_process(delta: float) -> void:
 	_velocity.y += _gravity
 	
@@ -60,10 +69,10 @@ func _physics_process(delta: float) -> void:
 
 
 func check_movement() -> void:
-	var can_move : bool = _dist_to_target <= _move_away_dist and \
+	var _can_move : bool = _dist_to_target <= _move_away_dist and \
 						  (!is_on_floor() or $Sprite/GroundRay.is_colliding())
 	
-	if can_move:
+	if _can_move:
 		_move_dir = -_dir_to_target
 	
 	else:
@@ -101,41 +110,40 @@ func update_sprite() -> void:
 
 func calculate_throw_velocity(point_a: Vector2, point_b: Vector2, arc_height: float, \
 							  up_gravity: float, down_gravity = null) -> Vector2:
+	
 	# source (Game Endeavor): https://www.youtube.com/watch?v=_kA1fbBH4ug
-
 	# Note to self (30 Nov 21): Learn how equations of motions work
 	
 	if down_gravity == null:
 		down_gravity = up_gravity
 	
-	var throw_velocity := Vector2()
+	var _throw_velocity := Vector2()
 	
-	var displacement := point_b - point_a
+	var _displacement := point_b - point_a
 	
-	if displacement.y > arc_height:
+	if _displacement.y > arc_height:
 		var time_up := sqrt(-2 * arc_height / float(up_gravity))
-		var time_down := sqrt(2 * (displacement.y - arc_height) / float(down_gravity))
+		var time_down := sqrt(2 * (_displacement.y - arc_height) / float(down_gravity))
 		
-		throw_velocity.y = -sqrt(-2 * up_gravity * arc_height)
-		throw_velocity.x = displacement.x / float(time_up + time_down)
+		_throw_velocity.y = -sqrt(-2 * up_gravity * arc_height)
+		_throw_velocity.x = _displacement.x / float(time_up + time_down)
 	
-	return throw_velocity
+	return _throw_velocity
 
 
 func _on_ThrowDelay_timeout() -> void:
 	# if can see 
 	if _can_see_target:
 		var _projectile := projectile.instance() as Projectile
-		#get_viewport().add_child(_projectile) # not sure if spawning on viewport is good idea
 		_projectile.set_as_toplevel(true)
-		add_child(_projectile)
+		get_parent().add_child(_projectile)
 		
-		var arc_height = _target.global_position.y - self.global_position.y - 32
-		arc_height = min(arc_height, -32)
+		var _arc_height = _target.global_position.y - self.global_position.y - 32
+		_arc_height = min(_arc_height, -32)
 		
 		_projectile.global_position = self.global_position
 		_projectile.linear_velocity = calculate_throw_velocity(self.global_position, \
-											_target.global_position, arc_height, _projectile.gravity)
+											_target.global_position, _arc_height, _projectile.gravity)
 	
 	_throw_delay.start()
 
@@ -155,4 +163,4 @@ func _on_AttackRange_body_exited(body: Node) -> void:
 
 # damaged
 func _on_HurtBox_area_entered(area: Area2D) -> void:
-	queue_free()
+	call_deferred("free")

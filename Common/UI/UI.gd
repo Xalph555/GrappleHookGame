@@ -1,8 +1,11 @@
+#--------------------------------------#
+# UI Script                            #
+#--------------------------------------#
 extends Control
 
-# format node paths like this to make it more flexible
-#export(NodePath) onready var _dialog_text = get_node(_dialog_text) as Label
 
+# Variables:
+#---------------------------------------
 export(NodePath) onready var _health_text = get_node(_health_text) as Label
 export(NodePath) onready var _score_text = get_node(_score_text) as Label
 export(NodePath) onready var _mouse_pointer = get_node(_mouse_pointer) as Control
@@ -12,6 +15,8 @@ export var boss_hp_bar: PackedScene
 var _temp_nodes = []
 
 
+# Functions:
+#---------------------------------------
 func _ready() -> void:
 	# connect signals
 	GameEvents.connect("boss_fight_start", self, "_on_boss_fight_start")

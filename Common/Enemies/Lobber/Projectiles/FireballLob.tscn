@@ -59,16 +59,11 @@ gravity_scale = 10.0
 contacts_reported = 1
 contact_monitor = true
 script = ExtResource( 2 )
-projectile_offeset = Vector2( 0, 500 )
 
 [node name="LifeTime" type="Timer" parent="."]
 wait_time = 10.0
 one_shot = true
 autostart = true
-
-[node name="ShortTime" type="Timer" parent="."]
-wait_time = 1.3
-one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -93,6 +88,5 @@ shape = SubResource( 9 )
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="LifeTime" to="." method="_on_LifeTime_timeout"]
-[connection signal="timeout" from="ShortTime" to="." method="_on_ShortTime_timeout"]
 
 [editable path="HitBox"]
