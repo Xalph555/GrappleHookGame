@@ -8,6 +8,8 @@ class_name BlitzOrb
 
 # Variables:
 #---------------------------------------
+var _points := 100
+
 var _hover_dist := 180
 var _target : Node = null
 
@@ -92,4 +94,5 @@ func _on_AttackRange_body_exited(body: Node) -> void:
 
 # damaged
 func _on_HurtBox_area_entered(area: Area2D) -> void:
+	PlayerStats.score += _points
 	call_deferred("free")

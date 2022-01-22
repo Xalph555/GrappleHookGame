@@ -16,6 +16,8 @@ const _SNAP_VEC_LEN := 33
 const _MAX_SLIDES := 4
 const _MAX_SLOPE_ANGLE := deg2rad(46)
 
+var _points := 100
+
 var _target : KinematicBody2D
 var _vector_to_target : Vector2
 var _dir_to_target : Vector2
@@ -125,8 +127,8 @@ func calculate_throw_velocity(point_a: Vector2, point_b: Vector2, arc_height: fl
 		var time_up := sqrt(-2 * arc_height / float(up_gravity))
 		var time_down := sqrt(2 * (_displacement.y - arc_height) / float(down_gravity))
 		
-		_throw_velocity.y = -sqrt(-2 * up_gravity * arc_height)
 		_throw_velocity.x = _displacement.x / float(time_up + time_down)
+		_throw_velocity.y = -sqrt(-2 * up_gravity * arc_height)
 	
 	return _throw_velocity
 
@@ -163,4 +165,5 @@ func _on_AttackRange_body_exited(body: Node) -> void:
 
 # damaged
 func _on_HurtBox_area_entered(area: Area2D) -> void:
+	PlayerStats.score += _points
 	call_deferred("free")
