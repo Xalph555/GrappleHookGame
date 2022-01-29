@@ -32,12 +32,12 @@ _global_script_classes=[ {
 "base": "Collectable",
 "class": "Coin",
 "language": "GDScript",
-"path": "res://Common/Collectables/Coin/Coin.gd"
+"path": "res://Common/LevelElements/Collectables/Coin/Coin.gd"
 }, {
 "base": "Area2D",
 "class": "Collectable",
 "language": "GDScript",
-"path": "res://Common/Collectables/Collectable.gd"
+"path": "res://Common/LevelElements/Collectables/Collectable.gd"
 }, {
 "base": "StaticBody2D",
 "class": "Erupter",
@@ -64,7 +64,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Common/Enemies/Sentry/Heads/LazerHead.gd"
 }, {
-"base": "Area2D",
+"base": "StaticBody2D",
 "class": "LevelGoal",
 "language": "GDScript",
 "path": "res://Common/LevelElements/LevelGoal/LevelGoal.gd"
@@ -84,6 +84,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Common/Player/Player.gd"
 }, {
+"base": "State",
+"class": "PlayerState",
+"language": "GDScript",
+"path": "res://Common/Player/StateMachine/PlayerState.gd"
+}, {
 "base": "RigidBody2D",
 "class": "Projectile",
 "language": "GDScript",
@@ -98,6 +103,16 @@ _global_script_classes=[ {
 "class": "Shotgun",
 "language": "GDScript",
 "path": "res://Common/Player/ShotGun/ShotGun.gd"
+}, {
+"base": "Node",
+"class": "State",
+"language": "GDScript",
+"path": "res://Common/StateMachinePieces/State.gd"
+}, {
+"base": "Node",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://Common/StateMachinePieces/StateMachine.gd"
 }, {
 "base": "StaticBody2D",
 "class": "TransportPortal",
@@ -125,9 +140,12 @@ _global_script_class_icons={
 "Line2DTrail": "",
 "Lobber": "",
 "Player": "",
+"PlayerState": "",
 "Projectile": "",
 "Sentry": "",
 "Shotgun": "",
+"State": "",
+"StateMachine": "",
 "TransportPortal": "",
 "TransportPortalSwitch": ""
 }

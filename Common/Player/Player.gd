@@ -8,7 +8,7 @@ class_name Player
 
 # Variables:
 #---------------------------------------
-const _GRAVITY := 30
+const _GRAVITY := 1600 #30
 const _TERMINAL_SPEED := 7500
 
 const _UP_DIR := Vector2.UP
@@ -24,7 +24,7 @@ var _camera_zoom_curent := 1.0
 var _camera_zoom_ease_base := 0.01
 var _camera_zoom_ease_current := 0.01
 
-var is_boss_fight := false setget updateis_boss_fight
+var is_boss_fight := false setget update_is_boss_fight
 
 var gravity := _GRAVITY
 var jump_height := -700
@@ -44,7 +44,10 @@ var is_flying := false
 
 var _hook_instance : GrappleHook
 
-onready var _anim_player = $AnimationPlayer
+onready var _anim_tree_main = $AnimationTreeMain
+onready var _anim_tree_main_state = _anim_tree_main.get("parameters/playback")
+onready var _anim_player_main = $AnimationPlayerMain
+onready var _anim_player_sec = $AnimationPlayerSec
 onready var _camera = $PlayerCamera
 onready var _shotgun = $ShotGun as Shotgun
 
@@ -53,7 +56,7 @@ onready var _shotgun = $ShotGun as Shotgun
 #---------------------------------------
 func _physics_process(delta) -> void:
 	# apply gravity
-	velocity.y += gravity
+	velocity.y += gravity * delta
 	
 	if velocity.x > -limit_speed and velocity.x < limit_speed:
 		velocity.x += _input_dir.x * acceleration
@@ -80,6 +83,9 @@ func _physics_process(delta) -> void:
 											  _MAX_SLIDES, 
 											  _MAX_SLOPE_ANGLE, 
 											  _has_infinite_inertia).y
+	
+	# slight issue found (25/01/2022) - player moves faster up slopes than down
+	# 								  - could be because of move_and_slide_with_snap?
 	
 	update_sprite()
 	update_camera()
@@ -147,7 +153,7 @@ func release_grapple() -> void:
 
 func apply_friction() -> void:
 	if is_on_floor():
-		if _can_grapple: # need a better way to do this - someone please implement a proper state machine or something for states (maybe)
+		if _can_grapple: 
 			is_flying = false
 		
 		gravity = 0
@@ -166,11 +172,35 @@ func clamp_speed() -> void:
 
 
 func update_sprite() -> void:
+	# sprite flipping
 	if _input_dir.x > 0:
 		$Sprite.scale.x = 1
 		
 	elif _input_dir.x < 0:
 		$Sprite.scale.x = -1
+	
+	# idle and slide animation
+	# conditions for sliding:
+	# 	- have to be on floor
+	# 	- should not slide when moving up slopes (?)
+	# 	- have to be moving fast enough
+	
+	var _can_slide : bool =  is_on_floor() and \
+							 velocity.y >= 0 and \
+							 velocity.length() > max_speed * 1.15
+	
+	# visual bug when sliding due to how acceleration is applied and eased on
+	# 	player
+	# temporary fix by adjusting multiplier for max_speed on last condition of
+	#	_can_slide and increasing length of slide animation cycle
+	# a more solid solution will be needed so the game is more stable regarding
+	#	the player's ability to slide
+	
+	if _can_slide:
+		_anim_tree_main_state.travel("Slide")
+		
+	else:
+		_anim_tree_main_state.travel("Idle")
 
 
 func update_camera() -> void:
@@ -189,7 +219,7 @@ func update_camera() -> void:
 	_camera.zoom = lerp(_camera.zoom, Vector2(1, 1) * _camera_zoom_curent, _camera_zoom_ease_current)
 
 
-func updateis_boss_fight(value : bool) -> void:
+func update_is_boss_fight(value : bool) -> void:
 	is_boss_fight = value
 	
 	if is_boss_fight:
@@ -201,12 +231,22 @@ func updateis_boss_fight(value : bool) -> void:
 
 # damaged
 func _on_HurtBox_area_entered(area: Area2D) -> void:
-	_anim_player.play("damaged")
+	var hurtbox = area as Hitbox
 	
-	release_grapple() 
-	PlayerStats.current_health -= area.damage
-	print("Damage amount: ", area.damage)
+	if hurtbox:
+		_anim_player_sec.play("damaged")
+		
+		release_grapple() 
+		PlayerStats.current_health -= area.damage
+		
+		print("Damage amount: ", area.damage)
+		
+		if area.knock_back_force > 0:
+			var dir_knockback = (self.get_global_position() - area.get_global_position()).normalized()
+			velocity = dir_knockback * area.knock_back_force 
+			
+			_anim_tree_main_state.travel("Idle")
 	
-	if area.knock_back_force > 0:
-		var dir_knockback = (self.get_global_position() - area.get_global_position()).normalized()
-		velocity = dir_knockback * area.knock_back_force 
+	else:
+		print("Hurt by something that does not have a Hitbox")
+

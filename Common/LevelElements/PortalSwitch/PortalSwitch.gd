@@ -17,8 +17,9 @@ var _connected_portals : Array
 
 var _has_triggered := false
 
-onready var _sprite := $Sprite
+onready var _anim_player := $AnimationPlayer
 onready var _toggle_cooldown := $ToggleCooldown
+onready var _sprite := $Sprite
 
 
 # Functions:
@@ -41,10 +42,12 @@ func set_portals() -> void:
 
 func set_sprite() -> void:
 	if is_active:
-		_sprite.set_modulate(Color.slategray)
+		#_sprite.set_modulate(Color.slategray)
+		_anim_player.play("SwitchOn")
 		
 	else:
-		_sprite.set_modulate(Color.royalblue)
+		#_sprite.set_modulate(Color.royalblue)
+		_anim_player.play("SwitchOff")
 
 
 func _on_TriggerArea_area_entered(area: Area2D) -> void:

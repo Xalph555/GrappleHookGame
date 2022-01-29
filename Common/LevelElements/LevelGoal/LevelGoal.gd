@@ -1,7 +1,7 @@
 #--------------------------------------#
 # LevelGoal Script                     #
 #--------------------------------------#
-extends Area2D
+extends StaticBody2D
 
 class_name LevelGoal
 
@@ -13,5 +13,7 @@ func _ready() -> void:
 	pass
 
 
-func _on_body_entered(body: Node) -> void:
+func _on_Area2D_body_entered(body: Node) -> void:
+	GameEvents.emit_signal("level_complete")
+	
 	print("Player has completed the level!")

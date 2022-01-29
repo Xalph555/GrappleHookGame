@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Coin.png-d863803b7ab72540a2305c73b998b1b2.stex"
+path="res://.import/SpikeTileMap.png-9dac8214fe2b613d8d0f77af23b83fcf.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Common/Collectables/Coin/Coin.png"
-dest_files=[ "res://.import/Coin.png-d863803b7ab72540a2305c73b998b1b2.stex" ]
+source_file="res://Common/Tiles/Spikes/SpikeTileMap.png"
+dest_files=[ "res://.import/SpikeTileMap.png-9dac8214fe2b613d8d0f77af23b83fcf.stex" ]
 
 [params]
 
@@ -31,5 +31,5 @@ process/invert_color=false
 process/normal_map_invert_y=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0
