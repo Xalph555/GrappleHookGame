@@ -7,6 +7,7 @@
 bounce = 0.5
 
 [sub_resource type="CircleShape2D" id=1]
+resource_local_to_scene = true
 radius = 9.05539
 
 [sub_resource type="CanvasItemMaterial" id=3]
@@ -50,6 +51,7 @@ scale_curve = SubResource( 11 )
 color_ramp = SubResource( 10 )
 
 [sub_resource type="CircleShape2D" id=9]
+resource_local_to_scene = true
 radius = 8.0
 
 [node name="FireballLob" type="RigidBody2D"]

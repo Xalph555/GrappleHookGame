@@ -1,19 +1,19 @@
 #--------------------------------------#
-# PortalSwitch Script                  #
+# DoorSwitch Script                  #
 #--------------------------------------#
 extends StaticBody2D
 
-class_name TransportPortalSwitch
+class_name DoorSwitch
 
 
 # Variables:
 #---------------------------------------
-export(Array, NodePath) var connected_portal_paths
+export(Array, NodePath) var door_paths
 
 export var can_toggle := false
-export var is_active := false
+export var is_open := false
 
-var _connected_portals : Array
+var _doors : Array
 
 var _has_triggered := false
 
@@ -26,28 +26,36 @@ onready var _sprite := $Sprite
 #---------------------------------------
 func _ready() -> void:
 	# get all connected portals
-	for i in range(connected_portal_paths.size()):
-		_connected_portals.append(get_node(connected_portal_paths[i]))
+	for i in range(door_paths.size()):
+		_doors.append(get_node(door_paths[i]))
 	
-	# set all connected portals to the appropriate state
-	# call_deferred to allow the portals to properly load first
-	call_deferred("set_portals")
+	call_deferred("set_doors")
 	set_sprite()
 
 
-func set_portals() -> void:
-	for i in _connected_portals:
-		i.call_deferred("toggle_portal", is_active)
+func set_doors() -> void:
+	for i in _doors:
+		i.call_deferred("disable_trigger")
+		i.call_deferred("set_default_state", is_open)
 
 
 func set_sprite() -> void:
-	if is_active:
-		#_sprite.set_modulate(Color.slategray)
+	if is_open:
+		_anim_player.play("SwitchOff")
+
+	else:
 		_anim_player.play("SwitchOn")
 		
+
+
+func trigger_doors() -> void:
+	if is_open:
+		for i in _doors:
+			i.open_door()
+	
 	else:
-		#_sprite.set_modulate(Color.royalblue)
-		_anim_player.play("SwitchOff")
+		for i in _doors:
+			i.close_door()
 
 
 func _on_TriggerArea_area_entered(area: Area2D) -> void:
@@ -55,8 +63,8 @@ func _on_TriggerArea_area_entered(area: Area2D) -> void:
 		return
 	
 	if can_toggle:
-		is_active = !is_active
-		set_portals()
+		is_open = !is_open
+		trigger_doors()
 		set_sprite()
 		
 		_toggle_cooldown.start()
@@ -66,8 +74,8 @@ func _on_TriggerArea_area_entered(area: Area2D) -> void:
 	if !_has_triggered:
 		_has_triggered = true
 		
-		is_active = !is_active
-		set_portals()
+		is_open = !is_open
+		trigger_doors()
 		set_sprite()
 		
 		_toggle_cooldown.start()

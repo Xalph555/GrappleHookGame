@@ -26,13 +26,16 @@ tracks/0/keys = {
 length = 0.001
 
 [sub_resource type="CapsuleShape2D" id=1]
+resource_local_to_scene = true
 radius = 8.0
 height = 8.0
 
 [sub_resource type="CircleShape2D" id=2]
+resource_local_to_scene = true
 radius = 578.031
 
 [sub_resource type="RectangleShape2D" id=3]
+resource_local_to_scene = true
 extents = Vector2( 9, 13 )
 
 [node name="Lobber" type="KinematicBody2D"]

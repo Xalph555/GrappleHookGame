@@ -8,7 +8,7 @@ class_name Player
 
 # Variables:
 #---------------------------------------
-const _GRAVITY := 1600 #30
+const _GRAVITY := 30
 const _TERMINAL_SPEED := 7500
 
 const _UP_DIR := Vector2.UP
@@ -56,7 +56,7 @@ onready var _shotgun = $ShotGun as Shotgun
 #---------------------------------------
 func _physics_process(delta) -> void:
 	# apply gravity
-	velocity.y += gravity * delta
+	velocity.y += gravity
 	
 	if velocity.x > -limit_speed and velocity.x < limit_speed:
 		velocity.x += _input_dir.x * acceleration
@@ -67,6 +67,7 @@ func _physics_process(delta) -> void:
 	apply_friction()
 	clamp_speed()
 	
+
 	if is_on_wall(): 
 		velocity = move_and_slide_with_snap(velocity, 
 											_snap_vector, 
