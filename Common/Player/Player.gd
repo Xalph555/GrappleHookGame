@@ -28,8 +28,8 @@ var is_boss_fight := false setget update_is_boss_fight
 
 var gravity := _GRAVITY
 var jump_height := -700
-var acceleration:= 33
-var max_speed := 450
+var acceleration:= 35
+var max_speed := 480
 var limit_speed := max_speed
 
 var _do_stop_on_slope := true
@@ -37,6 +37,9 @@ var _has_infinite_inertia := true
 var _snap_vector := _SNAP_DIR * _SNAP_VEC_LEN
 var velocity := Vector2.ZERO
 var _input_dir := Vector2.ZERO
+
+var _can_jump := true
+var _jump_was_pressed := false
 
 var _can_shoot := true
 var _can_grapple := true
@@ -49,17 +52,21 @@ onready var _anim_tree_main_state = _anim_tree_main.get("parameters/playback")
 onready var _anim_player_main = $AnimationPlayerMain
 onready var _anim_player_sec = $AnimationPlayerSec
 onready var _camera = $PlayerCamera
+
 onready var _shotgun = $ShotGun as Shotgun
 
 
 # Functions:
 #---------------------------------------
+func _ready() -> void:
+	PlayerStats.save_stats()
+
+
 func _physics_process(delta) -> void:
 	# apply gravity
 	velocity.y += gravity
 	
-	if velocity.x > -limit_speed and velocity.x < limit_speed:
-		velocity.x += _input_dir.x * acceleration
+	velocity.x = clamp(velocity.x + (_input_dir.x * acceleration), -limit_speed, limit_speed)
 	
 	limit_speed = lerp(limit_speed, max_speed, 0.02)
 	
@@ -94,37 +101,63 @@ func _physics_process(delta) -> void:
 
 func update_movement_inputs() -> void:
 	# Input direction
-	_input_dir.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	_input_dir.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	_input_dir = _input_dir.normalized()
 	
 	# Jump
 	if is_on_floor():
-		if Input.is_action_just_pressed("ui_up"):
-			_snap_vector = Vector2.ZERO
-			velocity.y -= velocity.y # to fix 'super jump' bug when going up slopes
-			velocity.y += jump_height
+		_can_jump = true
 		
-		else:
-			_snap_vector = _SNAP_DIR * _SNAP_VEC_LEN
+		if _jump_was_pressed:
+			jump()
+			
+	else:
+		coyote_time()
+	
+	if Input.is_action_just_pressed("jump"):
+		_jump_was_pressed = true
+		remember_jump_time()
 		
+		if _can_jump:
+			jump()
+		
+	else:
 		if is_flying:
 			_snap_vector = Vector2.ZERO
+		else:
+			_snap_vector = _SNAP_DIR * _SNAP_VEC_LEN
 	
 	# Shoot hook
-	if Input.is_action_just_pressed("ui_mouse_left") and _can_grapple:
+	if Input.is_action_just_pressed("grapple") and _can_grapple:
 		throw_grapple()
 	
-	if Input.is_action_just_released("ui_mouse_left"):
+	if Input.is_action_just_released("grapple"):
 		release_grapple() 
 	
 	# Fire Shotgun
-	if Input.is_action_just_pressed("ui_mouse_right") and _can_shoot:
+	if Input.is_action_just_pressed("shoot") and _can_shoot:
 		is_flying = false
 		_snap_vector = Vector2.ZERO
 		
 		limit_speed = max_speed
 		
 		_shotgun.shoot()
+
+
+func jump() -> void:
+	_snap_vector = Vector2.ZERO
+	velocity.y -= velocity.y # to fix 'super jump' bug when going up slopes
+	velocity.y += jump_height
+
+
+func remember_jump_time() -> void:
+	yield(get_tree().create_timer(0.1), "timeout")
+	_jump_was_pressed = false
+
+
+func coyote_time() -> void:
+	yield(get_tree().create_timer(0.1), "timeout")
+	_can_jump = false
 
 
 func throw_grapple() -> void:
@@ -180,22 +213,9 @@ func update_sprite() -> void:
 	elif _input_dir.x < 0:
 		$Sprite.scale.x = -1
 	
-	# idle and slide animation
-	# conditions for sliding:
-	# 	- have to be on floor
-	# 	- should not slide when moving up slopes (?)
-	# 	- have to be moving fast enough
-	
 	var _can_slide : bool =  is_on_floor() and \
 							 velocity.y >= 0 and \
-							 velocity.length() > max_speed * 1.15
-	
-	# visual bug when sliding due to how acceleration is applied and eased on
-	# 	player
-	# temporary fix by adjusting multiplier for max_speed on last condition of
-	#	_can_slide and increasing length of slide animation cycle
-	# a more solid solution will be needed so the game is more stable regarding
-	#	the player's ability to slide
+							 velocity.length() > max_speed
 	
 	if _can_slide:
 		_anim_tree_main_state.travel("Slide")
@@ -232,19 +252,19 @@ func update_is_boss_fight(value : bool) -> void:
 
 # damaged
 func _on_HurtBox_area_entered(area: Area2D) -> void:
-	var hurtbox = area as Hitbox
+	var hitbox = area as Hitbox
 	
-	if hurtbox:
+	if hitbox:
 		_anim_player_sec.play("damaged")
 		
 		release_grapple() 
-		PlayerStats.current_health -= area.damage
+		PlayerStats.current_health -= hitbox.damage
 		
-		print("Damage amount: ", area.damage)
+		print("Damage amount: ", hitbox.damage)
 		
-		if area.knock_back_force > 0:
-			var dir_knockback = (self.get_global_position() - area.get_global_position()).normalized()
-			velocity = dir_knockback * area.knock_back_force 
+		if hitbox.knock_back_force > 0:
+			var dir_knockback = (self.get_global_position() - hitbox.get_global_position()).normalized()
+			velocity = dir_knockback * hitbox.knock_back_force 
 			
 			_anim_tree_main_state.travel("Idle")
 	

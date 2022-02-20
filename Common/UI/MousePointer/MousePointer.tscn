@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Common/UI/MousePointer/AimIndicator.png" type="Texture" id=1]
+[ext_resource path="res://Common/UI/MousePointer/MousePointer.gd" type="Script" id=2]
+
+[node name="MousePointer" type="Control"]
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 76.0
+margin_top = -4.0
+margin_right = 84.0
+margin_bottom = 4.0
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

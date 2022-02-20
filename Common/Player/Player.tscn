@@ -1,10 +1,11 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Common/Player/PlayerSprite.png" type="Texture" id=1]
 [ext_resource path="res://Common/Player/ShotGun/ShotGun.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Common/Player/Player.gd" type="Script" id=3]
 [ext_resource path="res://Common/Player/Hook/Hook.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Common/HitHurtBox/HurtBox.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Common/UI/MousePointer/MousePointer.tscn" type="PackedScene" id=6]
 
 [sub_resource type="AnimationNodeAnimation" id=7]
 animation = "Idle"
@@ -381,6 +382,8 @@ collision_mask = 512
 shape = SubResource( 2 )
 
 [node name="ShotGun" parent="." instance=ExtResource( 2 )]
+
+[node name="MousePointer" parent="." instance=ExtResource( 6 )]
 
 [connection signal="area_entered" from="HurtBox" to="." method="_on_HurtBox_area_entered"]
 [connection signal="body_entered" from="HurtBox" to="." method="_on_HurtBox_body_entered"]

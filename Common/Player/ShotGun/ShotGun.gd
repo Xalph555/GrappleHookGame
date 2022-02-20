@@ -31,11 +31,11 @@ onready var _sprite := $Pivot/Sprite
 onready var _spawn_pos := $Pivot/BulletSpawn
 
 
-
 # Functions:
 #---------------------------------------
 func _ready() -> void:
 	_rng.randomize()
+	PlayerStats.change_weapon(_current_ammo, _max_ammo)
 
 
 func _process(_delta: float) -> void:
@@ -57,7 +57,6 @@ func shoot() -> void:
 		
 		for _i in range(_num_bullets):
 			var _bullet = bullet.instance() as Bullet
-			#get_viewport().add_child(_bullet) # not sure if spawning on viewport is good idea
 			_bullet.set_as_toplevel(true)
 			add_child(_bullet)
 			
@@ -70,6 +69,9 @@ func shoot() -> void:
 		_parent.velocity -= _knock_dir * _knock_back
 		
 		_current_ammo -= 1
+		
+		PlayerStats.current_ammo = _current_ammo
+		
 		if _current_ammo <= 0:
 			reload()
 		
@@ -79,7 +81,11 @@ func shoot() -> void:
 
 
 func reload():
-	_tween.interpolate_property(self, "rotation", self.rotation, self.rotation + deg2rad(360), 0.5, Tween.TRANS_SINE,Tween.EASE_IN)
+	_tween.interpolate_property(self, "rotation", 
+								self.rotation, self.rotation + deg2rad(360), 
+								0.5, Tween.TRANS_SINE,Tween.EASE_IN)
 	_tween.start()
 	yield(_tween, "tween_completed")
 	_current_ammo = _max_ammo
+	
+	PlayerStats.current_ammo = _current_ammo

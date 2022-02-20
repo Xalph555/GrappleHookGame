@@ -420,6 +420,7 @@ shape = SubResource( 8 )
 
 [node name="PathFollow2D" parent="LevelElements/MovingDoor" index="2"]
 position = Vector2( -0.000244141, 0 )
+rotation = -1.5708
 
 [node name="MovingDoor2" parent="LevelElements" instance=ExtResource( 8 )]
 position = Vector2( 3760, 256 )
@@ -431,6 +432,7 @@ shape = SubResource( 9 )
 
 [node name="PathFollow2D" parent="LevelElements/MovingDoor2" index="2"]
 position = Vector2( 0.000244141, 0 )
+rotation = -1.5708
 
 [node name="MovingDoor3" parent="LevelElements" instance=ExtResource( 8 )]
 position = Vector2( 3760, 448 )
@@ -443,6 +445,7 @@ shape = SubResource( 10 )
 
 [node name="PathFollow2D" parent="LevelElements/MovingDoor3" index="2"]
 position = Vector2( -0.000244141, 0 )
+rotation = -1.5708
 
 [node name="MovingDoor5" parent="LevelElements" instance=ExtResource( 8 )]
 position = Vector2( 6416, 256 )
@@ -451,6 +454,9 @@ curve = SubResource( 15 )
 [node name="CollisionShape2D" parent="LevelElements/MovingDoor5/TriggerArea" index="0"]
 position = Vector2( 0, 84 )
 shape = SubResource( 9 )
+
+[node name="PathFollow2D" parent="LevelElements/MovingDoor5" index="2"]
+rotation = -1.5708
 
 [node name="MovingDoor6" parent="LevelElements" instance=ExtResource( 8 )]
 position = Vector2( 6416, 448 )
@@ -463,6 +469,7 @@ shape = SubResource( 10 )
 
 [node name="PathFollow2D" parent="LevelElements/MovingDoor6" index="2"]
 position = Vector2( 0, 3.05176e-05 )
+rotation = -1.5708
 
 [node name="MovingDoor4" parent="LevelElements" instance=ExtResource( 8 )]
 position = Vector2( 5072, 352 )
@@ -470,6 +477,9 @@ curve = SubResource( 17 )
 
 [node name="CollisionShape2D" parent="LevelElements/MovingDoor4/TriggerArea" index="0"]
 shape = SubResource( 8 )
+
+[node name="PathFollow2D" parent="LevelElements/MovingDoor4" index="2"]
+rotation = -1.5708
 
 [node name="DoorSwitch" parent="LevelElements" instance=ExtResource( 10 )]
 position = Vector2( 4960, 440 )
@@ -493,6 +503,9 @@ position = Vector2( -24, 0 )
 [node name="CollisionShape2D" parent="LevelElements/MovingDoor7/TriggerArea" index="0"]
 rotation = 0.0
 shape = SubResource( 11 )
+
+[node name="PathFollow2D" parent="LevelElements/MovingDoor7" index="2"]
+rotation = -1.5708
 
 [editable path="Player"]
 [editable path="Player/HurtBox"]

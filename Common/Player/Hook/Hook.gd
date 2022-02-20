@@ -25,6 +25,7 @@ var _is_hooked := false
 var _parent: KinematicBody2D
 
 onready var _hook_chain := $Chain
+onready var _hook_head := $HookHead
 
 
 # Functions:
@@ -68,15 +69,20 @@ func apply_tension():
 
 func fly_hook(delta: float):
 	_velocity = _move_dir * _move_speed * delta
-		
-	if move_and_collide(_velocity):
+	
+	var collided = move_and_collide(_velocity)
+	
+	if collided:
 		_is_hooked = true
 		_move_dir = Vector2.ZERO
+		
+		self.rotation = collided.normal.angle() + deg2rad(180)
+		display_chain()
 
 
 func shoot(shooter: KinematicBody2D, dir: Vector2) -> void:
 	_parent = shooter
-	position = _parent.global_position
+	global_position = _parent.global_position
 	
 	_move_dir = dir
 	rotation = dir.angle()

@@ -114,7 +114,7 @@ states/OverHeatArms/node = SubResource( 50 )
 states/OverHeatArms/position = Vector2( 62, 200 )
 transitions = [ "Idle", "BeyBladeArmsCharge", SubResource( 51 ), "BeyBladeArmsCharge", "BeyBladeArms", SubResource( 52 ), "Idle", "OverHeatArms", SubResource( 57 ), "OverHeatArms", "Idle", SubResource( 58 ), "BeyBladeArms", "OverHeatArms", SubResource( 61 ), "Idle", "ComboAttackCharge", SubResource( 62 ), "ComboAttackCharge", "ComboAttack", SubResource( 63 ), "ComboAttack", "OverHeatArms", SubResource( 64 ), "Idle", "Attack1ChargeUp", SubResource( 66 ), "Attack1ChargeUp", "Attack1Release", SubResource( 67 ), "Attack1Release", "Idle", SubResource( 68 ), "Idle", "OraFlurryCharge", SubResource( 71 ), "OraFlurryCharge", "OraFlurry", SubResource( 72 ), "OraFlurry", "Idle", SubResource( 73 ), "Idle", "Death", SubResource( 81 ) ]
 start_node = "Idle"
-graph_offset = Vector2( -279, -107 )
+graph_offset = Vector2( -292, -66 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=17]
 
@@ -5203,7 +5203,7 @@ one_shot = true
 one_shot = true
 
 [node name="Body" type="Sprite" parent="."]
-position = Vector2( 0, 8.05348 )
+position = Vector2( 0, 3.29787 )
 texture = ExtResource( 2 )
 __meta__ = {
 "_edit_ik_": true
@@ -5213,6 +5213,7 @@ __meta__ = {
 show_behind_parent = true
 material = SubResource( 9 )
 position = Vector2( -73.3333, 53.3333 )
+rotation = 0.519406
 amount = 24
 lifetime = 0.5
 preprocess = 16.0
@@ -5225,6 +5226,7 @@ process_material = SubResource( 12 )
 show_behind_parent = true
 material = SubResource( 9 )
 position = Vector2( 60, 57.3333 )
+rotation = -0.384789
 amount = 24
 lifetime = 0.5
 preprocess = 16.0
@@ -5234,7 +5236,7 @@ local_coords = false
 process_material = SubResource( 12 )
 
 [node name="Head" type="Sprite" parent="Body"]
-position = Vector2( 0, -56.0721 )
+position = Vector2( 0, -63.7717 )
 texture = ExtResource( 3 )
 centered = false
 offset = Vector2( -103.697, -124 )
@@ -5248,12 +5250,12 @@ shape = SubResource( 75 )
 disabled = true
 
 [node name="ArmRJoint" type="Sprite" parent="Body"]
-position = Vector2( 132, -75.1199 )
+position = Vector2( 132, -79.2811 )
 texture = ExtResource( 5 )
 
 [node name="ArmRUpper" type="Sprite" parent="Body/ArmRJoint"]
 show_behind_parent = true
-rotation = 0.642508
+rotation = 0.517659
 texture = ExtResource( 1 )
 centered = false
 offset = Vector2( -4, -10 )
@@ -5264,7 +5266,7 @@ __meta__ = {
 
 [node name="ArmRFore" type="Sprite" parent="Body/ArmRJoint/ArmRUpper"]
 position = Vector2( 124, 0 )
-rotation = 1.17019
+rotation = 1.39087
 texture = ExtResource( 6 )
 centered = false
 offset = Vector2( -75.1508, -52.2315 )
@@ -5283,7 +5285,7 @@ disabled = true
 
 [node name="HandR" type="Sprite" parent="Body/ArmRJoint/ArmRUpper/ArmRFore"]
 position = Vector2( 97.202, -10.2784 )
-rotation = 0.852583
+rotation = 0.803686
 texture = ExtResource( 4 )
 centered = false
 offset = Vector2( 14.4964, -58.3757 )
@@ -5309,8 +5311,8 @@ __meta__ = {
 [node name="HitBox" parent="Body/ArmRJoint/ArmRUpper/ArmRFore/HandR" instance=ExtResource( 8 )]
 position = Vector2( 66.6146, 15.1345 )
 collision_layer = 512
-damage = 100.0
-knock_back_force = 500.0
+damage = 300.0
+knock_back_force = 1500.0
 
 [node name="CollisionShape2D" parent="Body/ArmRJoint/ArmRUpper/ArmRFore/HandR/HitBox" index="0"]
 shape = SubResource( 32 )
@@ -5328,13 +5330,13 @@ local_coords = false
 process_material = SubResource( 23 )
 
 [node name="ArmLJoint" type="Sprite" parent="Body"]
-position = Vector2( -132, -75.1199 )
+position = Vector2( -132, -79.2811 )
 texture = ExtResource( 5 )
 
 [node name="ArmLUpper" type="Sprite" parent="Body/ArmLJoint"]
 show_behind_parent = true
 position = Vector2( 4, 2 )
-rotation = -0.497153
+rotation = -0.394158
 texture = ExtResource( 1 )
 centered = false
 offset = Vector2( -130, -10 )
@@ -5345,7 +5347,7 @@ __meta__ = {
 
 [node name="ArmLFore" type="Sprite" parent="Body/ArmLJoint/ArmLUpper"]
 position = Vector2( -130, -2 )
-rotation = -1.18435
+rotation = -1.41854
 texture = ExtResource( 6 )
 centered = false
 offset = Vector2( -117.724, -52.3409 )

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/AimIndicator.png-cfb6dbba23534dd8de0c671b793b32db.stex"
+path="res://.import/AimIndicator.png-2ac5f8c26ff70b827ac842bc6fb58b68.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Common/UI/AimIndicator.png"
-dest_files=[ "res://.import/AimIndicator.png-cfb6dbba23534dd8de0c671b793b32db.stex" ]
+source_file="res://Common/UI/MousePointer/AimIndicator.png"
+dest_files=[ "res://.import/AimIndicator.png-2ac5f8c26ff70b827ac842bc6fb58b68.stex" ]
 
 [params]
 

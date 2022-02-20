@@ -22,8 +22,11 @@
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
+fog_color = Color( 0.129412, 0.368627, 0.607843, 1 )
+fog_sun_color = Color( 0.843137, 0.666667, 0.309804, 1 )
 glow_enabled = true
 glow_hdr_threshold = 1.5
+adjustment_enabled = true
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=2]
 
@@ -101,7 +104,7 @@ cell_size = Vector2( 4, 4 )
 tile_data = PoolIntArray( -786433, 0, 0, -1, 0, 0, 786431, 0, 0, 1572863, 0, 0, 5113531, 0, 0, 5898623, 0, 0, 6160987, 0, 0, 6422831, 0, 0, 6423383, 0, 0, 6685067, 0, 0, 6947103, 0, 0, 7209531, 0, 0, 7210303, 0, 0, 7471375, 0, 0, 7471511, 0, 0, 7996283, 0, 0, 7997323, 0, 0, 8258079, 0, 0, 8258659, 0, 0, 8259871, 0, 0, 8259991, 0, 0, 9045171, 0, 0, 9046283, 0, 0, 9371731, 0, 0, 9569191, 0, 0, 9569295, 0, 0, 9570415, 0, 0, 9570427, 0, 0, 9570439, 0, 0, 9767621, 0, 0, 9832699, 0, 0, 9896003, 0, 0, 10094127, 0, 0, 10095031, 0, 0, 10420275, 0, 0, 10422930, 0, 0, 10881631, 0, 0, 10944547, 0, 0, 12454367, 0, 0, 54657155, 0, 0, 54788928, 0, 0, 54919571, 0, 0, 54919875, 0, 0, 56229987, 0, 0, 56295855, 0, 0, 57082499, 0, 0, 57802819, 0, 0, 58065359, 0, 0, 59179595, 0, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 7945, 381 )
+position = Vector2( 235, -302 )
 
 [node name="AnimationTreeMain" parent="Player" index="0"]
 parameters/playback = SubResource( 2 )
@@ -206,7 +209,7 @@ position = Vector2( 3902, 3292 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="UI" parent="UI" instance=ExtResource( 11 )]
+[node name="UI2" parent="UI" instance=ExtResource( 11 )]
 
 [editable path="Player"]
 [editable path="Player/HurtBox"]

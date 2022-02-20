@@ -64,7 +64,7 @@ shape = SubResource( 2 )
 [node name="Particles2D" type="Particles2D" parent="."]
 emitting = false
 amount = 40
-lifetime = 6.0
+lifetime = 5.0
 one_shot = true
 speed_scale = 2.25
 explosiveness = 1.0
