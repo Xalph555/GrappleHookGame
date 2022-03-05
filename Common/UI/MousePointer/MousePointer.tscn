@@ -9,11 +9,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="NormalPointer" type="TextureRect" parent="."]
 margin_left = 76.0
 margin_top = -4.0
 margin_right = 84.0
 margin_bottom = 4.0
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DashPointer" type="TextureRect" parent="."]
+visible = false
+modulate = Color( 1, 0, 0, 1 )
+margin_left = 76.0
+margin_top = -6.0
+margin_right = 84.0
+margin_bottom = 2.0
+rect_scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false

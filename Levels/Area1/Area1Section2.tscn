@@ -149,7 +149,7 @@ sentry_head = ExtResource( 13 )
 attack_range = 600.0
 
 [node name="Player" parent="." instance=ExtResource( 6 )]
-position = Vector2( 6571, 2435 )
+position = Vector2( 1846, 482 )
 
 [node name="AnimationTreeMain" parent="Player" index="0"]
 parameters/playback = SubResource( 2 )
@@ -163,3 +163,4 @@ limit_bottom = 4650
 
 [editable path="Player"]
 [editable path="Player/HurtBox"]
+[editable path="Player/DashHitBox"]

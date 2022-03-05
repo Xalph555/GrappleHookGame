@@ -16,6 +16,16 @@ _ammo_text = NodePath("Ammo/AmmoLabel")
 _score_text = NodePath("Score/ScoreLabel")
 boss_hp_bar = ExtResource( 3 )
 
+[node name="RestartText" type="Label" parent="."]
+margin_left = 881.0
+margin_top = 81.0
+margin_right = 1000.0
+margin_bottom = 95.0
+text = "Press 'P' to restart'"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Health" type="ColorRect" parent="."]
 margin_left = 20.0
 margin_top = 16.0

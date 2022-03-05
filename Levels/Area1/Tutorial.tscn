@@ -108,3 +108,4 @@ rotation = -3.14159
 
 [editable path="Player"]
 [editable path="Player/HurtBox"]
+[editable path="Player/DashHitBox"]

@@ -47,19 +47,26 @@ var is_flying := false
 
 var _hook_instance : GrappleHook
 
-onready var _anim_tree_main = $AnimationTreeMain
-onready var _anim_tree_main_state = _anim_tree_main.get("parameters/playback")
-onready var _anim_player_main = $AnimationPlayerMain
-onready var _anim_player_sec = $AnimationPlayerSec
-onready var _camera = $PlayerCamera
+var _dash_factor := 1.8
+var _dash_duration := 0.2
 
-onready var _shotgun = $ShotGun as Shotgun
+onready var _anim_tree_main := $AnimationTreeMain
+onready var _anim_tree_main_state = _anim_tree_main.get("parameters/playback")
+onready var _anim_player_main := $AnimationPlayerMain
+onready var _anim_player_sec := $AnimationPlayerSec
+onready var _camera := $PlayerCamera
+
+onready var _shotgun := $ShotGun as Shotgun
+onready var _mouse_pointer := $MousePointer
+onready var _dash_hitbox := $DashHitBox
+onready var _dash_particles := $DashHitBox/CollisionShape2D/DashParticles
 
 
 # Functions:
 #---------------------------------------
 func _ready() -> void:
 	PlayerStats.save_stats()
+	_dash_hitbox.disable_hit_box()
 
 
 func _physics_process(delta) -> void:
@@ -106,6 +113,9 @@ func update_movement_inputs() -> void:
 	
 	# Jump
 	if is_on_floor():
+		if _can_grapple: 
+			is_flying = false
+			
 		_can_jump = true
 		
 		if _jump_was_pressed:
@@ -124,14 +134,17 @@ func update_movement_inputs() -> void:
 	else:
 		if is_flying:
 			_snap_vector = Vector2.ZERO
+			
 		else:
 			_snap_vector = _SNAP_DIR * _SNAP_VEC_LEN
 	
 	# Shoot hook
 	if Input.is_action_just_pressed("grapple") and _can_grapple:
+		_mouse_pointer.visible = false
 		throw_grapple()
 	
 	if Input.is_action_just_released("grapple"):
+		_mouse_pointer.visible = true
 		release_grapple() 
 	
 	# Fire Shotgun
@@ -142,6 +155,10 @@ func update_movement_inputs() -> void:
 		limit_speed = max_speed
 		
 		_shotgun.shoot()
+	
+	# Dash
+	if Input.is_action_just_released("dash") and is_flying and _can_grapple:
+		dash()
 
 
 func jump() -> void:
@@ -185,11 +202,37 @@ func release_grapple() -> void:
 		_hook_instance = null
 
 
+func dash() -> void:
+	is_flying = false
+	_can_grapple = false
+	
+	_mouse_pointer.visible = false
+	
+	var mouse_dir := (get_global_mouse_position() - self.global_position).normalized()
+	_dash_hitbox.rotation = mouse_dir.angle()
+	_dash_hitbox.enable_hit_box()
+	_dash_particles.emitting = true
+	
+	var dash_force := velocity.length() * _dash_factor
+	var dash_vector := Vector2(dash_force, dash_force) * mouse_dir
+	
+	# Set dash damage scaling with current speed
+	_dash_hitbox.damage = velocity.length() * 0.2
+	print(_dash_hitbox.damage)
+
+	limit_speed = dash_force
+	velocity = dash_vector
+
+	# lock controls - no shooting/ grapple
+	yield(get_tree().create_timer(_dash_duration), "timeout")
+	
+	_dash_hitbox.disable_hit_box()
+	_can_grapple = true
+	_mouse_pointer.visible = true
+
+
 func apply_friction() -> void:
 	if is_on_floor():
-		if _can_grapple: 
-			is_flying = false
-		
 		gravity = 0
 		velocity.x = lerp(velocity.x, 0, 0.05)
 		velocity.y = lerp(velocity.y, 0, 0.05)
@@ -197,7 +240,7 @@ func apply_friction() -> void:
 	else:
 		gravity = _GRAVITY
 		velocity.x = lerp(velocity.x, 0, 0.03)
-		velocity.y = lerp(velocity.y, 0, 0.04)
+		velocity.y = lerp(velocity.y, 0, 0.03)
 
 
 func clamp_speed() -> void:
@@ -222,6 +265,13 @@ func update_sprite() -> void:
 		
 	else:
 		_anim_tree_main_state.travel("Idle")
+		
+	# update mouse pointer
+	if is_flying:
+		_mouse_pointer.set_dash_pointer()
+	
+	else:
+		_mouse_pointer.set_normal_pointer()
 
 
 func update_camera() -> void:
