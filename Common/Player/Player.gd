@@ -210,3 +210,21 @@ func _on_HurtBox_area_entered(area: Area2D) -> void:
 	if area.knock_back_force > 0:
 		var dir_knockback = (self.get_global_position() - area.get_global_position()).normalized()
 		velocity = dir_knockback * area.knock_back_force 
+
+
+func handle_teleporter(portal):
+	var enter_dir = self.velocity.normalized()
+	var exit_angle = enter_dir.angle_to(portal._portal_connections[0].exit_dir)
+	var exit_impulse = portal._portal_connections[0].exit_dir * portal._portal_connections[0].exit_force
+	
+	self.global_position = portal._portal_connections[0].global_position
+	self.velocity = self.velocity.rotated(exit_angle) + exit_impulse
+	
+	if _hook_instance != null:
+		if _hook_instance.hook_path.empty() or _hook_instance.hook_path[0] != portal:
+			_hook_instance.hook_path.insert(0, portal)
+			_hook_instance.hook_path.insert(0, portal._portal_connections[0])
+		else:
+			_hook_instance.hook_path.pop_front()
+			_hook_instance.hook_path.pop_front()
+
