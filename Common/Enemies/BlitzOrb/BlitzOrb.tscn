@@ -22,15 +22,19 @@ tracks/0/keys = {
 }
 
 [sub_resource type="CircleShape2D" id=2]
+resource_local_to_scene = true
 radius = 13.0384
 
 [sub_resource type="CircleShape2D" id=6]
+resource_local_to_scene = true
 radius = 14.0
 
 [sub_resource type="CircleShape2D" id=5]
+resource_local_to_scene = true
 radius = 11.0
 
 [sub_resource type="CircleShape2D" id=3]
+resource_local_to_scene = true
 radius = 800.0
 
 [node name="BlitzOrb" type="KinematicBody2D"]

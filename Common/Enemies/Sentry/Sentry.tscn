@@ -4,10 +4,12 @@
 [ext_resource path="res://Common/Enemies/Sentry/Sentry.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=3]
+resource_local_to_scene = true
 radius = 2.99996
 height = 24.0
 
 [sub_resource type="CircleShape2D" id=2]
+resource_local_to_scene = true
 radius = 580.0
 
 [node name="Sentry" type="StaticBody2D"]
