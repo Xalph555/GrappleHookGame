@@ -25,8 +25,8 @@ var _is_hooked := false
 
 var _parent: KinematicBody2D
 var _current_speed := 0
-var _min_speed := 1000
-var _max_speed := 1000;
+var _min_speed := 3000
+var _max_speed := 3000;
 
 var chains := []
 
