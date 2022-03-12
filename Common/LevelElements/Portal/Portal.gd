@@ -49,6 +49,10 @@ func set_is_exiting(exiting: bool) -> void:
 
 
 func teleport_target(target: Node) -> void:
+	if target.has_method('handle_teleporter'):
+		target.handle_teleporter(self)
+		return
+	
 	var enter_dir = target.velocity.normalized()
 	var exit_angle = enter_dir.angle_to(_portal_connections[0].exit_dir)
 	var exit_impulse = _portal_connections[0].exit_dir * _portal_connections[0].exit_force
@@ -58,16 +62,10 @@ func teleport_target(target: Node) -> void:
 
 
 func _on_EnterArea_body_entered(body: Node) -> void:
-	if is_exiting:
-		if is_main_portal: 
-			set_is_exiting(false) 
-		else: 
-			_portal_connections[0].set_is_exiting(false) 
-	
-	else:
-		if is_main_portal:
-			set_is_exiting(true)
-		else:
-			_portal_connections[0].set_is_exiting(true)
-			
+	if not is_exiting:
+		_portal_connections[0].set_is_exiting(true)
 		teleport_target(body)
+
+
+func _on_EnterArea_body_exited(body):
+	is_exiting = false
