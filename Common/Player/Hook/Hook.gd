@@ -10,7 +10,6 @@ export var chain: PackedScene
 
 # Variables
 #---------------------------------------
-
 var _pull_x := 30
 var _pull_y := 90
 var _hook_pull := Vector2(_pull_x, _pull_y)
@@ -105,7 +104,7 @@ func apply_tension():
 
 
 func fly_hook(delta: float):
-	_velocity = _move_dir * _move_speed * delta
+	_velocity = _move_dir * _min_speed * delta
 	
 	var collided = move_and_collide(_velocity)
 	
