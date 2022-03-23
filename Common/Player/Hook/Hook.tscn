@@ -10,7 +10,6 @@ radius = 2.0
 [node name="Hook" type="KinematicBody2D"]
 collision_layer = 32800
 script = ExtResource( 1 )
-
 chain = ExtResource( 3 )
 
 [node name="HookHead" type="Sprite" parent="."]
