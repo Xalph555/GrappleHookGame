@@ -23,8 +23,10 @@ var _distance_to_parent := 0.0
 var _is_hooked := false
 
 var _hooked_obj : KinematicBody2D
-var _hooked_obj_dist := 0.0
-var _hooked_obj_dir := Vector2.ZERO
+var _hooked_local_pos := Vector2.ZERO
+var _hooked_angle_vec := Vector2.ZERO
+#var _hooked_obj_dist := 0.0
+#var _hooked_obj_dir := Vector2.ZERO
 
 var _parent: KinematicBody2D
 var _current_speed := 0
@@ -33,7 +35,6 @@ var _max_speed := 3000;
 
 var chains := []
 var hook_path := []
-
 
 
 # Functions:
@@ -90,17 +91,19 @@ func fly_hook(delta: float):
 	var collided = move_and_collide(_velocity)
 	
 	if collided:
+		self.rotation = collided.normal.angle() + deg2rad(180)
+		display_chain()
+		
 		_hooked_obj = instance_from_id(collided.collider_id) as KinematicBody2D
 		
 		if _hooked_obj:
-			_hooked_obj_dist = (_hooked_obj.global_position - self.global_position).length()
-#			_hooked_obj_dir = (_hooked_obj.global_position - self.global_position).normalized()
+			_hooked_local_pos = _hooked_obj.to_local(self.global_position)
+			_hooked_angle_vec = _hooked_obj.to_local(Vector2(cos(self.rotation), sin(self.rotation)))
+			
+			print(Vector2(cos(self.rotation), sin(self.rotation)))
 		
 		_is_hooked = true
 		_move_dir = Vector2.ZERO
-		
-		self.rotation = collided.normal.angle() + deg2rad(180)
-		display_chain()
 
 
 func apply_tension():
@@ -131,8 +134,9 @@ func apply_tension():
 
 func update_hook_position() -> void:
 	if _hooked_obj:
-		var hook_obj_dir = (self.global_position - _hooked_obj.global_position).normalized()
-		self.global_position = hook_obj_dir * _hooked_obj_dist + _hooked_obj.global_position
+		self.global_position = _hooked_obj.to_global(_hooked_local_pos)
+		self.rotation = _hooked_obj.to_global(_hooked_angle_vec).angle()
+		print(_hooked_obj.to_global(_hooked_angle_vec))
 
 
 func shoot(shooter: KinematicBody2D, dir: Vector2) -> void:

@@ -568,7 +568,7 @@ door_speed = 15.0
 shape = SubResource( 28 )
 
 [node name="PathFollow2D" parent="LevelElements/MovingDoor8" index="2"]
-rotation = -0.870709
+rotation = -0.870708
 
 [node name="Node2D" type="Node2D" parent="."]
 
