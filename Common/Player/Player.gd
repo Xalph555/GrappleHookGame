@@ -187,8 +187,10 @@ func throw_grapple() -> void:
 		hook_dir = hook_dir.normalized()
 		
 		_hook_instance = hook.instance()
+		
 		_hook_instance.set_as_toplevel(true)
 		add_child(_hook_instance)
+		
 		_hook_instance.shoot(self, hook_dir)
 
 

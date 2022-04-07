@@ -24,11 +24,12 @@ var _is_hooked := false
 
 var _hooked_obj : KinematicBody2D
 var _hooked_local_pos := Vector2.ZERO
-var _hooked_angle_vec := Vector2.ZERO
+var _hooked_obj_rot_offset := 0.0
+
 #var _hooked_obj_dist := 0.0
 #var _hooked_obj_dir := Vector2.ZERO
 
-var _parent: KinematicBody2D
+var _player: KinematicBody2D
 var _current_speed := 0
 var _min_speed := 3000
 var _max_speed := 3000;
@@ -40,8 +41,8 @@ var hook_path := []
 # Functions:
 #---------------------------------------
 func _physics_process(delta: float) -> void:
-	_distance_to_parent = self.global_position.distance_to(_parent.global_position)
-	_hook_dir = (self.global_position - _parent.global_position).normalized()
+	_distance_to_parent = self.global_position.distance_to(_player.global_position)
+	_hook_dir = (self.global_position - _player.global_position).normalized()
 	
 	display_chain()
 	
@@ -61,7 +62,7 @@ func display_chain():
 		var new_chain = chain.instance()
 		new_chain.set_as_toplevel(true)
 		$Chains.add_child(new_chain)
-		new_chain.draw_between(_parent.global_position, self.global_position)
+		new_chain.draw_between(_player.global_position, self.global_position)
 		return
 		
 	# chain graphics
@@ -69,7 +70,7 @@ func display_chain():
 	var new_chain = chain.instance()
 	new_chain.set_as_toplevel(true)
 	$Chains.add_child(new_chain)
-	new_chain.draw_between(_parent.global_position, hook_path[0].global_position)
+	new_chain.draw_between(_player.global_position, hook_path[0].global_position)
 	
 	# display between each portal
 	for i in range(2, len(hook_path), 2):
@@ -98,21 +99,21 @@ func fly_hook(delta: float):
 		
 		if _hooked_obj:
 			_hooked_local_pos = _hooked_obj.to_local(self.global_position)
-			_hooked_angle_vec = _hooked_obj.to_local(Vector2(cos(self.rotation), sin(self.rotation)))
 			
-			print(Vector2(cos(self.rotation), sin(self.rotation)))
+			var angle_to_hooked := self.global_position.direction_to(_hooked_obj.global_position).angle()
+			_hooked_obj_rot_offset = self.rotation - angle_to_hooked
 		
 		_is_hooked = true
 		_move_dir = Vector2.ZERO
 
 
 func apply_tension():
-	_parent.is_flying = true
+	_player.is_flying = true
 	
 	# if a portal is entered then apply tension towards the nearest portal
 	var dir: = Vector2()
 	if !hook_path.empty():
-		dir = (hook_path[0].global_position - _parent.global_position).normalized()
+		dir = (hook_path[0].global_position - _player.global_position).normalized()
 	
 	else:
 		dir = _hook_dir
@@ -125,23 +126,25 @@ func apply_tension():
 	# dead space
 	var dead_space := 30.00
 	if _distance_to_parent < dead_space:
-		_parent.global_position = (-_hook_dir * dead_space) + self.global_position
+		_player.global_position = (-_hook_dir * dead_space) + self.global_position
 		tension_vec = Vector2.ZERO
 	
-	_parent.limit_speed = _parent.max_speed * 1.6
-	_parent.velocity += tension_vec 
+	_player.limit_speed = _player.max_speed * 1.6
+	_player.velocity += tension_vec 
 
 
 func update_hook_position() -> void:
 	if _hooked_obj:
 		self.global_position = _hooked_obj.to_global(_hooked_local_pos)
-		self.rotation = _hooked_obj.to_global(_hooked_angle_vec).angle()
-		print(_hooked_obj.to_global(_hooked_angle_vec))
+		
+		var angle_to_hooked := self.global_position.direction_to(_hooked_obj.global_position).angle()
+		self.rotation = angle_to_hooked + _hooked_obj_rot_offset
+
 
 
 func shoot(shooter: KinematicBody2D, dir: Vector2) -> void:
-	_parent = shooter
-	position = _parent.global_position
+	_player = shooter
+	position = _player.global_position
 	hook_path = []
 	
 	_current_speed = _max_speed
