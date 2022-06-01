@@ -141,7 +141,6 @@ func update_hook_position() -> void:
 		self.rotation = angle_to_hooked + _hooked_obj_rot_offset
 
 
-
 func shoot(shooter: KinematicBody2D, dir: Vector2) -> void:
 	_player = shooter
 	position = _player.global_position

@@ -216,7 +216,7 @@ func dash() -> void:
 	_dash_particles.emitting = true
 	
 	var dash_force := velocity.length() * _dash_factor
-	var dash_vector := Vector2(dash_force, dash_force) * mouse_dir
+	var dash_vector := mouse_dir * dash_force
 	
 	# Set dash damage scaling with current speed
 	_dash_hitbox.damage = velocity.length() * 0.2

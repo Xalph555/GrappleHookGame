@@ -30,3 +30,4 @@ shape = SubResource( 1 )
 
 [editable path="Player"]
 [editable path="Player/HurtBox"]
+[editable path="Player/DashHitBox"]
