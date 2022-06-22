@@ -12,7 +12,7 @@
 [ext_resource path="res://Common/LevelElements/DoorSwitch/DoorSwitch.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Levels/LevelManager.gd" type="Script" id=11]
 [ext_resource path="res://Common/Enemies/Lobber/Lobber.tscn" type="PackedScene" id=12]
-[ext_resource path="res://Common/LevelElements/EnemyCounters/TestCountingMechanisms/DoorSwitchEnemyCounterArea.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Common/Experimental/TestCountingMechanisms/DoorSwitchEnemyCounterArea.tscn" type="PackedScene" id=13]
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
@@ -707,15 +707,12 @@ position = Vector2( 10960, -1024 )
 [node name="CollisionShape2D" parent="MovingDoor/TriggerArea" index="0"]
 shape = SubResource( 30 )
 
-[node name="PathFollow2D" parent="MovingDoor" index="2"]
-rotation = -1.5708
-
 [node name="DoorSwitchEnemyCounterArea" parent="." instance=ExtResource( 13 )]
-position = Vector2( 11352, -928 )
+position = Vector2( 11344, -936 )
 door_paths = [ NodePath("../MovingDoor") ]
 
 [node name="CollisionPolygon2D" parent="DoorSwitchEnemyCounterArea/EnemyCounterArea/Area2D" index="0"]
-polygon = PoolVector2Array( -312, -144, 336, -96, 384, 104, -304, 80 )
+polygon = PoolVector2Array( -304, -312, 256, -352, 280, 48, -288, 40 )
 
 [editable path="Player"]
 [editable path="Player/HurtBox"]

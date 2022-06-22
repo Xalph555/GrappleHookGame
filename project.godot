@@ -69,6 +69,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Common/Player/Hook/Hook.gd"
 }, {
+"base": "GunUpgradeBase",
+"class": "GunBarrelAugmentBase",
+"language": "GDScript",
+"path": "res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/GunBarrelAugmentBase.gd"
+}, {
+"base": "Node",
+"class": "GunUpgradeBase",
+"language": "GDScript",
+"path": "res://Common/Experimental/ProtoUpgradeGun/GunUpgradeBase.gd"
+}, {
 "base": "Area2D",
 "class": "Hitbox",
 "language": "GDScript",
@@ -119,6 +129,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Common/Enemies/Lobber/Projectiles/Projectile.gd"
 }, {
+"base": "Node2D",
+"class": "ProtoUpgradeGun",
+"language": "GDScript",
+"path": "res://Common/Experimental/ProtoUpgradeGun/ProtoUpgradeGun.gd"
+}, {
 "base": "StaticBody2D",
 "class": "Sentry",
 "language": "GDScript",
@@ -167,6 +182,8 @@ _global_script_class_icons={
 "EnemyCounterSpecific": "",
 "Erupter": "",
 "GrappleHook": "",
+"GunBarrelAugmentBase": "",
+"GunUpgradeBase": "",
 "Hitbox": "",
 "Hurtbox": "",
 "LazerHead": "",
@@ -177,6 +194,7 @@ _global_script_class_icons={
 "Player": "",
 "PlayerState": "",
 "Projectile": "",
+"ProtoUpgradeGun": "",
 "Sentry": "",
 "Shotgun": "",
 "State": "",

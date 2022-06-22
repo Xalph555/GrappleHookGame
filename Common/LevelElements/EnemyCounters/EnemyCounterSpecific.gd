@@ -20,9 +20,9 @@ func _ready() -> void:
 		return
 	
 	# get all assigned enemy references
-	var enemies_temp : Array
+	var enemies_temp := []
 	
 	for path in enemy_paths:
 		enemies_temp.append(get_node(path))
 	
-	set_enemies(enemies_temp)
+	self.enemies = enemies_temp

@@ -328,6 +328,10 @@ func _on_HurtBox_area_entered(area: Area2D) -> void:
 		print("Hurt by something that does not have a Hitbox")
 
 
+func _on_HurtBox_body_entered(body:Node) -> void:
+	pass # Replace with function body.
+
+
 func handle_teleporter(portal):
 	var enter_dir = self.velocity.normalized()
 	var exit_angle = enter_dir.angle_to(portal._portal_connections[0].exit_dir)
@@ -343,4 +347,6 @@ func handle_teleporter(portal):
 		else:
 			_hook_instance.hook_path.pop_front()
 			_hook_instance.hook_path.pop_front()
+
+
 
