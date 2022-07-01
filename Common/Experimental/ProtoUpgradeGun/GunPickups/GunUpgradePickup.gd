@@ -1,18 +1,13 @@
 #--------------------------------------#
 # GunUpgradePickup Script              #
 #--------------------------------------#
-
 extends RigidBody2D
 class_name GunUpgradePickup
 
 
-
 # Variables:
 #---------------------------------------
-export(PackedScene) var upgrade
-export(String) var upgrade_type
-export(String) var display_name
-
+export(Resource) var upgrade
 
 onready var _pick_up_text := $PickUpText
 
@@ -21,19 +16,11 @@ onready var _pick_up_text := $PickUpText
 #---------------------------------------
 func _ready() -> void:
 	if upgrade:
-		self.name = "Pick up: " + upgrade.get_state().get_node_name(0)
-		_pick_up_text.text = display_name
+		self.name = "Pick up: " + upgrade.get_name()
+		_pick_up_text.text = upgrade.display_name
 
 	highlight_pickup(false)
 	
-
-func get_upgrade() -> PackedScene:
-	return upgrade
-
-
-func get_upgrade_type() -> String:
-	return upgrade_type
-
 
 func get_compatability() -> Array:
 	return []

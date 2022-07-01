@@ -1,14 +1,13 @@
 #--------------------------------------#
 # ShotGunBarrelAugment Script          #
 #--------------------------------------#
-
 extends GunBarrelAugmentBase
 
 
 # Variables:
 #---------------------------------------
-export(float) var projecilte_spread := 15.0
-export(int) var num_projectiles := 4
+var projecilte_spread := 15.0
+var num_projectiles := 4
 
 var _rng = RandomNumberGenerator.new()
 
@@ -17,6 +16,13 @@ var _rng = RandomNumberGenerator.new()
 #---------------------------------------
 func _ready() -> void:
 	_rng.randomize() 
+
+
+func config_upgrade(config : GunUpgradeConfig) -> void:
+	.config_upgrade(config)
+
+	projecilte_spread = config.projecilte_spread
+	num_projectiles = config.num_projectiles
 
 
 func shoot(spawn_pos : Vector2) -> void:

@@ -28,10 +28,10 @@ export(PackedScene) var pickup_template
 
 # default variables
 export(PackedScene) var default_projectile
-export(PackedScene) var default_barrel_augment
-export(PackedScene) var default_attribute_upgrade1
-export(PackedScene) var default_attribute_upgrade2
-export(PackedScene) var default_attribute_upgrade3
+export(Resource) var default_barrel_augment
+export(Resource) var default_attribute_upgrade1
+export(Resource) var default_attribute_upgrade2
+export(Resource) var default_attribute_upgrade3
 
 export(float) var default_reload_speed := 0.0
 export(float) var default_fire_rate := 0.0
@@ -42,10 +42,17 @@ export(float) var default_base_projectile_speed := 500.0
 
 # references to components
 var current_projectile : PackedScene
-var current_barrel_augment : GunBarrelAugmentBase
+var current_barrel_augment : GunUpgradeResource
 var current_attribute_upgrades = {1 : null,
 								  2 : null,
 								  3 : null}
+
+onready var barrel_augment := $Components/BarrelAugment
+onready var attribute_upgrades = {1 : $Components/AttributeUpgrade1,
+								  2 : $Components/AttributeUpgrade2,
+								  3 : $Components/AttributeUpgrade3}
+
+
 
 # base stats
 var base_max_ammo := 0 setget set_base_max_ammo, get_base_max_ammo
@@ -122,12 +129,12 @@ func _process(_delta: float) -> void:
 
 
 func shoot() -> void:
-	if not current_barrel_augment or not current_projectile:
+	if not barrel_augment or not current_projectile:
 		return
 
 	if self.current_ammo > 0 and _can_shoot:
 		_can_shoot = false
-		current_barrel_augment.shoot(_spawn_pos.global_position)
+		barrel_augment.shoot(_spawn_pos.global_position)
 
 		if self.current_ammo <= 0:
 			reload()
@@ -196,25 +203,33 @@ func change_projectile(new_projectile : PackedScene) -> void:
 		remove_projectile()
 
 	current_projectile = new_projectile
-	current_barrel_augment.change_projectile(current_projectile)
+	barrel_augment.change_projectile(current_projectile)
 
 
-func attach_barrel(barrel : PackedScene) -> void:
+func attach_barrel(barrel : GunUpgradeResource) -> void:
 	if not barrel:
 		print("Invalid barrel being set for gun")
 		return
 	
-	if current_barrel_augment:
+	if barrel_augment.get_script():
 		detach_barrel()
+	
+	current_barrel_augment = barrel
+	barrel_augment.set_script(barrel.gun_upgrade_script)
+	barrel_augment.config_upgrade(barrel.gun_upgrade_config)
+	barrel_augment.set_up_barrel(self, gun_owner, current_projectile)
+
+	# if current_barrel_augment:
+	# 	detach_barrel()
 		
 
-	current_barrel_augment = barrel.instance()
-	components.add_child(current_barrel_augment)
+	# current_barrel_augment = barrel.instance()
+	# components.add_child(current_barrel_augment)
 
-	current_barrel_augment.set_up_barrel(self, gun_owner, current_projectile)
+	# current_barrel_augment.set_up_barrel(self, gun_owner, current_projectile)
 
 
-func attach_upgrade(slot : int, upgrade : PackedScene) -> void:
+func attach_upgrade(slot : int, upgrade : GunUpgradeResource) -> void:
 	if not upgrade:
 		print("Invalid upgrade being set for gun")
 		return
@@ -223,50 +238,55 @@ func attach_upgrade(slot : int, upgrade : PackedScene) -> void:
 		print("Invalid upgrade slot chosen for gun")
 		return
 
-	if current_attribute_upgrades[slot]:
+	if attribute_upgrades[slot].get_script():
 		detach_upgrade(slot)
+	
+	current_attribute_upgrades[slot] = upgrade
+	attribute_upgrades[slot].set_script(upgrade.gun_upgrade_script)
+	attribute_upgrades[slot].config_upgrade(upgrade.gun_upgrade_config)
+	attribute_upgrades[slot].add_upgrade(self, gun_owner)
+
+	# if current_attribute_upgrades[slot]:
+	# 	detach_upgrade(slot)
 		
 	
-	current_attribute_upgrades[slot] = upgrade.instance()
-	components.add_child(current_attribute_upgrades[slot])
+	# current_attribute_upgrades[slot] = upgrade.instance()
+	# components.add_child(current_attribute_upgrades[slot])
 
-	current_attribute_upgrades[slot].add_upgrade(self, gun_owner)
+	# current_attribute_upgrades[slot].add_upgrade(self, gun_owner)
 
 
 func remove_projectile() -> void:
 	# eject current projectile
-	if current_barrel_augment:
-		current_barrel_augment.remove_projectile()
+	if barrel_augment:
+		barrel_augment.remove_projectile()
 
 	current_projectile = null
 
 
 func detach_barrel() -> void:
-	current_barrel_augment.remove_upgrade()
+	barrel_augment.remove_upgrade()
 	eject_upgrade(current_barrel_augment)
 
-	current_barrel_augment.call_deferred("free")
 	current_barrel_augment = null
+	barrel_augment.set_script(null)
 
 
 func detach_upgrade(slot : int) -> void:
-	current_attribute_upgrades[slot].remove_upgrade()
+	attribute_upgrades[slot].remove_upgrade()
 	eject_upgrade(current_attribute_upgrades[slot])
 
-	current_attribute_upgrades[slot].call_deferred("free")
 	current_attribute_upgrades[slot] = null
+	attribute_upgrades[slot].set_script(null)
+
+	# current_attribute_upgrades[slot].call_deferred("free")
+	# current_attribute_upgrades[slot] = null
 
 
 func eject_upgrade(upgrade) -> void:
-	var packed_upgrade = PackedScene.new()
-	packed_upgrade.pack(upgrade)
-
 	var new_pickup = pickup_template.instance()
 
-	new_pickup.upgrade = packed_upgrade
-	new_pickup.upgrade_type = upgrade.get_class()
-	new_pickup.display_name = upgrade.display_name
-
+	new_pickup.upgrade = upgrade
 	new_pickup.global_position = self.global_position
 
 	get_tree().current_scene.add_child(new_pickup)
@@ -275,13 +295,13 @@ func eject_upgrade(upgrade) -> void:
 
 
 func get_free_upgrade_slot() -> int:
-	if current_attribute_upgrades[1] == null:
+	if not current_attribute_upgrades[1]:
 		return 1
 	
-	if current_attribute_upgrades[2] == null:
+	if not current_attribute_upgrades[2]:
 		return 2
 
-	if current_attribute_upgrades[3] == null:
+	if not current_attribute_upgrades[3]:
 		return 3
 
 	return -1

@@ -7,18 +7,16 @@ class_name GunUpgradeBase
 
 # Variables:
 #---------------------------------------
-export(String) var display_name := ""
-
 # stat modifiers
-export(int) var ammo := 0
+var ammo := 0
 
-export(float) var reload_speed := 0.0
-export(float) var fire_rate := 0.0
+var reload_speed := 0.0
+var fire_rate := 0.0
 
-export(float) var knock_back := 0.0
-export(float) var damage := 0.0
-export(float) var projectile_knock_back := 0.0
-export(float) var projectile_speed := 0.0
+var knock_back := 0.0
+var damage := 0.0
+var projectile_knock_back := 0.0
+var projectile_speed := 0.0
 
 var parent
 var gun_owner
@@ -26,6 +24,18 @@ var gun_owner
 
 # Functions:
 #---------------------------------------
+func config_upgrade(config : GunUpgradeConfig) -> void:
+	ammo = config.ammo
+
+	reload_speed = config.reload_speed
+	fire_rate = config.fire_rate
+
+	knock_back = config.knock_back
+	damage = config.damage
+	projectile_knock_back = config.projectile_knock_back
+	projectile_speed = config.projectile_speed
+
+
 func add_upgrade(new_parent, new_owner) -> void:
 	parent = new_parent
 	gun_owner = new_owner

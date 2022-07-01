@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/ShotGunBarrelAugment/ShotGunAugmentConfig.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+ammo = 3
+reload_speed = 0.5
+fire_rate = 0.3
+knock_back = 630.0
+damage = 13.0
+projectile_knock_back = 3500.0
+projectile_speed = 500.0
+projecilte_spread = 15.0
+num_projectiles = 4

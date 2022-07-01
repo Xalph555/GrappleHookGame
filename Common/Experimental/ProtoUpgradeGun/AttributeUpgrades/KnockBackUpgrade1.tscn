@@ -4,5 +4,3 @@
 
 [node name="KnockBackUpgrade1" type="Node"]
 script = ExtResource( 1 )
-display_name = "KnockBack +50"
-knock_back = 50.0

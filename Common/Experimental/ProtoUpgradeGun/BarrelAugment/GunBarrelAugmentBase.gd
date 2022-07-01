@@ -37,6 +37,7 @@ func shoot(spawn_pos : Vector2) -> void:
 
 func get_class() -> String:
 	return "GunBarrelAugmentBase"
+	
 
 func is_class(value) -> bool:
 	return value == "GunBarrelAugmentBase"

@@ -54,7 +54,7 @@ var _dash_factor := 1.8
 var _dash_duration := 0.2
 
 # pickups
-var selected_pickup
+var selected_pickup : GunUpgradePickup
 var _choosing_upgrade := false
 
 onready var _anim_tree_main := $AnimationTreeMain
@@ -190,17 +190,17 @@ func _unhandled_input(event: InputEvent) -> void:
 		# attach upgrade to selected slot
 		if event.is_action_pressed("Selection1"):
 			set_choosing_upgrade(false)
-			_gun_extension.attach_upgrade(1, selected_pickup.get_upgrade())
+			_gun_extension.attach_upgrade(1, selected_pickup.upgrade)
 			remove_selected_pickup() 
 		
 		if event.is_action_pressed("Selection2"):
 			set_choosing_upgrade(false)
-			_gun_extension.attach_upgrade(2, selected_pickup.get_upgrade())
+			_gun_extension.attach_upgrade(2, selected_pickup.upgrade)
 			remove_selected_pickup() 
 		
 		if event.is_action_pressed("Selection3"):
 			set_choosing_upgrade(false)
-			_gun_extension.attach_upgrade(3, selected_pickup.get_upgrade())
+			_gun_extension.attach_upgrade(3, selected_pickup.upgrade)
 			remove_selected_pickup() 
 
 
@@ -208,14 +208,14 @@ func pickup_item() -> void:
 	if selected_pickup.get_class() == "GunUpgradePickup":
 		# ---- get and check incompatability (to be impemented)
 
-		var gun_upgrade_type = selected_pickup.get_upgrade_type()
+		var gun_upgrade_type = selected_pickup.upgrade.gun_upgrade_type
 		# print(gun_upgrade_type)
 
-		if gun_upgrade_type == "GunUpgradeBase":
+		if gun_upgrade_type == GunUpgradeResource.GUN_UPGRADE_TYPES.ATTRIBUTE_UPGRADE:
 			var free_slot = _gun_extension.get_free_upgrade_slot()
 
 			if free_slot != -1:
-				_gun_extension.attach_upgrade(free_slot, selected_pickup.get_upgrade())
+				_gun_extension.attach_upgrade(free_slot, selected_pickup.upgrade)
 
 				remove_selected_pickup() 
 			
@@ -224,8 +224,8 @@ func pickup_item() -> void:
 
 				print("No free gun upgrade slot")
 			
-		elif gun_upgrade_type == "GunBarrelAugmentBase":
-			_gun_extension.attach_barrel(selected_pickup.get_upgrade())
+		elif gun_upgrade_type == GunUpgradeResource.GUN_UPGRADE_TYPES.BARREL_UPGRADE:
+			_gun_extension.attach_barrel(selected_pickup.upgrade)
 
 			remove_selected_pickup() 
 		

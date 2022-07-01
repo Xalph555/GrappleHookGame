@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/GunUpgradeConfig.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+ammo = 1
+reload_speed = 0.5
+fire_rate = 0.2
+knock_back = 0.0
+damage = 5.0
+projectile_knock_back = 200.0
+projectile_speed = 800.0

@@ -20,10 +20,10 @@
 [ext_resource path="res://Common/LevelElements/LevelGoal/LevelGoal.tscn" type="PackedScene" id=18]
 [ext_resource path="res://Common/Tiles/Spikes/SpikeTiles.tscn" type="PackedScene" id=19]
 [ext_resource path="res://Common/LevelElements/Collectables/CollectableTiles.tscn" type="PackedScene" id=20]
-[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/AttributeUpgrades/FireRateUpgrade1.tscn" type="PackedScene" id=21]
-[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/AttributeUpgrades/KnockBackUpgrade1.tscn" type="PackedScene" id=22]
-[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/AttributeUpgrades/AmmoIncreaseUpgrade1.tscn" type="PackedScene" id=23]
-[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/PistolBarrelAugment.tscn" type="PackedScene" id=24]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/AttributeUpgrades/KnockbackUpgrades/Knockback1Upgrade.tres" type="Resource" id=21]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/PistolBarrelAugment/PistolBarrelAugnentResource.tres" type="Resource" id=22]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/AttributeUpgrades/AmmoUpgrades/AmmoIncrease1Upgrade.tres" type="Resource" id=23]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/AttributeUpgrades/FireRateUpgrades/FireRate1Upgrade.tres" type="Resource" id=24]
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
@@ -218,45 +218,31 @@ position = Vector2( 3902, 3292 )
 
 [node name="GunUpgradePickup" parent="." instance=ExtResource( 8 )]
 position = Vector2( 332, -250 )
-upgrade = ExtResource( 21 )
-upgrade_type = "GunUpgradeBase"
-display_name = "Fire Rate +0.1"
+upgrade = ExtResource( 24 )
 
 [node name="GunUpgradePickup2" parent="." instance=ExtResource( 8 )]
-position = Vector2( 363, -248 )
-upgrade = ExtResource( 21 )
-upgrade_type = "GunUpgradeBase"
-display_name = "Fire Rate +0.1"
+position = Vector2( 354, -250 )
+upgrade = ExtResource( 24 )
 
 [node name="GunUpgradePickup3" parent="." instance=ExtResource( 8 )]
-position = Vector2( 393, -248 )
-upgrade = ExtResource( 23 )
-upgrade_type = "GunUpgradeBase"
-display_name = "Ammo +1"
+position = Vector2( 380, -250 )
+upgrade = ExtResource( 21 )
 
 [node name="GunUpgradePickup4" parent="." instance=ExtResource( 8 )]
-position = Vector2( 426, -248 )
-upgrade = ExtResource( 23 )
-upgrade_type = "GunUpgradeBase"
-display_name = "Ammo +1"
+position = Vector2( 406, -250 )
+upgrade = ExtResource( 21 )
 
 [node name="GunUpgradePickup5" parent="." instance=ExtResource( 8 )]
-position = Vector2( 461, -248 )
-upgrade = ExtResource( 22 )
-upgrade_type = "GunUpgradeBase"
-display_name = "KnockBack +50"
+position = Vector2( 431, -250 )
+upgrade = ExtResource( 23 )
 
 [node name="GunUpgradePickup6" parent="." instance=ExtResource( 8 )]
-position = Vector2( 488, -248 )
-upgrade = ExtResource( 22 )
-upgrade_type = "GunUpgradeBase"
-display_name = "KnockBack +50"
+position = Vector2( 455, -250 )
+upgrade = ExtResource( 23 )
 
 [node name="GunUpgradePickup7" parent="." instance=ExtResource( 8 )]
-position = Vector2( 673, -249 )
-upgrade = ExtResource( 24 )
-upgrade_type = "GunBarrelAugmentBase"
-display_name = "Pistol Barrel Augment"
+position = Vector2( 675, -250 )
+upgrade = ExtResource( 22 )
 
 [editable path="Player"]
 [editable path="Player/HurtBox"]
