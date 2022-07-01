@@ -100,7 +100,7 @@ func _on_enemy_defeated() -> void:
 		return
 		
 	yield(get_tree(), "idle_frame")
-	
+	 
 	# clearing the destroyed enemy
 	for i in range(self.enemies.size()):
 		if not is_instance_valid(self.enemies[i]):

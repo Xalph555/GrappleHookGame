@@ -19,18 +19,21 @@ const _MAX_SLOPE_ANGLE := deg2rad(46)
 
 export var hook: PackedScene
 
+# camera
 var _camera_zoom_base := 1.0
 var _camera_zoom_curent := 1.0
 var _camera_zoom_ease_base := 0.01
 var _camera_zoom_ease_current := 0.01
 
+# boss fight
 var is_boss_fight := false setget update_is_boss_fight
 
+# movement
 var gravity := _GRAVITY
 var jump_height := -700
 var acceleration:= 35
 var max_speed := 480
-var limit_speed := max_speed
+onready var limit_speed := max_speed
 
 var _do_stop_on_slope := true
 var _has_infinite_inertia := true
@@ -50,14 +53,22 @@ var _hook_instance : GrappleHook
 var _dash_factor := 1.8
 var _dash_duration := 0.2
 
+# pickups
+var selected_pickup
+var _choosing_upgrade := false
+
 onready var _anim_tree_main := $AnimationTreeMain
 onready var _anim_tree_main_state = _anim_tree_main.get("parameters/playback")
 onready var _anim_player_main := $AnimationPlayerMain
 onready var _anim_player_sec := $AnimationPlayerSec
 onready var _camera := $PlayerCamera
 
-onready var _shotgun := $ShotGun as Shotgun
+#onready var _shotgun := $ShotGun as Shotgun
+onready var _gun_extension := $ProtoGunExtension
+onready var _upgrade_menu := $GunUpgradeSelection
+
 onready var _mouse_pointer := $MousePointer
+
 onready var _dash_hitbox := $DashHitBox
 onready var _dash_particles := $DashHitBox/CollisionShape2D/DashParticles
 
@@ -67,6 +78,11 @@ onready var _dash_particles := $DashHitBox/CollisionShape2D/DashParticles
 func _ready() -> void:
 	PlayerStats.save_stats()
 	_dash_hitbox.disable_hit_box()
+
+	yield(get_tree(), "idle_frame")
+	_gun_extension.set_up(self)
+
+	set_choosing_upgrade(false)
 
 
 func _physics_process(delta) -> void:
@@ -154,13 +170,84 @@ func update_movement_inputs() -> void:
 		
 		limit_speed = max_speed
 		
-		_shotgun.shoot()
+		#_shotgun.shoot()
+		_gun_extension.shoot()
 	
 	# Dash
 	if Input.is_action_just_released("dash") and is_flying and _can_grapple:
 		dash()
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("Interact"):
+		if selected_pickup:
+			pickup_item()
+	
+	if _choosing_upgrade:
+		if event.is_action_pressed("ui_cancel"):
+			set_choosing_upgrade(false)
+		
+		# attach upgrade to selected slot
+		if event.is_action_pressed("Selection1"):
+			set_choosing_upgrade(false)
+			_gun_extension.attach_upgrade(1, selected_pickup.get_upgrade())
+			remove_selected_pickup() 
+		
+		if event.is_action_pressed("Selection2"):
+			set_choosing_upgrade(false)
+			_gun_extension.attach_upgrade(2, selected_pickup.get_upgrade())
+			remove_selected_pickup() 
+		
+		if event.is_action_pressed("Selection3"):
+			set_choosing_upgrade(false)
+			_gun_extension.attach_upgrade(3, selected_pickup.get_upgrade())
+			remove_selected_pickup() 
+
+
+func pickup_item() -> void:
+	if selected_pickup.get_class() == "GunUpgradePickup":
+		# ---- get and check incompatability (to be impemented)
+
+		var gun_upgrade_type = selected_pickup.get_upgrade_type()
+		# print(gun_upgrade_type)
+
+		if gun_upgrade_type == "GunUpgradeBase":
+			var free_slot = _gun_extension.get_free_upgrade_slot()
+
+			if free_slot != -1:
+				_gun_extension.attach_upgrade(free_slot, selected_pickup.get_upgrade())
+
+				remove_selected_pickup() 
+			
+			else:
+				set_choosing_upgrade(true)
+
+				print("No free gun upgrade slot")
+			
+		elif gun_upgrade_type == "GunBarrelAugmentBase":
+			_gun_extension.attach_barrel(selected_pickup.get_upgrade())
+
+			remove_selected_pickup() 
+		
+		else:
+			print("no pickup")
+		
+	else:
+		print("no pickup")
+
+
+func remove_selected_pickup() -> void:
+	selected_pickup.call_deferred("free")
+	selected_pickup = null
+
+
+# gun pickups
+func set_choosing_upgrade(can_choose : bool) -> void:
+	_choosing_upgrade = can_choose
+	_upgrade_menu.visible = can_choose
+
+
+# movement functions
 func jump() -> void:
 	_snap_vector = Vector2.ZERO
 	velocity.y -= velocity.y # to fix 'super jump' bug when going up slopes
@@ -177,11 +264,30 @@ func coyote_time() -> void:
 	_can_jump = false
 
 
+func apply_friction() -> void:
+	if is_on_floor():
+		gravity = 0
+		velocity.x = lerp(velocity.x, 0, 0.05)
+		velocity.y = lerp(velocity.y, 0, 0.05)
+		
+	else:
+		gravity = _GRAVITY
+		velocity.x = lerp(velocity.x, 0, 0.03)
+		velocity.y = lerp(velocity.y, 0, 0.03)
+
+
+func clamp_speed() -> void:
+	velocity.x = clamp(velocity.x, -_TERMINAL_SPEED, _TERMINAL_SPEED)
+	velocity.y = clamp(velocity.y, -_TERMINAL_SPEED, _TERMINAL_SPEED)
+
+
+# grapple hook functions
 func throw_grapple() -> void:
 	if !_hook_instance:
 		_can_grapple = false
 		_can_shoot = false
-		_shotgun.visible = false
+		#_shotgun.visible = false
+		_gun_extension.visible = false
 		
 		var hook_dir := get_global_mouse_position() - self.global_position
 		hook_dir = hook_dir.normalized()
@@ -198,7 +304,8 @@ func release_grapple() -> void:
 	if _hook_instance:
 		_can_grapple = true
 		_can_shoot = true
-		_shotgun.visible = true
+		#_shotgun.visible = true
+		_gun_extension.visible = true
 		
 		_hook_instance.release()
 		_hook_instance = null
@@ -233,23 +340,24 @@ func dash() -> void:
 	_mouse_pointer.visible = true
 
 
-func apply_friction() -> void:
-	if is_on_floor():
-		gravity = 0
-		velocity.x = lerp(velocity.x, 0, 0.05)
-		velocity.y = lerp(velocity.y, 0, 0.05)
-		
-	else:
-		gravity = _GRAVITY
-		velocity.x = lerp(velocity.x, 0, 0.03)
-		velocity.y = lerp(velocity.y, 0, 0.03)
+func handle_teleporter(portal):
+	var enter_dir = self.velocity.normalized()
+	var exit_angle = enter_dir.angle_to(portal._portal_connections[0].exit_dir)
+	var exit_impulse = portal._portal_connections[0].exit_dir * portal._portal_connections[0].exit_force
+	
+	self.global_position = portal._portal_connections[0].global_position
+	self.velocity = self.velocity.rotated(exit_angle) + exit_impulse
+	
+	if _hook_instance != null:
+		if _hook_instance.hook_path.empty() or _hook_instance.hook_path[0] != portal:
+			_hook_instance.hook_path.insert(0, portal)
+			_hook_instance.hook_path.insert(0, portal._portal_connections[0])
+		else:
+			_hook_instance.hook_path.pop_front()
+			_hook_instance.hook_path.pop_front()
 
 
-func clamp_speed() -> void:
-	velocity.x = clamp(velocity.x, -_TERMINAL_SPEED, _TERMINAL_SPEED)
-	velocity.y = clamp(velocity.y, -_TERMINAL_SPEED, _TERMINAL_SPEED)
-
-
+# other
 func update_sprite() -> void:
 	# sprite flipping
 	if _input_dir.x > 0:
@@ -327,26 +435,25 @@ func _on_HurtBox_area_entered(area: Area2D) -> void:
 	else:
 		print("Hurt by something that does not have a Hitbox")
 
-
 func _on_HurtBox_body_entered(body:Node) -> void:
 	pass # Replace with function body.
 
 
-func handle_teleporter(portal):
-	var enter_dir = self.velocity.normalized()
-	var exit_angle = enter_dir.angle_to(portal._portal_connections[0].exit_dir)
-	var exit_impulse = portal._portal_connections[0].exit_dir * portal._portal_connections[0].exit_force
+# handling pickups
+func _on_PickupRange_body_entered(body:Node) -> void:
+	if selected_pickup and body == selected_pickup:
+		return
 	
-	self.global_position = portal._portal_connections[0].global_position
-	self.velocity = self.velocity.rotated(exit_angle) + exit_impulse
+	if selected_pickup:
+		selected_pickup.highlight_pickup(false)
+
+	selected_pickup = body
+	selected_pickup.highlight_pickup(true)
+
+func _on_PickupRange_body_exited(body:Node) -> void:
+	if selected_pickup and body == selected_pickup:
+		set_choosing_upgrade(false)
+
+		selected_pickup.highlight_pickup(false)
+		selected_pickup = null
 	
-	if _hook_instance != null:
-		if _hook_instance.hook_path.empty() or _hook_instance.hook_path[0] != portal:
-			_hook_instance.hook_path.insert(0, portal)
-			_hook_instance.hook_path.insert(0, portal._portal_connections[0])
-		else:
-			_hook_instance.hook_path.pop_front()
-			_hook_instance.hook_path.pop_front()
-
-
-
