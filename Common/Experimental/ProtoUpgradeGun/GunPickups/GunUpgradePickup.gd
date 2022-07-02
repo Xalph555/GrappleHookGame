@@ -10,14 +10,16 @@ class_name GunUpgradePickup
 export(Resource) var upgrade
 
 onready var _pick_up_text := $PickUpText
+onready var _pick_up_icon := $PickupBody/PickupIcon
 
 
 # Functions:
 #---------------------------------------
 func _ready() -> void:
 	if upgrade:
-		self.name = "Pick up: " + upgrade.get_name()
+		self.name = "Pick up: " + upgrade.display_name
 		_pick_up_text.text = upgrade.display_name
+		_pick_up_icon.texture = upgrade.upgrade_icon
 
 	highlight_pickup(false)
 	

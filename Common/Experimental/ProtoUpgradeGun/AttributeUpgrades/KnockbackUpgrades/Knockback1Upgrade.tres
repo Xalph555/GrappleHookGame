@@ -1,12 +1,14 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/GunUpgradeResource.gd" type="Script" id=1]
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/AttributeUpgrades/KnockbackUpgrades/Knockback1Config.tres" type="Resource" id=2]
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/GunUpgradeBase.gd" type="Script" id=3]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/AttributeUpgrades/KnockbackUpgrades/Knockback1Icon.tres" type="Texture" id=4]
 
 [resource]
 script = ExtResource( 1 )
 display_name = "Knockback +50"
 gun_upgrade_type = 0
+upgrade_icon = ExtResource( 4 )
 gun_upgrade_config = ExtResource( 2 )
 gun_upgrade_script = ExtResource( 3 )

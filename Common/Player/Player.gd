@@ -244,7 +244,12 @@ func remove_selected_pickup() -> void:
 # gun pickups
 func set_choosing_upgrade(can_choose : bool) -> void:
 	_choosing_upgrade = can_choose
-	_upgrade_menu.visible = can_choose
+
+	if can_choose:
+		_upgrade_menu.display_attached_upgrades(selected_pickup.upgrade.display_name, _gun_extension.get_all_attachments())
+	
+	else:
+		_upgrade_menu.hide_attached_upgrades()
 
 
 # movement functions

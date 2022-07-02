@@ -1,11 +1,14 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/GunUpgradeBase.gd" type="Script" id=1]
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/GunUpgradeResource.gd" type="Script" id=2]
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/AttributeUpgrades/AmmoUpgrades/AmmoIncrease1Config.tres" type="Resource" id=3]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/AttributeUpgrades/AmmoUpgrades/AmmoUpgrade1.tres" type="Texture" id=4]
 
 [resource]
 script = ExtResource( 2 )
 display_name = "Ammo +1"
+gun_upgrade_type = 0
+upgrade_icon = ExtResource( 4 )
 gun_upgrade_config = ExtResource( 3 )
 gun_upgrade_script = ExtResource( 1 )

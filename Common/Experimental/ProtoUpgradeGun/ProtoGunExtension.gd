@@ -41,8 +41,8 @@ export(float) var default_projectile_knock_back := 0.0
 export(float) var default_base_projectile_speed := 500.0
 
 # references to components
-var current_projectile : PackedScene
 var current_barrel_augment : GunUpgradeResource
+var current_projectile : PackedScene
 var current_attribute_upgrades = {1 : null,
 								  2 : null,
 								  3 : null}
@@ -305,6 +305,21 @@ func get_free_upgrade_slot() -> int:
 		return 3
 
 	return -1
+
+
+func get_all_attachments() -> Dictionary:
+	# {Barrel : Resource, Projectile : Resource, AttributeUpgrades : [list of Resources]}
+
+	var attachments = {}
+
+	attachments["Barrel"] = current_barrel_augment
+	attachments["Projectile"] = current_projectile
+	attachments["AttributeUpgrades"] = []
+	attachments["AttributeUpgrades"].append(current_attribute_upgrades[1])
+	attachments["AttributeUpgrades"].append(current_attribute_upgrades[2])
+	attachments["AttributeUpgrades"].append(current_attribute_upgrades[3])
+
+	return attachments
 
 
 func check_compatability(prohibitions : Array) -> bool:
