@@ -7,6 +7,12 @@ class_name ProtoGunExtension
 
 # Signals:
 #---------------------------------------
+# component changes
+signal barrel_changed(new_barrel)
+signal projectile_changed(new_projectile)
+signal attribute_upgrade_changed(slot, new_upgrade)
+
+# stat changes
 signal max_ammo_changed(new_max_ammo)
 signal current_ammo_changed(new_current_ammo)
 signal reloading
@@ -19,7 +25,6 @@ signal knock_back_changed(new_knock_back)
 signal damage_changed(new_damage)
 signal projectile_knock_back_changed(new_knock_back)
 signal bullet_speed_changed(new_bullet_speed)
-
 
 # Variables:
 #---------------------------------------
@@ -51,7 +56,6 @@ onready var barrel_augment := $Components/BarrelAugment
 onready var attribute_upgrades = {1 : $Components/AttributeUpgrade1,
 								  2 : $Components/AttributeUpgrade2,
 								  3 : $Components/AttributeUpgrade3}
-
 
 
 # base stats
@@ -92,6 +96,8 @@ var projectile_speed := 0.0 setget set_projectile_speed, get_projectile_speed
 var aim_location : Vector2
 var _can_shoot := true
 
+var _rng = RandomNumberGenerator.new()
+
 # node references
 var gun_owner
 
@@ -108,6 +114,10 @@ onready var _reload_timer := $ReloadTimer
 
 # Functions:
 #---------------------------------------
+func _ready() -> void:
+	_rng.randomize()
+
+
 func set_up(new_gun_owner) -> void:
 	gun_owner = new_gun_owner
 	restore_defaults()
@@ -205,6 +215,8 @@ func change_projectile(new_projectile : PackedScene) -> void:
 	current_projectile = new_projectile
 	barrel_augment.change_projectile(current_projectile)
 
+	emit_signal("projectile_changed", current_projectile)
+
 
 func attach_barrel(barrel : GunUpgradeResource) -> void:
 	if not barrel:
@@ -219,14 +231,7 @@ func attach_barrel(barrel : GunUpgradeResource) -> void:
 	barrel_augment.config_upgrade(barrel.gun_upgrade_config)
 	barrel_augment.set_up_barrel(self, gun_owner, current_projectile)
 
-	# if current_barrel_augment:
-	# 	detach_barrel()
-		
-
-	# current_barrel_augment = barrel.instance()
-	# components.add_child(current_barrel_augment)
-
-	# current_barrel_augment.set_up_barrel(self, gun_owner, current_projectile)
+	emit_signal("barrel_changed", current_barrel_augment)
 
 
 func attach_upgrade(slot : int, upgrade : GunUpgradeResource) -> void:
@@ -246,14 +251,7 @@ func attach_upgrade(slot : int, upgrade : GunUpgradeResource) -> void:
 	attribute_upgrades[slot].config_upgrade(upgrade.gun_upgrade_config)
 	attribute_upgrades[slot].add_upgrade(self, gun_owner)
 
-	# if current_attribute_upgrades[slot]:
-	# 	detach_upgrade(slot)
-		
-	
-	# current_attribute_upgrades[slot] = upgrade.instance()
-	# components.add_child(current_attribute_upgrades[slot])
-
-	# current_attribute_upgrades[slot].add_upgrade(self, gun_owner)
+	emit_signal("attribute_upgrade_changed", slot, current_attribute_upgrades[slot])
 
 
 func remove_projectile() -> void:
@@ -279,9 +277,6 @@ func detach_upgrade(slot : int) -> void:
 	current_attribute_upgrades[slot] = null
 	attribute_upgrades[slot].set_script(null)
 
-	# current_attribute_upgrades[slot].call_deferred("free")
-	# current_attribute_upgrades[slot] = null
-
 
 func eject_upgrade(upgrade) -> void:
 	var new_pickup = pickup_template.instance()
@@ -291,7 +286,12 @@ func eject_upgrade(upgrade) -> void:
 
 	get_tree().current_scene.add_child(new_pickup)
 
-	new_pickup.apply_central_impulse(Vector2.UP * 120)
+	var launch_angle = _rng.randf_range(-35, 35)
+	var launch_dir = Vector2.UP.rotated(deg2rad(launch_angle)).normalized()
+
+	print("eject dir: ", launch_dir)
+
+	new_pickup.apply_central_impulse(launch_dir * 120)
 
 
 func get_free_upgrade_slot() -> int:

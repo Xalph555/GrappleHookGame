@@ -7,7 +7,7 @@
 [ext_resource path="res://Common/HitHurtBox/HurtBox.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Common/UI/MousePointer/MousePointer.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Common/HitHurtBox/HitBox.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Common/UI/GunUpgradeSelection/GunUpgradeSelection.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Common/UI/GunUI/GunUpgradeSelection/GunUpgradeSelection.tscn" type="PackedScene" id=8]
 
 [sub_resource type="AnimationNodeAnimation" id=7]
 animation = "Idle"

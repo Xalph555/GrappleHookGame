@@ -15,4 +15,8 @@ onready var _upgrade_icon := $CenterContainer/UpgradeIcon
 func display_upgrade(slot : int, upgrade_icon : Texture) -> void:
 	_slot_num.text = str(slot)
 
+	update_icon(upgrade_icon)
+
+
+func update_icon(upgrade_icon : Texture) -> void:
 	_upgrade_icon.texture = upgrade_icon

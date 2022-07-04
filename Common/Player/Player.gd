@@ -84,6 +84,8 @@ func _ready() -> void:
 
 	set_choosing_upgrade(false)
 
+	_upgrade_menu.set_up_ui(_gun_extension, 3)
+
 
 func _physics_process(delta) -> void:
 	# apply gravity
@@ -246,7 +248,7 @@ func set_choosing_upgrade(can_choose : bool) -> void:
 	_choosing_upgrade = can_choose
 
 	if can_choose:
-		_upgrade_menu.display_attached_upgrades(selected_pickup.upgrade.display_name, _gun_extension.get_all_attachments())
+		_upgrade_menu.display_attached_upgrades(selected_pickup.upgrade.display_name)
 	
 	else:
 		_upgrade_menu.hide_attached_upgrades()
