@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/UpgradeSlot.png-68ff258d7607f89986edd0d8f9f0c195.stex"
+path="res://.import/UpgradeSlot.png-1eafdc4252bc2b27b1a7e9ad8adcc60c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Common/UI/GunUI/GunUpgradeSelection/UpgradeSlots/UpgradeSlot.png"
-dest_files=[ "res://.import/UpgradeSlot.png-68ff258d7607f89986edd0d8f9f0c195.stex" ]
+source_file="res://Common/UI/GunUI/UpgradeSlots/UpgradeSlot.png"
+dest_files=[ "res://.import/UpgradeSlot.png-1eafdc4252bc2b27b1a7e9ad8adcc60c.stex" ]
 
 [params]
 

@@ -1,5 +1,5 @@
 #--------------------------------------#
-# GunUpgradeSlot UI Script             #
+# GunUpgradeSlotNumberedUI Script      #
 #--------------------------------------#
 extends VBoxContainer
 

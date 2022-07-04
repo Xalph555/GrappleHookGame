@@ -18,7 +18,7 @@ func set_up_barrel(new_parent, new_owner, new_projectile) -> void:
 	self.projectile = new_projectile
 
 
-func change_projectile(new_projectile) -> void:
+func change_projectile(new_projectile : PackedScene) -> void:
 	if self.projectile:
 		remove_projectile()
 	

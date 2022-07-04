@@ -74,6 +74,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/GunBarrelAugmentBase.gd"
 }, {
+"base": "Resource",
+"class": "GunIncompatibilitiesResource",
+"language": "GDScript",
+"path": "res://Common/Experimental/ProtoUpgradeGun/GunIncompatibilitiesResource.gd"
+}, {
 "base": "Node",
 "class": "GunUpgradeBase",
 "language": "GDScript",
@@ -132,7 +137,7 @@ _global_script_classes=[ {
 "base": "Area2D",
 "class": "Pellets",
 "language": "GDScript",
-"path": "res://Common/Experimental/ProtoUpgradeGun/Projectiles/Pellets.gd"
+"path": "res://Common/Experimental/ProtoUpgradeGun/Projectiles/Pellets/Pellets.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Player",
@@ -203,6 +208,7 @@ _global_script_class_icons={
 "Erupter": "",
 "GrappleHook": "",
 "GunBarrelAugmentBase": "",
+"GunIncompatibilitiesResource": "",
 "GunUpgradeBase": "",
 "GunUpgradeConfig": "",
 "GunUpgradePickup": "",

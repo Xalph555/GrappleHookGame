@@ -10,7 +10,8 @@ class_name GunUpgradeResource
 export(String) var display_name = ""
 
 enum GUN_UPGRADE_TYPES {ATTRIBUTE_UPGRADE,
-						BARREL_UPGRADE}
+						BARREL_UPGRADE,
+						PROJECTILE_UPGRADE}
 export(GUN_UPGRADE_TYPES) var gun_upgrade_type
 
 export(Texture) var upgrade_icon
@@ -18,6 +19,9 @@ export(Texture) var upgrade_icon
 export(Resource) var gun_upgrade_config
 export(Script) var gun_upgrade_script
 
+export(PackedScene) var projectile_scene
+
+export(Resource) var gun_incompatibilities
 
 
 # Functions:

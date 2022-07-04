@@ -32,7 +32,7 @@ signal bullet_speed_changed(new_bullet_speed)
 export(PackedScene) var pickup_template
 
 # default variables
-export(PackedScene) var default_projectile
+export(Resource) var default_projectile
 export(Resource) var default_barrel_augment
 export(Resource) var default_attribute_upgrade1
 export(Resource) var default_attribute_upgrade2
@@ -47,12 +47,13 @@ export(float) var default_base_projectile_speed := 500.0
 
 # references to components
 var current_barrel_augment : GunUpgradeResource
-var current_projectile : PackedScene
+var current_projectile : GunUpgradeResource
 var current_attribute_upgrades = {1 : null,
 								  2 : null,
 								  3 : null}
 
 onready var barrel_augment := $Components/BarrelAugment
+var projectile_scene : PackedScene
 onready var attribute_upgrades = {1 : $Components/AttributeUpgrade1,
 								  2 : $Components/AttributeUpgrade2,
 								  3 : $Components/AttributeUpgrade3}
@@ -139,7 +140,7 @@ func _process(_delta: float) -> void:
 
 
 func shoot() -> void:
-	if not barrel_augment or not current_projectile:
+	if not barrel_augment.get_script() or not projectile_scene:
 		return
 
 	if self.current_ammo > 0 and _can_shoot:
@@ -204,16 +205,21 @@ func refresh_stats() -> void:
 	_can_shoot = true
 
 
-func change_projectile(new_projectile : PackedScene) -> void:
+func change_projectile(new_projectile : GunUpgradeResource) -> void:
 	if not new_projectile:
-		print("Invalid projectile being set for gun")
+		print("No projectile being set for gun but change_projectile was called")
 		return
 	
-	if current_projectile:
+	if not new_projectile.projectile_scene:
+		print("Invalid projectile being set for gun")
+		return
+
+	if projectile_scene:
 		remove_projectile()
 
 	current_projectile = new_projectile
-	barrel_augment.change_projectile(current_projectile)
+	projectile_scene = new_projectile.projectile_scene
+	barrel_augment.change_projectile(projectile_scene)
 
 	emit_signal("projectile_changed", current_projectile)
 
@@ -229,7 +235,7 @@ func attach_barrel(barrel : GunUpgradeResource) -> void:
 	current_barrel_augment = barrel
 	barrel_augment.set_script(barrel.gun_upgrade_script)
 	barrel_augment.config_upgrade(barrel.gun_upgrade_config)
-	barrel_augment.set_up_barrel(self, gun_owner, current_projectile)
+	barrel_augment.set_up_barrel(self, gun_owner, projectile_scene)
 
 	emit_signal("barrel_changed", current_barrel_augment)
 
@@ -256,23 +262,27 @@ func attach_upgrade(slot : int, upgrade : GunUpgradeResource) -> void:
 
 func remove_projectile() -> void:
 	# eject current projectile
-	if barrel_augment:
+	if projectile_scene:
 		barrel_augment.remove_projectile()
+		eject_upgrade(current_projectile)
 
 	current_projectile = null
+	projectile_scene = null
 
 
 func detach_barrel() -> void:
-	barrel_augment.remove_upgrade()
-	eject_upgrade(current_barrel_augment)
+	if barrel_augment.get_script():
+		barrel_augment.remove_upgrade()
+		eject_upgrade(current_barrel_augment)
 
 	current_barrel_augment = null
 	barrel_augment.set_script(null)
 
 
 func detach_upgrade(slot : int) -> void:
-	attribute_upgrades[slot].remove_upgrade()
-	eject_upgrade(current_attribute_upgrades[slot])
+	if attribute_upgrades[slot].get_script():
+		attribute_upgrades[slot].remove_upgrade()
+		eject_upgrade(current_attribute_upgrades[slot])
 
 	current_attribute_upgrades[slot] = null
 	attribute_upgrades[slot].set_script(null)
@@ -289,7 +299,7 @@ func eject_upgrade(upgrade) -> void:
 	var launch_angle = _rng.randf_range(-35, 35)
 	var launch_dir = Vector2.UP.rotated(deg2rad(launch_angle)).normalized()
 
-	print("eject dir: ", launch_dir)
+	# print("eject dir: ", launch_dir)
 
 	new_pickup.apply_central_impulse(launch_dir * 120)
 
@@ -314,6 +324,7 @@ func get_all_attachments() -> Dictionary:
 
 	attachments["Barrel"] = current_barrel_augment
 	attachments["Projectile"] = current_projectile
+
 	attachments["AttributeUpgrades"] = []
 	attachments["AttributeUpgrades"].append(current_attribute_upgrades[1])
 	attachments["AttributeUpgrades"].append(current_attribute_upgrades[2])
@@ -322,9 +333,22 @@ func get_all_attachments() -> Dictionary:
 	return attachments
 
 
-func check_compatability(prohibitions : Array) -> bool:
-	return false
+func is_incompatible(prohibitions : GunIncompatibilitiesResource) -> bool:
+	for barrel in prohibitions.barrels:
+		if barrel == current_barrel_augment:
+			return false
+	
+	for projectile in prohibitions.projectiles:
+		if projectile == current_projectile:
+			return false
+	
+	for attribute_upgrade in prohibitions.attribute_upgrades:
+		for current_upgrade in current_attribute_upgrades:
+			if attribute_upgrade == current_upgrade:
+				return false
 
+	return true
+	
 
 # timer callbacks
 func _on_ReloadTimer_timeout() -> void:

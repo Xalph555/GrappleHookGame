@@ -231,8 +231,12 @@ func pickup_item() -> void:
 
 			remove_selected_pickup() 
 		
+		elif gun_upgrade_type == GunUpgradeResource.GUN_UPGRADE_TYPES.PROJECTILE_UPGRADE:
+			_gun_extension.change_projectile(selected_pickup.upgrade)
+			remove_selected_pickup()
+
 		else:
-			print("no pickup")
+			print("Invalid gun pickup")
 		
 	else:
 		print("no pickup")
