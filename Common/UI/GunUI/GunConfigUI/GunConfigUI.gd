@@ -2,6 +2,7 @@
 # GunConfigUI Script                   #
 #--------------------------------------#
 extends Control
+class_name GunConfigUI
 
 
 # Variables:
@@ -13,6 +14,11 @@ var _slot_instances := {"barrel" : null,
 						"projectile" : null,
 						"attributes" : []}
 
+var _player : Player
+var _player_gun : ProtoGunExtension
+
+var _is_active := false
+
 onready var _barrel_slot := $BarrelUpgrade
 onready var _projectile_slot := $Projectile
 onready var _attribute_slots := $AttributeUpgrades/AttributeUpgradeSlots
@@ -20,7 +26,10 @@ onready var _attribute_slots := $AttributeUpgrades/AttributeUpgradeSlots
 
 # Functions:
 #---------------------------------------
-func set_up_ui(gun_ref : ProtoGunExtension, num_of_upgrade_slots : int) -> void:
+func set_up_ui(player_ref : Player, gun_ref : ProtoGunExtension, num_of_upgrade_slots : int) -> void:
+	_player = player_ref
+	_player_gun = gun_ref
+
 	# create upgrade slots
 	var slot_instance = upgrade_slot.instance()
 	_barrel_slot.add_child(slot_instance)
@@ -28,7 +37,7 @@ func set_up_ui(gun_ref : ProtoGunExtension, num_of_upgrade_slots : int) -> void:
 
 	slot_instance = upgrade_slot.instance()
 	_projectile_slot.add_child(slot_instance)
-	slot_instance["projectile"] = slot_instance
+	_slot_instances["projectile"] = slot_instance
 
 	for i in range(num_of_upgrade_slots):
 		var slot_num_instance = upgrade_slot_numbered.instance()
@@ -36,33 +45,42 @@ func set_up_ui(gun_ref : ProtoGunExtension, num_of_upgrade_slots : int) -> void:
 
 		slot_num_instance.display_upgrade(i + 1, null)
 
-		_slot_instances["attributed"].append(slot_instance)
+		_slot_instances["attributes"].append(slot_num_instance)
+	
+	self.visible = _is_active
 
 	# connect signals
-	gun_ref.connect("barrel_changed", self, "_on_barrel_changed")
-	gun_ref.connect("projectile_changed", self, "_on_projectile_changed")
-	gun_ref.connect("attribute_upgrade_changed", self, "_on_attribute_upgrade_changed")
+	_player_gun.connect("barrel_changed", self, "_on_barrel_changed")
+	_player_gun.connect("projectile_changed", self, "_on_projectile_changed")
+	_player_gun.connect("attribute_upgrade_changed", self, "_on_attribute_upgrade_changed")
 
 
-func display_menu(upgrades : Dictionary) -> void:
-	for instance in _slot_instances:
-		instance.call_deferred("free")
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		display_menu(false)
+		
+	if event.is_action_pressed("tab"):
+		display_menu(! _is_active)
+
+
+func display_menu(shown : bool) -> void:
+	_is_active = shown
+
+	if _is_active:
+		self.visible = true
 	
-	_slot_instances.clear()
-
-	self.visible = true
+	else:
+		self.visible = false
 
 
 func _on_barrel_changed(new_barrel : GunUpgradeResource):
 	_slot_instances["barrel"].update_icon(new_barrel.upgrade_icon)
 
-
-func _on_projectile_changed(new_projectile) -> void:
-	pass
-
+func _on_projectile_changed(new_projectile : GunUpgradeResource) -> void:
+	_slot_instances["projectile"].update_icon(new_projectile.upgrade_icon)
 
 func _on_attribute_upgrade_changed(slot : int, new_upgrade : GunUpgradeResource) -> void:
-	if slot > _slot_instances["attributes"].size():
+	if slot < 1 or slot > _slot_instances["attributes"].size():
 		print("Invalid slot changed for GunUpgradeSelectionUI")
 		return
 	

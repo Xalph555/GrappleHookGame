@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Common/Player/ShotGun/Shotgun.png" type="Texture" id=1]
 [ext_resource path="res://Common/UI/GunUI/GunConfigUI/GunConfigUI.gd" type="Script" id=2]
+[ext_resource path="res://Common/UI/GunUI/UpgradeSlots/UpgradeSlotNumbered.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Common/UI/GunUI/UpgradeSlots/UpgradeSlot.tscn" type="PackedScene" id=4]
 
 [node name="GunConfigUI" type="Control"]
 anchor_right = 1.0
@@ -11,11 +13,13 @@ margin_top = 130.0
 margin_right = -180.0
 margin_bottom = -130.0
 script = ExtResource( 2 )
+upgrade_slot = ExtResource( 4 )
+upgrade_slot_numbered = ExtResource( 3 )
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.129412, 0.129412, 0.137255, 0.454902 )
+color = Color( 0.129412, 0.129412, 0.137255, 0.792157 )
 
 [node name="MenuTitle" type="Label" parent="."]
 margin_left = 15.0

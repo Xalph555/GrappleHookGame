@@ -2,8 +2,19 @@
 # Player Script                        #
 #--------------------------------------#
 extends KinematicBody2D
-
 class_name Player
+
+
+# Signals:
+#---------------------------------------
+signal pick_up_selected(pick_up)
+signal pick_up_deselected(pick_up)
+
+signal grapple_start
+signal grapple_end
+
+signal dash_start
+signal dash_end
 
 
 # Variables:
@@ -54,8 +65,7 @@ var _dash_factor := 1.8
 var _dash_duration := 0.2
 
 # pickups
-var selected_pickup : GunUpgradePickup
-var _choosing_upgrade := false
+var selected_pickup
 
 onready var _anim_tree_main := $AnimationTreeMain
 onready var _anim_tree_main_state = _anim_tree_main.get("parameters/playback")
@@ -64,10 +74,7 @@ onready var _anim_player_sec := $AnimationPlayerSec
 onready var _camera := $PlayerCamera
 
 #onready var _shotgun := $ShotGun as Shotgun
-onready var _gun_extension := $ProtoGunExtension
-onready var _upgrade_menu := $GunUpgradeSelection
-
-onready var _mouse_pointer := $MousePointer
+onready var gun_extension := $ProtoGunExtension
 
 onready var _dash_hitbox := $DashHitBox
 onready var _dash_particles := $DashHitBox/CollisionShape2D/DashParticles
@@ -80,11 +87,7 @@ func _ready() -> void:
 	_dash_hitbox.disable_hit_box()
 
 	yield(get_tree(), "idle_frame")
-	_gun_extension.set_up(self)
-
-	set_choosing_upgrade(false)
-
-	_upgrade_menu.set_up_ui(_gun_extension, 3)
+	gun_extension.set_up(self)
 
 
 func _physics_process(delta) -> void:
@@ -158,12 +161,12 @@ func update_movement_inputs() -> void:
 	
 	# Shoot hook
 	if Input.is_action_just_pressed("grapple") and _can_grapple:
-		_mouse_pointer.visible = false
 		throw_grapple()
+		emit_signal("grapple_start")
 	
 	if Input.is_action_just_released("grapple"):
-		_mouse_pointer.visible = true
 		release_grapple() 
+		emit_signal("grapple_end")
 	
 	# Fire Shotgun
 	if Input.is_action_just_pressed("shoot") and _can_shoot:
@@ -173,7 +176,7 @@ func update_movement_inputs() -> void:
 		limit_speed = max_speed
 		
 		#_shotgun.shoot()
-		_gun_extension.shoot()
+		gun_extension.shoot()
 	
 	# Dash
 	if Input.is_action_just_released("dash") and is_flying and _can_grapple:
@@ -181,29 +184,9 @@ func update_movement_inputs() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("Interact"):
+	if event.is_action_pressed("interact"):
 		if selected_pickup:
 			pickup_item()
-	
-	if _choosing_upgrade:
-		if event.is_action_pressed("ui_cancel"):
-			set_choosing_upgrade(false)
-		
-		# attach upgrade to selected slot
-		if event.is_action_pressed("Selection1"):
-			set_choosing_upgrade(false)
-			_gun_extension.attach_upgrade(1, selected_pickup.upgrade)
-			remove_selected_pickup() 
-		
-		if event.is_action_pressed("Selection2"):
-			set_choosing_upgrade(false)
-			_gun_extension.attach_upgrade(2, selected_pickup.upgrade)
-			remove_selected_pickup() 
-		
-		if event.is_action_pressed("Selection3"):
-			set_choosing_upgrade(false)
-			_gun_extension.attach_upgrade(3, selected_pickup.upgrade)
-			remove_selected_pickup() 
 
 
 func pickup_item() -> void:
@@ -214,25 +197,19 @@ func pickup_item() -> void:
 		# print(gun_upgrade_type)
 
 		if gun_upgrade_type == GunUpgradeResource.GUN_UPGRADE_TYPES.ATTRIBUTE_UPGRADE:
-			var free_slot = _gun_extension.get_free_upgrade_slot()
-
-			if free_slot != -1:
-				_gun_extension.attach_upgrade(free_slot, selected_pickup.upgrade)
-
+			if gun_extension.attach_upgrade_quick(selected_pickup.upgrade):
 				remove_selected_pickup() 
 			
 			else:
-				set_choosing_upgrade(true)
-
 				print("No free gun upgrade slot")
 			
 		elif gun_upgrade_type == GunUpgradeResource.GUN_UPGRADE_TYPES.BARREL_UPGRADE:
-			_gun_extension.attach_barrel(selected_pickup.upgrade)
+			gun_extension.attach_barrel(selected_pickup.upgrade)
 
 			remove_selected_pickup() 
 		
 		elif gun_upgrade_type == GunUpgradeResource.GUN_UPGRADE_TYPES.PROJECTILE_UPGRADE:
-			_gun_extension.change_projectile(selected_pickup.upgrade)
+			gun_extension.change_projectile(selected_pickup.upgrade)
 			remove_selected_pickup()
 
 		else:
@@ -243,19 +220,10 @@ func pickup_item() -> void:
 
 
 func remove_selected_pickup() -> void:
+	emit_signal("pick_up_deselected", selected_pickup)
+
 	selected_pickup.call_deferred("free")
 	selected_pickup = null
-
-
-# gun pickups
-func set_choosing_upgrade(can_choose : bool) -> void:
-	_choosing_upgrade = can_choose
-
-	if can_choose:
-		_upgrade_menu.display_attached_upgrades(selected_pickup.upgrade.display_name)
-	
-	else:
-		_upgrade_menu.hide_attached_upgrades()
 
 
 # movement functions
@@ -298,7 +266,7 @@ func throw_grapple() -> void:
 		_can_grapple = false
 		_can_shoot = false
 		#_shotgun.visible = false
-		_gun_extension.visible = false
+		gun_extension.visible = false
 		
 		var hook_dir := get_global_mouse_position() - self.global_position
 		hook_dir = hook_dir.normalized()
@@ -316,7 +284,7 @@ func release_grapple() -> void:
 		_can_grapple = true
 		_can_shoot = true
 		#_shotgun.visible = true
-		_gun_extension.visible = true
+		gun_extension.visible = true
 		
 		_hook_instance.release()
 		_hook_instance = null
@@ -326,7 +294,7 @@ func dash() -> void:
 	is_flying = false
 	_can_grapple = false
 	
-	_mouse_pointer.visible = false
+	emit_signal("dash_start")
 	
 	var mouse_dir := (get_global_mouse_position() - self.global_position).normalized()
 	_dash_hitbox.rotation = mouse_dir.angle()
@@ -348,7 +316,7 @@ func dash() -> void:
 	
 	_dash_hitbox.disable_hit_box()
 	_can_grapple = true
-	_mouse_pointer.visible = true
+	emit_signal("dash_end")
 
 
 func handle_teleporter(portal):
@@ -386,13 +354,6 @@ func update_sprite() -> void:
 		
 	else:
 		_anim_tree_main_state.travel("Idle")
-		
-	# update mouse pointer
-	if is_flying:
-		_mouse_pointer.set_dash_pointer()
-	
-	else:
-		_mouse_pointer.set_normal_pointer()
 
 
 func update_camera() -> void:
@@ -460,11 +421,13 @@ func _on_PickupRange_body_entered(body:Node) -> void:
 
 	selected_pickup = body
 	selected_pickup.highlight_pickup(true)
+	emit_signal("pick_up_selected", selected_pickup)
 
 func _on_PickupRange_body_exited(body:Node) -> void:
 	if selected_pickup and body == selected_pickup:
-		set_choosing_upgrade(false)
+		emit_signal("pick_up_deselected", selected_pickup)
 
 		selected_pickup.highlight_pickup(false)
 		selected_pickup = null
+
 	

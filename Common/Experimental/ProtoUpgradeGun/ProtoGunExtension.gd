@@ -11,6 +11,7 @@ class_name ProtoGunExtension
 signal barrel_changed(new_barrel)
 signal projectile_changed(new_projectile)
 signal attribute_upgrade_changed(slot, new_upgrade)
+signal attribute_slots_full(pending_upgrade)
 
 # stat changes
 signal max_ammo_changed(new_max_ammo)
@@ -101,8 +102,6 @@ var _rng = RandomNumberGenerator.new()
 
 # node references
 var gun_owner
-
-onready var components := $Components
 
 onready var _tween := $Tween
 onready var _pivot := $Pivot
@@ -260,6 +259,22 @@ func attach_upgrade(slot : int, upgrade : GunUpgradeResource) -> void:
 	emit_signal("attribute_upgrade_changed", slot, current_attribute_upgrades[slot])
 
 
+func attach_upgrade_quick(upgrade : GunUpgradeResource) -> bool:
+	if not upgrade:
+		print("Invalid upgrade being set for gun")
+		return false
+	
+	var free_slot = get_free_upgrade_slot()
+
+	if free_slot == -1:
+		emit_signal("attribute_slots_full", upgrade)
+		return false
+	
+	attach_upgrade(free_slot, upgrade)
+
+	return true
+
+
 func remove_projectile() -> void:
 	# eject current projectile
 	if projectile_scene:
@@ -288,7 +303,7 @@ func detach_upgrade(slot : int) -> void:
 	attribute_upgrades[slot].set_script(null)
 
 
-func eject_upgrade(upgrade) -> void:
+func eject_upgrade(upgrade : GunUpgradeResource) -> void:
 	var new_pickup = pickup_template.instance()
 
 	new_pickup.upgrade = upgrade

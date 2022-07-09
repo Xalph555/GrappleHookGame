@@ -5,24 +5,26 @@
 
 [node name="GunUpgradeSelection" type="Control"]
 show_behind_parent = true
-margin_left = -72.0
-margin_top = -85.0
-margin_right = 72.0
-margin_bottom = 10.0
 script = ExtResource( 1 )
 upgrade_slot = ExtResource( 2 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Control" type="Control" parent="."]
+margin_left = -72.0
+margin_top = -96.0
+margin_right = 72.0
+margin_bottom = -1.0
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.278431, 0.270588, 0.329412, 0.603922 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="Control/VBoxContainer"]
 margin_top = 29.0
 margin_right = 144.0
 margin_bottom = 43.0
@@ -30,7 +32,7 @@ text = "Pending Upgrade:"
 align = 1
 valign = 1
 
-[node name="UpgradeName" type="Label" parent="VBoxContainer"]
+[node name="UpgradeName" type="Label" parent="Control/VBoxContainer"]
 margin_top = 47.0
 margin_right = 144.0
 margin_bottom = 61.0
@@ -38,7 +40,7 @@ text = "<Upgrade>"
 align = 1
 valign = 1
 
-[node name="UpgradeSlotContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="UpgradeSlotContainer" type="HBoxContainer" parent="Control/VBoxContainer"]
 margin_top = 65.0
 margin_right = 144.0
 margin_bottom = 65.0

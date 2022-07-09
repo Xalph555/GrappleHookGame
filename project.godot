@@ -74,6 +74,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/GunBarrelAugmentBase.gd"
 }, {
+"base": "Control",
+"class": "GunConfigUI",
+"language": "GDScript",
+"path": "res://Common/UI/GunUI/GunConfigUI/GunConfigUI.gd"
+}, {
 "base": "Resource",
 "class": "GunIncompatibilitiesResource",
 "language": "GDScript",
@@ -98,6 +103,11 @@ _global_script_classes=[ {
 "class": "GunUpgradeResource",
 "language": "GDScript",
 "path": "res://Common/Experimental/ProtoUpgradeGun/GunUpgradeResource.gd"
+}, {
+"base": "Control",
+"class": "GunUpgradeSelectionUI",
+"language": "GDScript",
+"path": "res://Common/UI/GunUI/GunUpgradeSelection/GunUpgradeSelection.gd"
 }, {
 "base": "Area2D",
 "class": "Hitbox",
@@ -129,6 +139,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Common/Enemies/Lobber/Lobber.gd"
 }, {
+"base": "Control",
+"class": "MouseAimPointer",
+"language": "GDScript",
+"path": "res://Common/UI/MousePointer/MousePointer.gd"
+}, {
 "base": "Path2D",
 "class": "MovingDoor",
 "language": "GDScript",
@@ -148,6 +163,11 @@ _global_script_classes=[ {
 "class": "PlayerState",
 "language": "GDScript",
 "path": "res://Common/Player/StateMachine/PlayerState.gd"
+}, {
+"base": "CanvasLayer",
+"class": "PlayerUIManager",
+"language": "GDScript",
+"path": "res://Common/UI/PlayerUIManager/PlayerUIManager.gd"
 }, {
 "base": "RigidBody2D",
 "class": "Projectile",
@@ -208,21 +228,25 @@ _global_script_class_icons={
 "Erupter": "",
 "GrappleHook": "",
 "GunBarrelAugmentBase": "",
+"GunConfigUI": "",
 "GunIncompatibilitiesResource": "",
 "GunUpgradeBase": "",
 "GunUpgradeConfig": "",
 "GunUpgradePickup": "",
 "GunUpgradeResource": "",
+"GunUpgradeSelectionUI": "",
 "Hitbox": "",
 "Hurtbox": "",
 "LazerHead": "",
 "LevelGoal": "",
 "Line2DTrail": "",
 "Lobber": "",
+"MouseAimPointer": "",
 "MovingDoor": "",
 "Pellets": "",
 "Player": "",
 "PlayerState": "",
+"PlayerUIManager": "",
 "Projectile": "",
 "ProtoGunExtension": "",
 "Sentry": "",
@@ -327,24 +351,29 @@ reload_level={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":80,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
-Interact={
+interact={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
-Selection1={
+selection1={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":49,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
-Selection2={
+selection2={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":50,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
-Selection3={
+selection3={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":51,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+tab={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777218,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 
