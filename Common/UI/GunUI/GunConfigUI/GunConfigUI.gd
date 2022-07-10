@@ -33,16 +33,18 @@ func set_up_ui(player_ref : Player, gun_ref : ProtoGunExtension, num_of_upgrade_
 	# create upgrade slots
 	var slot_instance = upgrade_slot.instance()
 	_barrel_slot.add_child(slot_instance)
+	slot_instance.connect("num_slot_double_clicked", self, "_on_barrel_slot_double_clicked")
 	_slot_instances["barrel"] = slot_instance
 
 	slot_instance = upgrade_slot.instance()
 	_projectile_slot.add_child(slot_instance)
+	slot_instance.connect("num_slot_double_clicked", self, "_on_projectile_slot_double_clicked")
 	_slot_instances["projectile"] = slot_instance
 
 	for i in range(num_of_upgrade_slots):
 		var slot_num_instance = upgrade_slot_numbered.instance()
 		_attribute_slots.add_child(slot_num_instance)
-
+		slot_num_instance.connect("num_slot_double_clicked", self, "_on_attribute_upgrade_slot_double_clicked")
 		slot_num_instance.display_upgrade(i + 1, null)
 
 		_slot_instances["attributes"].append(slot_num_instance)
@@ -73,15 +75,36 @@ func display_menu(shown : bool) -> void:
 		self.visible = false
 
 
+# gun callbacks
 func _on_barrel_changed(new_barrel : GunUpgradeResource):
-	_slot_instances["barrel"].update_icon(new_barrel.upgrade_icon)
+	if new_barrel:
+		_slot_instances["barrel"].update_icon(new_barrel.upgrade_icon)
+	else:
+		_slot_instances["barrel"].update_icon(null)
 
 func _on_projectile_changed(new_projectile : GunUpgradeResource) -> void:
-	_slot_instances["projectile"].update_icon(new_projectile.upgrade_icon)
+	if new_projectile:
+		_slot_instances["projectile"].update_icon(new_projectile.upgrade_icon)
+	else:
+		_slot_instances["projectile"].update_icon(null)
 
 func _on_attribute_upgrade_changed(slot : int, new_upgrade : GunUpgradeResource) -> void:
 	if slot < 1 or slot > _slot_instances["attributes"].size():
 		print("Invalid slot changed for GunUpgradeSelectionUI")
 		return
 	
-	_slot_instances["attributes"][slot - 1].update_icon(new_upgrade.upgrade_icon)
+	if new_upgrade:
+		_slot_instances["attributes"][slot - 1].update_icon(new_upgrade.upgrade_icon)
+	else:
+		_slot_instances["attributes"][slot - 1].update_icon(null)
+
+
+# UI callbacks
+func _on_barrel_slot_double_clicked() -> void:
+	_player_gun.detach_barrel()
+
+func _on_projectile_slot_double_clicked() -> void:
+	_player_gun.remove_projectile()
+
+func _on_attribute_upgrade_slot_double_clicked(slot_num : int) -> void:
+	_player_gun.detach_upgrade(slot_num)

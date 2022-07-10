@@ -88,11 +88,14 @@ func switch_upgrade(slot : int) -> void:
 			
 # gun signal call backs
 func _on_attribute_upgrade_changed(slot : int, new_upgrade : GunUpgradeResource) -> void:
-	if slot > upgrade_slot_instances.size():
+	if slot < 1 or slot > upgrade_slot_instances.size():
 		print("Invalid slot changed for GunUpgradeSelectionUI")
 		return
 	
-	upgrade_slot_instances[slot - 1].update_icon(new_upgrade.upgrade_icon)
+	if new_upgrade:
+		upgrade_slot_instances[slot - 1].update_icon(new_upgrade.upgrade_icon)
+	else:
+		upgrade_slot_instances[slot - 1].update_icon(null)
 
 
 func _on_attribute_slots_full(upgrade : GunUpgradeResource) -> void:

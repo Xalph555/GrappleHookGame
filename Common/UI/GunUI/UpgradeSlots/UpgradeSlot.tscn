@@ -16,3 +16,5 @@ margin_left = 16.0
 margin_top = 16.0
 margin_right = 16.0
 margin_bottom = 16.0
+
+[connection signal="gui_input" from="." to="." method="_on_UpgradeSlot_gui_input"]

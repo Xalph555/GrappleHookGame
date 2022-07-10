@@ -218,7 +218,9 @@ func change_projectile(new_projectile : GunUpgradeResource) -> void:
 
 	current_projectile = new_projectile
 	projectile_scene = new_projectile.projectile_scene
-	barrel_augment.change_projectile(projectile_scene)
+
+	if barrel_augment.get_script():
+		barrel_augment.change_projectile(projectile_scene)
 
 	emit_signal("projectile_changed", current_projectile)
 
@@ -278,11 +280,14 @@ func attach_upgrade_quick(upgrade : GunUpgradeResource) -> bool:
 func remove_projectile() -> void:
 	# eject current projectile
 	if projectile_scene:
-		barrel_augment.remove_projectile()
+		if barrel_augment.get_script():
+			barrel_augment.remove_projectile()
 		eject_upgrade(current_projectile)
 
 	current_projectile = null
 	projectile_scene = null
+
+	emit_signal("projectile_changed", current_projectile)
 
 
 func detach_barrel() -> void:
@@ -293,6 +298,8 @@ func detach_barrel() -> void:
 	current_barrel_augment = null
 	barrel_augment.set_script(null)
 
+	emit_signal("barrel_changed", current_barrel_augment)
+
 
 func detach_upgrade(slot : int) -> void:
 	if attribute_upgrades[slot].get_script():
@@ -301,6 +308,8 @@ func detach_upgrade(slot : int) -> void:
 
 	current_attribute_upgrades[slot] = null
 	attribute_upgrades[slot].set_script(null)
+
+	emit_signal("attribute_upgrade_changed", slot, current_attribute_upgrades[slot])
 
 
 func eject_upgrade(upgrade : GunUpgradeResource) -> void:
