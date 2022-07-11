@@ -44,6 +44,7 @@ func set_up_ui(player_ref : Player, gun_ref : ProtoGunExtension, num_of_upgrade_
 	for i in range(num_of_upgrade_slots):
 		var slot_num_instance = upgrade_slot_numbered.instance()
 		_attribute_slots.add_child(slot_num_instance)
+		
 		slot_num_instance.connect("num_slot_double_clicked", self, "_on_attribute_upgrade_slot_double_clicked")
 		slot_num_instance.display_upgrade(i + 1, null)
 

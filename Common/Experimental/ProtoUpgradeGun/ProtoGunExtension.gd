@@ -30,11 +30,11 @@ signal bullet_speed_changed(new_bullet_speed)
 # Variables:
 #---------------------------------------
 # upgrade pickup template
-export(PackedScene) var pickup_template
+export(PackedScene) var pickup_template = pickup_template as GunUpgradePickup
 
 # default variables
-export(Resource) var default_projectile
-export(Resource) var default_barrel_augment
+export(Resource) var default_projectile = default_projectile as GunUpgradeResource
+export(Resource) var default_barrel_augment = default_barrel_augment as GunUpgradeResource
 export(Resource) var default_attribute_upgrade1
 export(Resource) var default_attribute_upgrade2
 export(Resource) var default_attribute_upgrade3

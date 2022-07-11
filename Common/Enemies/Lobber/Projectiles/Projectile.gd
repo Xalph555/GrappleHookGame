@@ -10,15 +10,18 @@ class_name Projectile
 #---------------------------------------
 export (float) var gravity = 1000
 
-var _hasCollided := false
+var _has_collided := false
+
+onready var _life_timer := $LifeTime
 
 
 # Functions:
 #---------------------------------------
 func _on_body_entered(body: Node) -> void:
-	if !_hasCollided:
-		_hasCollided = true
+	if !_has_collided:
+		_has_collided = true
 		
+		_life_timer.stop()
 		yield(get_tree().create_timer(1.3), "timeout")
 		call_deferred("free")
 

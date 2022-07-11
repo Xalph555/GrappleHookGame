@@ -64,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Common/Enemies/Erupter/Erupter.gd"
 }, {
+"base": "RigidBody2D",
+"class": "FireBalls",
+"language": "GDScript",
+"path": "res://Common/Experimental/ProtoUpgradeGun/Projectiles/FireBalls/FireBall.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "GrappleHook",
 "language": "GDScript",
@@ -236,6 +241,7 @@ _global_script_class_icons={
 "EnemyCounterBase": "",
 "EnemyCounterSpecific": "",
 "Erupter": "",
+"FireBalls": "",
 "GrappleHook": "",
 "GunBarrelAugmentBase": "",
 "GunConfigUI": "",
