@@ -2,8 +2,8 @@
 
 [ext_resource path="res://Common/Player/ShotGun/Shotgun.png" type="Texture" id=1]
 [ext_resource path="res://Common/UI/GunUI/GunConfigUI/GunConfigUI.gd" type="Script" id=2]
-[ext_resource path="res://Common/UI/GunUI/UpgradeSlots/UpgradeSlotNumbered.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Common/UI/GunUI/UpgradeSlots/UpgradeSlot.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Common/UI/GunUI/UpgradeSlots/Selectable/UpgradeSlotSelectable.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Common/UI/GunUI/UpgradeSlots/Selectable/UpgradeSlotNumberedSelectable.tscn" type="PackedScene" id=4]
 
 [node name="GunConfigUI" type="Control"]
 anchor_right = 1.0
@@ -13,8 +13,8 @@ margin_top = 130.0
 margin_right = -180.0
 margin_bottom = -130.0
 script = ExtResource( 2 )
-upgrade_slot = ExtResource( 4 )
-upgrade_slot_numbered = ExtResource( 3 )
+upgrade_slot = ExtResource( 3 )
+upgrade_slot_numbered = ExtResource( 4 )
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -66,6 +66,7 @@ margin_left = -134.0
 margin_top = 35.0
 margin_right = -30.0
 margin_bottom = 75.0
+mouse_filter = 2
 
 [node name="BULabel" type="Label" parent="BarrelUpgrade"]
 margin_right = 104.0
@@ -79,6 +80,7 @@ margin_left = -134.0
 margin_top = 212.0
 margin_right = -30.0
 margin_bottom = 252.0
+mouse_filter = 2
 
 [node name="PLabel" type="Label" parent="Projectile"]
 margin_right = 104.0

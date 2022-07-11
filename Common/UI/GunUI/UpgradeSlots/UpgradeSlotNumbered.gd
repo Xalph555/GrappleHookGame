@@ -2,11 +2,7 @@
 # GunUpgradeSlotNumberedUI Script      #
 #--------------------------------------#
 extends VBoxContainer
-
-
-# Signals:
-#---------------------------------------
-signal num_slot_double_clicked(number)
+class_name UpgradeSlotNumberedUI
 
 
 # Variables:
@@ -30,8 +26,3 @@ func update_icon(upgrade_icon : Texture) -> void:
 	_upgrade_icon.texture = upgrade_icon
 
 
-func _on_UpgradeSlotNumbered_gui_input(event:InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.doubleclick:
-			print("double clicked")
-			emit_signal("num_slot_double_clicked", slot_number)

@@ -213,6 +213,16 @@ _global_script_classes=[ {
 "class": "TriggerArea",
 "language": "GDScript",
 "path": "res://Common/TriggerAreas/TriggerArea.gd"
+}, {
+"base": "VBoxContainer",
+"class": "UpgradeSlotNumberedUI",
+"language": "GDScript",
+"path": "res://Common/UI/GunUI/UpgradeSlots/UpgradeSlotNumbered.gd"
+}, {
+"base": "CenterContainer",
+"class": "UpgradeSlotUI",
+"language": "GDScript",
+"path": "res://Common/UI/GunUI/UpgradeSlots/UpgradeSlot.gd"
 } ]
 _global_script_class_icons={
 "BlitzOrb": "",
@@ -255,7 +265,9 @@ _global_script_class_icons={
 "StateMachine": "",
 "TransportPortal": "",
 "TransportPortalSwitch": "",
-"TriggerArea": ""
+"TriggerArea": "",
+"UpgradeSlotNumberedUI": "",
+"UpgradeSlotUI": ""
 }
 
 [application]

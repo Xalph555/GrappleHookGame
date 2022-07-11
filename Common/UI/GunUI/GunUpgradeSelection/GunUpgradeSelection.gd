@@ -31,6 +31,7 @@ func set_up_ui(player_ref : Player, gun_ref : ProtoGunExtension, num_of_slots : 
 		var slot_instance = upgrade_slot.instance()
 		_slot_container.add_child(slot_instance)
 
+		slot_instance.connect("num_slot_double_clicked", self, "_on_attribute_upgrade_slot_double_clicked")
 		slot_instance.display_upgrade(i + 1, null)
 		
 		upgrade_slot_instances.append(slot_instance)
@@ -85,7 +86,13 @@ func switch_upgrade(slot : int) -> void:
 
 	hide_attached_upgrades() 
 	
+
+# player signal call back
+func _on_pick_up_deselected(pick_up) -> void:
+	if _pending_upgrade:
+		hide_attached_upgrades()
 			
+
 # gun signal call backs
 func _on_attribute_upgrade_changed(slot : int, new_upgrade : GunUpgradeResource) -> void:
 	if slot < 1 or slot > upgrade_slot_instances.size():
@@ -102,6 +109,7 @@ func _on_attribute_slots_full(upgrade : GunUpgradeResource) -> void:
 	display_attached_upgrades(upgrade)
 
 
-func _on_pick_up_deselected(pick_up) -> void:
-	if _pending_upgrade:
-		hide_attached_upgrades()
+# UI call back
+func _on_attribute_upgrade_slot_double_clicked(slot_num : int) -> void:
+	switch_upgrade(slot_num) 
+
