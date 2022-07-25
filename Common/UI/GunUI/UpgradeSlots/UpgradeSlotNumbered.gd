@@ -10,6 +10,7 @@ class_name UpgradeSlotNumberedUI
 var slot_number := 0
 
 onready var _slot_num_text := $SlotNum
+onready var _slot_icon := $CenterContainer/SlotIcon
 onready var _upgrade_icon := $CenterContainer/UpgradeIcon
 
 

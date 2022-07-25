@@ -1,12 +1,26 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Common/UI/GunUI/UpgradeSlots/Selectable/UpgradeSlotUISelectable.gd" type="Script" id=1]
 [ext_resource path="res://Common/UI/GunUI/UpgradeSlots/UpgradeSlot.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Common/Shaders/OutlineShader.tres" type="Shader" id=3]
 
-[node name="UpgradeSlot" instance=ExtResource( 2 )]
+[sub_resource type="ShaderMaterial" id=3]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/intensity = 0
+shader_param/precision = 0.01
+shader_param/outline_color = Color( 1, 1, 1, 1 )
+
+[node name="UpgradeSlotSelectable" instance=ExtResource( 2 )]
+mouse_filter = 1
 script = ExtResource( 1 )
+
+[node name="SlotIcon" parent="." index="0"]
+material = SubResource( 3 )
 
 [node name="UpgradeIcon" parent="." index="1"]
 mouse_filter = 2
 
-[connection signal="gui_input" from="TextureRect" to="." method="_on_TextureRect_gui_input"]
+[connection signal="gui_input" from="SlotIcon" to="." method="_on_SlotIcon_gui_input"]
+[connection signal="mouse_entered" from="SlotIcon" to="." method="_on_SlotIcon_mouse_entered"]
+[connection signal="mouse_exited" from="SlotIcon" to="." method="_on_SlotIcon_mouse_exited"]

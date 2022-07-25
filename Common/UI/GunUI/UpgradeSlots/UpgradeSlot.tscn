@@ -6,7 +6,7 @@
 [node name="UpgradeSlot" type="CenterContainer"]
 script = ExtResource( 1 )
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="SlotIcon" type="TextureRect" parent="."]
 margin_right = 32.0
 margin_bottom = 32.0
 texture = ExtResource( 2 )

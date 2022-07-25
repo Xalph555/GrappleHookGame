@@ -21,7 +21,7 @@ margin_right = 32.0
 margin_bottom = 50.0
 mouse_filter = 1
 
-[node name="TextureRect" type="TextureRect" parent="CenterContainer"]
+[node name="SlotIcon" type="TextureRect" parent="CenterContainer"]
 margin_right = 32.0
 margin_bottom = 32.0
 texture = ExtResource( 1 )
