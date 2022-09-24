@@ -51,8 +51,6 @@ func _get_property_list() -> Array:
 			"hint" : PROPERTY_HINT_RESOURCE_TYPE,
 			"hint_string" : "PackedScene"
 		})
-
-		print("Hey")
 	
 	else:
 		props.append({
@@ -66,9 +64,7 @@ func _get_property_list() -> Array:
 			"hint" : PROPERTY_HINT_RESOURCE_TYPE,
 			"hint_string" : "Script"
 		})
-
-		print("Yo")
-
+		
 	return props
 
 

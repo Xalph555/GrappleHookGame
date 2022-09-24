@@ -27,6 +27,7 @@ signal damage_changed(new_damage)
 signal projectile_knock_back_changed(new_knock_back)
 signal bullet_speed_changed(new_bullet_speed)
 
+
 # Variables:
 #---------------------------------------
 # upgrade pickup template
@@ -106,7 +107,7 @@ var gun_owner
 onready var _tween := $Tween
 onready var _pivot := $Pivot
 onready var _sprite := $Pivot/Sprite
-onready var _spawn_pos := $Pivot/BulletSpawn
+onready var spawn_pos := $Pivot/BulletSpawn
 
 onready var _fire_rate_timer := $FireRateTimer
 onready var _reload_timer := $ReloadTimer
@@ -144,7 +145,7 @@ func shoot() -> void:
 
 	if self.current_ammo > 0 and _can_shoot:
 		_can_shoot = false
-		barrel_augment.shoot(_spawn_pos.global_position)
+		barrel_augment.shoot(spawn_pos.global_position)
 
 		if self.current_ammo <= 0:
 			reload()

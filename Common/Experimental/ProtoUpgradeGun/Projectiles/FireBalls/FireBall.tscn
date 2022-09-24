@@ -79,7 +79,6 @@ local_coords = false
 process_material = SubResource( 16 )
 
 [node name="HitBox" parent="." instance=ExtResource( 1 )]
-position = Vector2( -2, 0 )
 collision_layer = 16
 damage = 10.0
 knock_back_force = 100.0

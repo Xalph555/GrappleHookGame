@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/RailBarrelAugment/RailBarrelAugmentConfig.gd" type="Script" id=1]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/Projectiles/RailShells/RailShellProjectile.tres" type="Resource" id=2]
+
+[resource]
+script = ExtResource( 1 )
+ammo = 2
+reload_speed = 2.0
+fire_rate = 2.0
+knock_back = 10000.0
+damage = 100.0
+projectile_knock_back = 100.0
+projectile_speed = 0.0
+rail_shell_res = ExtResource( 2 )
+rail_beam_length = 800.0
+rail_beam_width = 30.0
+collision_hit_masks = [ 10 ]

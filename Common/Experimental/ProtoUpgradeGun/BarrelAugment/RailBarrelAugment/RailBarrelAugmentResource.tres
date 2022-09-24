@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/GunUpgradeResource.gd" type="Script" id=1]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/RailBarrelAugment/RailBarrelAugment.gd" type="Script" id=2]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/RailBarrelAugment/RailBarrelAugmentConfig.tres" type="Resource" id=3]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/RailBarrelAugment/RailBarrelIcon.tres" type="Texture" id=4]
+
+[resource]
+script = ExtResource( 1 )
+display_name = "Rail Barrel"
+gun_upgrade_type = 1
+upgrade_icon = ExtResource( 4 )
+gun_upgrade_config = ExtResource( 3 )
+gun_upgrade_script = ExtResource( 2 )
