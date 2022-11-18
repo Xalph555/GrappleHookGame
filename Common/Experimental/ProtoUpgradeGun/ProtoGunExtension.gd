@@ -13,6 +13,8 @@ signal projectile_changed(new_projectile)
 signal attribute_upgrade_changed(slot, new_upgrade)
 signal attribute_slots_full(pending_upgrade)
 
+signal upgrade_incompatible
+
 # stat changes
 signal max_ammo_changed(new_max_ammo)
 signal current_ammo_changed(new_current_ammo)
@@ -145,13 +147,13 @@ func shoot() -> void:
 
 	if self.current_ammo > 0 and _can_shoot:
 		_can_shoot = false
-		barrel_augment.shoot(spawn_pos.global_position)
 
-		if self.current_ammo <= 0:
-			reload()
+		if barrel_augment.shoot(spawn_pos.global_position):
+			if self.current_ammo <= 0:
+				reload()
 
-		else:
-			_fire_rate_timer.start()
+			else:
+				_fire_rate_timer.start()
 
 
 func reload() -> void:
@@ -205,53 +207,95 @@ func refresh_stats() -> void:
 	_can_shoot = true
 
 
-func change_projectile(new_projectile : GunUpgradeResource) -> void:
+func change_projectile(new_projectile : GunUpgradeResource) -> bool:
 	if not new_projectile:
 		print("No projectile being set for gun but change_projectile was called")
-		return
+		return false
 	
 	if not new_projectile.projectile_scene:
-		print("Invalid projectile being set for gun")
-		return
+		print("Invalid projectile - there is no projectile scene")
+		return false
 
-	if projectile_scene:
-		remove_projectile()
+	if current_projectile:
+		if is_incompatible(new_projectile.gun_incompatibilities, current_projectile):
+			emit_signal("upgrade_incompatible")
+			return false
+	else:
+		if is_incompatible(new_projectile.gun_incompatibilities, null):
+			emit_signal("upgrade_incompatible")
+			return false
+
+	if current_projectile:
+		if not remove_projectile():
+			return false
+
+	if barrel_augment.get_script():
+		if not barrel_augment.change_projectile(projectile_scene):
+			return false
 
 	current_projectile = new_projectile
 	projectile_scene = new_projectile.projectile_scene
 
-	if barrel_augment.get_script():
-		barrel_augment.change_projectile(projectile_scene)
-
 	emit_signal("projectile_changed", current_projectile)
 
+	return true
 
-func attach_barrel(barrel : GunUpgradeResource) -> void:
+
+func attach_barrel(barrel : GunUpgradeResource) -> bool:
 	if not barrel:
-		print("Invalid barrel being set for gun")
-		return
+		print("No barrel being set for gun")
+		return false
+
+	if current_barrel_augment:
+		if is_incompatible(barrel.gun_incompatibilities, current_barrel_augment):
+			emit_signal("upgrade_incompatible")
+			return false
+	else:
+		if is_incompatible(barrel.gun_incompatibilities, null):
+			emit_signal("upgrade_incompatible")
+			return false
 	
-	if barrel_augment.get_script():
-		detach_barrel()
+	if current_barrel_augment:
+		if not detach_barrel():
+			return false
 	
+	var previous_barrel = current_barrel_augment
+
 	current_barrel_augment = barrel
 	barrel_augment.set_script(barrel.gun_upgrade_script)
-	barrel_augment.config_upgrade(barrel.gun_upgrade_config)
-	barrel_augment.set_up_barrel(self, gun_owner, projectile_scene)
+
+	if not barrel_augment.config_upgrade(barrel.gun_upgrade_config) || not barrel_augment.set_up_barrel(self, gun_owner, projectile_scene):
+		current_barrel_augment = previous_barrel
+		barrel_augment.set_script(previous_barrel.gun_upgrade_script)
+		barrel_augment.config_upgrade(previous_barrel.gun_upgrade_config)
+		barrel_augment.set_up_barrel(self, gun_owner, projectile_scene)
+
+		return false
 
 	emit_signal("barrel_changed", current_barrel_augment)
 
+	return true
 
-func attach_upgrade(slot : int, upgrade : GunUpgradeResource) -> void:
+
+func attach_upgrade(slot : int, upgrade : GunUpgradeResource) -> bool:
 	if not upgrade:
-		print("Invalid upgrade being set for gun")
-		return
+		print("No upgrade being set for gun")
+		return false
 	
 	if slot < 0 or slot > 3:
 		print("Invalid upgrade slot chosen for gun")
-		return
+		return false
 
-	if attribute_upgrades[slot].get_script():
+	if current_attribute_upgrades[slot]:
+		if is_incompatible(upgrade.gun_incompatibilities, current_attribute_upgrades[slot]):
+			emit_signal("upgrade_incompatible")
+			return false
+	else:
+		if is_incompatible(upgrade.gun_incompatibilities, null):
+			emit_signal("upgrade_incompatible")
+			return false
+
+	if current_attribute_upgrades[slot]:
 		detach_upgrade(slot)
 	
 	current_attribute_upgrades[slot] = upgrade
@@ -260,6 +304,8 @@ func attach_upgrade(slot : int, upgrade : GunUpgradeResource) -> void:
 	attribute_upgrades[slot].add_upgrade(self, gun_owner)
 
 	emit_signal("attribute_upgrade_changed", slot, current_attribute_upgrades[slot])
+
+	return true
 
 
 func attach_upgrade_quick(upgrade : GunUpgradeResource) -> bool:
@@ -358,21 +404,30 @@ func get_all_attachments() -> Dictionary:
 	return attachments
 
 
-func is_incompatible(prohibitions : GunIncompatibilitiesResource) -> bool:
+func is_incompatible(prohibitions : GunIncompatibilitiesResource, excluded_upgrade : GunUpgradeResource) -> bool:
+	if not prohibitions:
+		return false
+
+	# check barrel incompatabilities
 	for barrel in prohibitions.barrels:
-		if barrel == current_barrel_augment:
-			return false
+		if barrel == current_barrel_augment && current_barrel_augment != excluded_upgrade:
+			print("Barrel was incompatitble")
+			return true
 	
+	# check projectile incompatabilities
 	for projectile in prohibitions.projectiles:
-		if projectile == current_projectile:
-			return false
+		if projectile == current_projectile && current_projectile != excluded_upgrade:
+			print("Projectile was incompatitble")
+			return true
 	
+	# check upgrade incompatabilities
 	for attribute_upgrade in prohibitions.attribute_upgrades:
 		for current_upgrade in current_attribute_upgrades:
-			if attribute_upgrade == current_upgrade:
-				return false
+			if attribute_upgrade == current_upgrade && current_upgrade != excluded_upgrade:
+				print("Upgrade was incompatitble")
+				return true
 
-	return true
+	return false
 	
 
 # timer callbacks

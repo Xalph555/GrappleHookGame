@@ -6,7 +6,7 @@ extends GunBarrelAugmentBase
 
 # Functions:
 #---------------------------------------
-func shoot(spawn_pos : Vector2) -> void:
+func shoot(spawn_pos : Vector2) -> bool:
 	.shoot(spawn_pos)
 
 	var _shoot_dir = (parent.aim_location - parent.global_position).normalized()
@@ -21,3 +21,5 @@ func shoot(spawn_pos : Vector2) -> void:
 	gun_owner.velocity += _knock_dir * parent.knock_back
 	
 	parent.current_ammo -= 1
+
+	return true

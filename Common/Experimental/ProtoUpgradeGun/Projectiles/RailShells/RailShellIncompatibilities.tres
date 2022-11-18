@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=6 format=2]
+
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/GunIncompatibilitiesResource.gd" type="Script" id=1]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/Projectiles/FireBalls/FireBallProjectile.tres" type="Resource" id=2]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/Projectiles/Pellets/PelletProjectile.tres" type="Resource" id=3]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/ShotGunBarrelAugment/ShotGunAugmentResource.tres" type="Resource" id=4]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/PistolBarrelAugment/PistolBarrelAugnentResource.tres" type="Resource" id=5]
+
+[resource]
+script = ExtResource( 1 )
+barrels = [ ExtResource( 4 ), ExtResource( 5 ) ]
+projectiles = [ ExtResource( 2 ), ExtResource( 3 ) ]
+attribute_upgrades = [  ]

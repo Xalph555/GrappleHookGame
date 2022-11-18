@@ -24,7 +24,7 @@ var gun_owner
 
 # Functions:
 #---------------------------------------
-func config_upgrade(config : GunUpgradeConfig) -> void:
+func config_upgrade(config : GunUpgradeConfig) -> bool:
 	ammo = config.ammo
 
 	reload_speed = config.reload_speed
@@ -35,8 +35,10 @@ func config_upgrade(config : GunUpgradeConfig) -> void:
 	projectile_knock_back = config.projectile_knock_back
 	projectile_speed = config.projectile_speed
 
+	return true
 
-func add_upgrade(new_parent, new_owner) -> void:
+
+func add_upgrade(new_parent, new_owner) -> bool:
 	parent = new_parent
 	gun_owner = new_owner
 
@@ -50,8 +52,10 @@ func add_upgrade(new_parent, new_owner) -> void:
 	parent.projectile_knock_back = self.projectile_knock_back
 	parent.projectile_speed += self.projectile_speed
 
+	return true
 
-func remove_upgrade() -> void:
+
+func remove_upgrade() -> bool:
 	parent.max_ammo -= self.ammo
 
 	parent.reload_speed -= self.reload_speed
@@ -64,6 +68,8 @@ func remove_upgrade() -> void:
 
 	parent = null
 	gun_owner = null
+
+	return true
 
 
 func get_class() -> String:

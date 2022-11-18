@@ -204,13 +204,18 @@ func pickup_item() -> void:
 				print("No free gun upgrade slot")
 			
 		elif gun_upgrade_type == GunUpgradeResource.GUN_UPGRADE_TYPES.BARREL_UPGRADE:
-			gun_extension.attach_barrel(selected_pickup.upgrade)
+			if gun_extension.attach_barrel(selected_pickup.upgrade):
+				remove_selected_pickup() 
 
-			remove_selected_pickup() 
+			else:
+				print("Could not attach gun barrel")
 		
 		elif gun_upgrade_type == GunUpgradeResource.GUN_UPGRADE_TYPES.PROJECTILE_UPGRADE:
-			gun_extension.change_projectile(selected_pickup.upgrade)
-			remove_selected_pickup()
+			if gun_extension.change_projectile(selected_pickup.upgrade):
+				remove_selected_pickup()
+
+			else:
+				print("Could not attach gun upgrade")
 
 		else:
 			print("Invalid gun pickup")

@@ -1,12 +1,14 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/GunUpgradeResource.gd" type="Script" id=1]
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/Projectiles/FireBalls/FireBall.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/Projectiles/FireBalls/FireBallIcon.tres" type="Texture" id=3]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/Projectiles/FireBalls/FireBallsIncompatibilities.tres" type="Resource" id=4]
 
 [resource]
 script = ExtResource( 1 )
 display_name = "FireBalls"
 gun_upgrade_type = 2
 upgrade_icon = ExtResource( 3 )
+gun_incompatibilities = ExtResource( 4 )
 projectile_scene = ExtResource( 2 )

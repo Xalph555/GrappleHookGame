@@ -1,14 +1,16 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/GunUpgradeResource.gd" type="Script" id=1]
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/PistolBarrelAugment/PistolBarrelAugment.gd" type="Script" id=2]
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/PistolBarrelAugment/PistolBarrelAugmentConfig.tres" type="Resource" id=3]
 [ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/PistolBarrelAugment/PistolBarrelIcon.tres" type="Texture" id=4]
+[ext_resource path="res://Common/Experimental/ProtoUpgradeGun/BarrelAugment/PistolBarrelAugment/PistolBarrelIncompatibilities.tres" type="Resource" id=5]
 
 [resource]
 script = ExtResource( 1 )
 display_name = "Pistol Barrel Augment"
 gun_upgrade_type = 1
 upgrade_icon = ExtResource( 4 )
+gun_incompatibilities = ExtResource( 5 )
 gun_upgrade_config = ExtResource( 3 )
 gun_upgrade_script = ExtResource( 2 )
